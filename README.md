@@ -1,14 +1,12 @@
 ### Usage
 
-[Usage](Usage.md)
+Details on how to use the method can be found [here](Usage.md)
 
 ### Creation
 
-[Creation](Creation.md)
+Details on how the method was created can be found [here](Creation.md)
 
 ### About
-
-MELODI Lite 
 
 Previously we created MELODI, a method and tool to derive overlapping enriched literature elements connecting two biomedical terms, e.g. an exposure and a disease, (Elsworth et al., 2018). The main data involved were derived from SemMedDB (Kilicoglu et al., 2012), in particular a set of annotated ‘subject-predicate-object’ triples created from the titles and abstracts of almost 30 million biomedical articles. 
 
@@ -16,7 +14,7 @@ All data were housed in a Neo4j graph, and each query term of interest created c
 
 It was also becoming apparent that limiting searches to two query terms was not ideal. For exaple, cases where a set of genes had been identified with potential links to a disease could not be queried efficiently and the results were impossible to disentangle. There was also a developing need to do many queries, and doing this via the web application was not practical, therefore the development of a programatic method was required.
 
-To address all these issues, we created MELODI Lite. A quicker and more agile method to identify overlapping elements between any number of exposures and outcomes (http://textbase.mrcieu.ac.uk/app/overlap/). The modifications made to the data, architecture and method are listed below:
+To address all these issues, we created MELODI Lite. A quicker and more agile method to identify overlapping elements between any number of exposures and outcomes. The modifications made to the data, architecture and method are listed below:
 
 ##### Filter by term type
 
