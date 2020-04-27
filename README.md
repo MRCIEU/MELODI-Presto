@@ -2,13 +2,10 @@
 
 1. [Get SemMedDB Data](#get-semmeddb-data)
 2. [Convert to delimited](#convert-to-delimited) 
-3. [Create config.py] 
-4. [Create frequency counts]
-5. [Index the Predication data]
-6. [Index the Sentence data]
-7. [Index the frequency counts]
-8. [Create App/API]
-
+3. [Create config.py](#create-config-file) 
+4. [Create frequency counts](#create-frequency-counts)
+5. [Index the data](#index-the-data)
+6. [Create App/API](#create-app/api)
 
 
 ### Get SemMedDB Data
@@ -58,11 +55,21 @@ DEPLOYMENT='dev/prod'
 
 ### Create frequency counts
 
-`python django_project/scripts/
+`python django_project/scripts/create_semmed_freqs.py`
 
-### Index the Predication data
-### Index the Sentence data
-### Index the frequency counts
+### Index the data
+
+PREDICATION data
+
+`python django_project/scripts/index-semmeddb.py`
+
+SENTENCE data
+
+`python django_project/scripts/index-semmeddb-sentences.py`
+
+PREDICATION frequency data
+
+`python django_project/scripts/index-semmeddb_freqs.py`
 
 ### Create App/API
 
