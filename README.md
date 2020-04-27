@@ -1,6 +1,6 @@
-### Building
+# Building
 
-1. Get SemMedDB Data
+1. [Get SemMedDB Data](#Get SemMedDB Data)
 2. Convert to tab delimited 
 3. Create frequency counts
 4. Index the Predication data
@@ -9,21 +9,27 @@
 7. Create config.py 
 8. Create App/API
 
-1. SemMedDB requires UTS license
 
-2. Downloads are in SQL format, need to convert to something more manageable
+
+### Get SemMedDB Data
+
+### Convert to tab delimited 
+
+Downloads are in SQL format, need to convert to something more manageable
 
 ```
 for i in *sql.gz; do echo $i; python django_project/scripts/mysql_to_csv.py <(gunzip -c $i) | gzip > ${i%%.*}.tsv.gz; done 
 ```
 
-8. To create the App and API just run docker-compose
+### Create App/API
+
+To create the App and API just run docker-compose
 
 ```
 docker-compose up -d
 ```
 
-### Testing
+# Testing
 
 ```
 #all
