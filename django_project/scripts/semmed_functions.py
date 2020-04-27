@@ -87,7 +87,7 @@ def run_sem_query(filterData,index,size=100000):
     #print(res['hits']['total'])
     return t,res['hits']['total'],res['hits']['hits']
 
-def get_term_stats(index=config.semmed_triple_freqs,query=[]):
+def get_term_stats(index=config.semmed_triple_freqs_index,query=[]):
 	filterData={"terms":{"SUB_PRED_OBJ":query}}
 	start=time.time()
 	res=es.search(

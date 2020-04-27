@@ -13,15 +13,18 @@
 
 ### Get SemMedDB Data
 
+Need the SENTENCE and PREDICATION tables - https://skr3.nlm.nih.gov/SemMedDB/download/download.html
+
 ### Convert to delimited 
 
 Downloads are in SQL format, need to convert to something more manageable
 
 ```
-for i in *sql.gz; do echo $i; python django_project/scripts/mysql_to_csv.py <(gunzip -c $i) | gzip > ${i%%.*}.tsv.gz; done 
+python django_project/scripts/mysql_to_csv.py <(gunzip -c semmedVER40_R_PREDICATION.sql.gz) | gzip > semmedVER40_R_PREDICATION.tsv.gz
+python django_project/scripts/mysql_to_csv.py <(gunzip -c semmedVER40_R_SENTENCE.sql.gz) | gzip > semmedVER40_R_SENTENCE.tsv.gz
 ```
 
-### Create config.py 
+### Create config file
 
 `django_project` needs to have config.py file 
 
@@ -36,20 +39,21 @@ elastic_port='9300'
 elastic_host_local='localhost'
 elastic_port_local='9200'
 
-#path to data
-dataPath='/Users/be15516/projects/textBase/api/django_project/data/'
-localPath='/Users/be15516/projects/textBase/api/django_project/data/'
-#dataPath='/usr/src/app/django_project/data/'
-semmed_index = 'semmeddb-v40'
-semmed_triple_freqs = 'semmeddb-v40_triple_freqs'
-semmed_data = '/Users/be15516/mounts/rdfs_mrc/research/data/nih/metadata/dev/release_candidate/data/SemMedDB/semmedVER40_R/semmedVER40_R_PREDICATION.psv.gz'
-semmed_sentence_index = 'semmeddb-sentence-v40'
+#path to data storage directory, e.g. where temporary files are stored
+dataPath='/path/to/data/'
+
+#Elasticsearch index names
+semmed_index = 'name of predicate index'
+semmed_sentence_index = 'name of sentence index'
+semmed_triple_freqs_index = 'name predicate frequency index '
+
+semmed_predicate_data = 'location of PREDICATION file, e.g. semmedVER40_R_PREDICATION.psv.gz'
+semmed_sentence_data = 'location of SENTENCE data file, e.g. semmedVER40_R_SENTENCE.tsv.gz
 maxPubs=10000000
 
 api_url='http://localhost:8000/api/'
-debug='True'
-DEPLOYMENT='dev'
-
+debug='True/False'
+DEPLOYMENT='dev/prod'
 ```
 
 ### Create frequency counts
