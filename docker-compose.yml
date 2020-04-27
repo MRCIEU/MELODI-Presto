@@ -14,7 +14,7 @@ services:
       - ./django_project:/usr/src/app/django_project
       - ./django_project/data:/usr/src/app/django_project/data
     ports:
-      - 8800:8000
+      - 8801:8000
 
   nginx:
     image: melodi-lite/nginx
