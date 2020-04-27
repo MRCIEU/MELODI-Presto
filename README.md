@@ -34,16 +34,17 @@ curl -X GET "localhost:9200/semmeddb-v40/_search?pretty" -H 'Content-Type: appli
 ```
 
 '
-Type acronym	Type full name	Subject Count	Object Count
-aapp	Amino Acid, Peptide, or Protein	2,796,833	1,506,909
-gngm	Gene or Genome	1,172,983	1,957,313
-orch	Organic Chemical	1,106,038	556,152
-dsyn	Disease or Syndrome	877,924	2,144,961
-horm	Hormone	235,704	104,903
-hops	Hazardous or Poisonous Substance	167,979	99,867
-inch	Inorganic Chemical	134,810	160,096
-enzy	Enzyme	35,497	46,044
-chem	Chemical	15,318	13,156
+|Type acronym | Type full name	| Subject Count	| Object Count |
+|---|---|---|---|
+|aapp	|Amino Acid, Peptide, or Protein	|2,796,833	|1,506,909|
+|gngm	|Gene or Genome	|1,172,983	|1,957,313|
+|orch	|Organic Chemical	|1,106,038	|556,152|
+|dsyn	|Disease or Syndrome	|877,924	|2,144,961|
+|horm	|Hormone	|235,704	|104,903|
+|hops	|Hazardous or Poisonous Substance	|167,979	|99,867|
+|inch	|Inorganic Chemical	|134,810	|160,096|
+|enzy	|Enzyme	|35,497	|46,044|
+|chem	|Chemical	|15,318	|13,156|
 
 
 ##### Filter by predicate type
