@@ -8,7 +8,7 @@ Details on how the method was created can be found [here](Creation.md)
 
 ### About
 
-Previously we created MELODI, a method and tool to derive overlapping enriched literature elements connecting two biomedical terms, e.g. an exposure and a disease, (Elsworth et al., 2018). The main data involved were derived from SemMedDB (Kilicoglu et al., 2012), in particular a set of annotated ‘subject-predicate-object’ triples created from the titles and abstracts of almost 30 million biomedical articles. 
+Previously we created MELODI, a method and tool to derive overlapping enriched literature elements connecting two biomedical terms, e.g. an exposure and a disease, (Elsworth et al., 2018)[https://doi.org/10.1093/ije/dyx251]. The main data involved were derived from SemMedDB (Kilicoglu et al., 2012), in particular a set of annotated ‘subject-predicate-object’ triples created from the titles and abstracts of almost 30 million biomedical articles. 
 
 All data were housed in a Neo4j graph, and each query term of interest created connections between the query and the associated literature nodes. This approach provided a suitable method for this type of analysis, and storing the data in a graph made sense, however, creating new links and performing large queries (those that search large parts of the graph and return large amounts of data) was not efficient. In addition, the graph contained all data from the PREDICATION table from SemMedDB, which contains lots of predicates and types that were not informative. 
 
