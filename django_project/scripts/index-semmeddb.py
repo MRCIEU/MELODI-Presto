@@ -25,7 +25,7 @@ es = Elasticsearch(
 )
 
 predIgnore = ['PART_OF','ISA','LOCATION_OF','PROCESS_OF','ADMINISTERED_TO','METHOD_OF','USES','compared_with']
-typeFilterList = ["aapp","dsyn","enzy","gngm","chem","clnd","horm","hops","inch","nusq","orch"]
+typeFilterList = ["aapp","dsyn","enzy","gngm","chem","clnd","horm","hops","inch","orch"]
 
 timeout=300
 
