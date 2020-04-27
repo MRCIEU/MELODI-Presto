@@ -71,7 +71,7 @@ PREDICATION frequency data
 
 `python django_project/scripts/index-semmeddb_freqs.py`
 
-### Create App/API
+### Create App and API
 
 To create the App and API just run docker-compose
 
