@@ -15,10 +15,9 @@ from . import views
 #https://github.com/axnsan12/drf-yasg
 schema_view = get_schema_view(
    openapi.Info(
-      title="textBase API",
+      title="MELODI Lite API",
       default_version='v0.1',
-      description="textBase API",
-      #terms_of_service="https://www.google.com/policies/terms/",
+      description="MELODI Lite API",
       contact=openapi.Contact(email="ben.elsworth@bristol.ac.uk"),
       license=openapi.License(name="BSD License"),
    ),

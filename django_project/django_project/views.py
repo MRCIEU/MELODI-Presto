@@ -35,7 +35,7 @@ api_url=config.api_url
 
 deploy=config.DEPLOYMENT
 if deploy=="prod":
-    word2vec_model, sent2vec_model, gwas_vector_dic, orcid_vector_dic = load_models()
+    print('#### Running in production mode ####\n')
 else:
     print('#### Running in development mode ####\n')
 
@@ -45,8 +45,8 @@ def index(request):
     template = loader.get_template('django_project/index.html')
     context = {
       'index': {
-        'api': 'TextBase API',
-        'app': 'TextBase App'
+        'api': 'MELODI Lite API',
+        'app': 'MELODI Lite App'
       }
     }
     return HttpResponse(template.render(context, request))
@@ -58,7 +58,7 @@ def app(request):
 
 def overlap(request):
     template = loader.get_template('django_project/overlap.html')
-    context = {'textbase_api_url':api_url}
+    context = {'api_url':api_url}
     return HttpResponse(template.render(context, request))
 
 ### API

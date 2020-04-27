@@ -29,7 +29,7 @@
   <br>
   <div class="row">
       <div class="col">
-          <pre><code id='api-code'>curl -X POST 'http://textbase.biocompute.org.uk/api/overlap/' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{ "x": [ "APOB", "LDLR", "LDLRAP1", "PCSK9" ], "y": [ "Hypercholesterolaemia" ]}'</code></pre>
+          <pre><code id='api-code'>curl -X POST 'http://melodi-lite.mrcieu.ac.uk/api/overlap/' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{ "x": [ "APOB", "LDLR", "LDLRAP1", "PCSK9" ], "y": [ "Hypercholesterolaemia" ]}'</code></pre>
       </div>
   </div>
   <div class="row">
@@ -96,7 +96,7 @@
         document.getElementById('x').innerHTML = a;
         //document.getElementById('y').innerHTML ='Hereditary non-polyposis colon cancer, Familial adenomatous polyposis';
         document.getElementById('y').innerHTML = b;
-        document.getElementById('api-code').innerHTML='curl -X POST \'http://textbase.biocompute.org.uk/api/overlap/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "x": [ "'+a+'" ], "y": [ "'+b+'" ]}\''
+        document.getElementById('api-code').innerHTML='curl -X POST \'http://melodi-lite.mrcieu.ac.uk/api/overlap/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "x": [ "'+a+'" ], "y": [ "'+b+'" ]}\''
     }
     $(document).ready(function() {
         var res_table = $('#results').DataTable( {
@@ -105,7 +105,7 @@
             //"serverSide": true,
             "ajax":{
                 "type": "POST",
-                "url": "{{textbase_api_url}}overlap/",
+                "url": "{{api_url}}overlap/",
                 data:function(d){
                     if (document.getElementById("x").value.length>0){
                         return JSON.stringify(
@@ -144,14 +144,14 @@
           console.log('change')
           var x=$("#x").val()
           var y=$("#y").val()
-          document.getElementById('api-code').innerHTML='curl -X POST \'http://textbase.biocompute.org.uk/api/overlap/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "x": [ "'+x+'" ], "y": [ "'+y+'" ]}\''
+          document.getElementById('api-code').innerHTML='curl -X POST \'http://melodi-lite.mrcieu.ac.uk/api/overlap/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "x": [ "'+x+'" ], "y": [ "'+y+'" ]}\''
         });
 
         $("#y").on('change keydown paste input', function(){
           console.log('change')
           var x=$("#x").val()
           var y=$("#y").val()
-          document.getElementById('api-code').innerHTML='curl -X POST \'http://textbase.biocompute.org.uk/api/overlap/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "x": [ "'+x+'" ], "y": [ "'+y+'" ]}\''
+          document.getElementById('api-code').innerHTML='curl -X POST \'http://melodi-lite.mrcieu.ac.uk/api/overlap/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "x": [ "'+x+'" ], "y": [ "'+y+'" ]}\''
         });
 
     } );
