@@ -1,6 +1,6 @@
 # Building
 
-1. [Get SemMedDB Data](#Get SemMedDB Data)
+1. [Get SemMedDB Data](#get-semmeddb-data)
 2. Convert to tab delimited 
 3. Create frequency counts
 4. Index the Predication data
