@@ -1,0 +1,41 @@
+version: '2'
+services:
+
+  django:
+    image: melodi-lite/django
+    restart: always
+    container_name: melodi-lite-django
+    build:
+      context: .
+    networks:
+      - dsne-django-nginx
+    volumes:
+      - dsne-django-static:/usr/src/app/static
+      - ./django_project:/usr/src/app/django_project
+      - ./django_project/data:/usr/src/app/django_project/data
+    ports:
+      - 8800:8000
+
+  nginx:
+    image: melodi-lite/nginx
+    restart: always
+    container_name: melodi-lite-nginx
+    build:
+      context: ./nginx
+      dockerfile: nginx.dockerfile
+    networks:
+      - dsne-django-nginx
+    volumes:
+      - dsne-django-static:/usr/src/app/static
+    ports:
+      - 9090:80
+    depends_on:
+      - django
+
+volumes:
+  dsne-django-static:
+  django_project:
+
+networks:
+  dsne-django-nginx:
+    driver: bridge

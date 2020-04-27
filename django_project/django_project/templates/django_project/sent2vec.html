@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<main class="hw-container" role='main'>
+    Sentence 1: <textarea rows="4" cols="50" id='s1'>This is a test sentence that is similar to the next one</textarea><br>
+    Sentence 2: <textarea rows="4" cols="50" id='s2'>This is a test sentence that is similar to the previous one, but a little bit different</textarea>
+    <br>Examples:
+
+    <br><button id='run'>Compare</button>
+    <div id='div1'></div>
+</main>
+{% endblock %}
+{% block javascript %}
+<script>
+    $("button").click(function(){
+        $.ajax({
+            type: "POST",
+            url: '/api/sent2vec-com/',
+            data: JSON.stringify({
+              's1': document.getElementById("s1").value,
+              's2': document.getElementById("s2").value
+            }),
+            success: function (data) {
+              console.log(data)
+              $("#div1").html(data);
+            }
+          });
+        });
+</script>
+{% endblock %}

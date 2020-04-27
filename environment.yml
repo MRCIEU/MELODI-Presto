@@ -1,0 +1,21 @@
+name: MelodiLite
+
+channels:
+  - akode
+  - conda-forge
+
+dependencies:
+  - python=3.7
+  - scipy
+  - Django=2.2.3
+  - gunicorn
+  - djangorestframework
+  - requests
+  - elasticsearch
+  - numpy
+  - scipy
+  - pandas
+  - pip
+  - pip:
+    - drf-yasg
+

@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    
+    <h1 class="text-center">Lite <img src="http://melodi.biocompute.org.uk/static/browser/img/melodi_logo.png" alt="MELODI"  height="36"></h1>
+  <div class="row">
+    <div class="col-1 text-right">
+        <b>X:</b>
+    </div>
+    <div class="col-11">
+        <textarea rows="1" style="min-width: 90%" id='x'>APOB, LDLR, LDLRAP1, PCSK9</textarea><br>
+    </div>
+  </div>
+  <div class="row">
+      <div class="col-1 text-right">
+          <b>Y:</b>
+      </div>
+      <div class="col-11">
+          <textarea rows="1" style="min-width: 90%" id='y'>Hypercholesterolaemia</textarea>
+      </div>
+  </div>
+  <div class="row">
+      <div class="col-5"></div>
+      <div class="col-2">
+          <button id='run'>Compare</button>
+      </div>
+      <div class="col-5"></div>
+  </div>
+  <br>
+  <div class="row">
+      <div class="col">
+          <pre><code id='api-code'>curl -X POST 'http://textbase.biocompute.org.uk/api/overlap/' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{ "x": [ "APOB", "LDLR", "LDLRAP1", "PCSK9" ], "y": [ "Hypercholesterolaemia" ]}'</code></pre>
+      </div>
+  </div>
+  <div class="row">
+    <!--https://www.cancer.org/cancer/colon-rectal-cancer/causes-risks-prevention/what-causes.html-->
+    <table class="display compact nowrap" style="width:60%" align="center">
+        <tr><td></td><td><b>X</b></td><td><b>Y</b></td></tr>
+        <tr>
+            <td><a class="example-call" href="#" onclick="populate_boxes(['MLH1, MSH2, MLH3, MSH6, PMS1, PMS2, APC'],['Hereditary non-polyposis colon cancer'])">Example 1</a></td>
+            <td>MLH1, MSH2, MLH3, MSH6, PMS1, PMS2, APC</td>
+            <td>Hereditary non-polyposis colon cancer</td>
+        </tr>
+        <tr>
+            <td><a class="example-call" href="#" onclick="populate_boxes(['Sleep duration'],['Breast cancer'])">Example 2</a></td>
+            <td>Sleep duration</td>
+            <td>Breast cancer</td>
+        </tr>
+        <tr>
+            <td><a class="example-call" href="#" onclick="populate_boxes(['TMPRSS2ERG, ERG'],['Prostate cancer'])">Example 3</a></td>
+            <td>TMPRSS2ERG, ERG</td>
+            <td>Prostate cancer</td>
+        </tr>
+    </table>
+    </div>
+    </div>
+    <div id='div1'>
+    <table id="results" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>X</th>
+                <th>X Triple</th>
+                <th>X Count</th>
+                <!--th>X Triple PMIDs</th-->
+                <th>X Pval</th>
+                <th>Y Outcome Triple</th>
+                <th>Y Count</th>
+                <!--th>Y Triple PMIDs</th-->
+                <th>Y Pval</th>
+                <th>Y</th>
+            </tr>
+        </thead>
+    </table>
+    </div>
+</div>
+{% endblock %}
+{% block javascript %}
+<style>
+    pre code {
+  background-color: #eee;
+  border: 1px solid #999;
+  display: block;
+  padding: 5px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+</style>
+<script>
+    function populate_boxes(a,b){
+        console.log(a,b)
+        //document.getElementById('x').innerHTML = 'MLH1,MSH2,MLH3,MSH6,PMS1,PMS2,APC';
+        document.getElementById('x').innerHTML = a;
+        //document.getElementById('y').innerHTML ='Hereditary non-polyposis colon cancer, Familial adenomatous polyposis';
+        document.getElementById('y').innerHTML = b;
+        document.getElementById('api-code').innerHTML='curl -X POST \'http://textbase.biocompute.org.uk/api/overlap/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "x": [ "'+a+'" ], "y": [ "'+b+'" ]}\''
+    }
+    $(document).ready(function() {
+        var res_table = $('#results').DataTable( {
+            "processing": true,
+            "order": [[3, "asc"],[6,"asc"]],
+            //"serverSide": true,
+            "ajax":{
+                "type": "POST",
+                "url": "{{textbase_api_url}}overlap/",
+                data:function(d){
+                    if (document.getElementById("x").value.length>0){
+                        return JSON.stringify(
+                        {
+                            'x': document.getElementById("x").value.trim().split(','),
+                            'y': document.getElementById("y").value.trim().split(',')
+                        });
+                    }else{
+                        console.log('empty')
+                        return JSON.stringify([])
+                    }
+                }
+            },
+            "columns": [
+              {"data":"set_x"},
+              {"data":"triple_x"},
+              {"data":"localCount_x"},
+              {"data":"pval_x"},
+              {"data":"triple_y"},
+              {"data":"localCount_y"},
+              {"data":"pval_y"},
+              {"data":"set_y"},
+            ]
+        } );
+
+        $("button").click(function(){
+            console.log('update')
+            res_table.ajax.reload()
+            });
+
+        $(".example-call").click(function(){
+            res_table.ajax.reload()
+            });
+
+        $("#x").on('change keydown paste input', function(){
+          console.log('change')
+          var x=$("#x").val()
+          var y=$("#y").val()
+          document.getElementById('api-code').innerHTML='curl -X POST \'http://textbase.biocompute.org.uk/api/overlap/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "x": [ "'+x+'" ], "y": [ "'+y+'" ]}\''
+        });
+
+        $("#y").on('change keydown paste input', function(){
+          console.log('change')
+          var x=$("#x").val()
+          var y=$("#y").val()
+          document.getElementById('api-code').innerHTML='curl -X POST \'http://textbase.biocompute.org.uk/api/overlap/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "x": [ "'+x+'" ], "y": [ "'+y+'" ]}\''
+        });
+
+    } );
+</script>
+{% endblock %}
