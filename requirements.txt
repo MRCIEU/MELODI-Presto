@@ -1,0 +1,12 @@
+Django==2.2.3
+gunicorn==19.7.0
+djangorestframework
+requests
+coreapi
+elasticsearch
+numpy
+scipy
+pytest
+pyyaml
+drf-yasg
+pandas

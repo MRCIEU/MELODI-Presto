@@ -28,7 +28,7 @@ services:
     volumes:
       - dsne-django-static:/usr/src/app/static
     ports:
-      - 9090:80
+      - 9091:80
     depends_on:
       - django
 
