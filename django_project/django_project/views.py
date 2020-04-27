@@ -46,7 +46,8 @@ def index(request):
     context = {
       'index': {
         'api': 'MELODI Lite API',
-        'app': 'MELODI Lite App'
+        'app': 'MELODI Lite App',
+        'repo': 'GitHub Repository'
       }
     }
     return HttpResponse(template.render(context, request))
