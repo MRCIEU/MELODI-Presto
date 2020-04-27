@@ -5,7 +5,7 @@
 3. [Create config.py](#create-config-file) 
 4. [Create frequency counts](#create-frequency-counts)
 5. [Index the data](#index-the-data)
-6. [Create App/API](#create-app/api)
+6. [Create App and API](#create-app-and-api)
 
 
 ### Get SemMedDB Data
