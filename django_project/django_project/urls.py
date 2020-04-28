@@ -9,6 +9,7 @@ from rest_framework import permissions
 from django.views.generic import TemplateView
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+import config
 
 from . import views
 
@@ -23,6 +24,7 @@ schema_view = get_schema_view(
    ),
    public=True,
    permission_classes=(permissions.AllowAny,),
+   url=config.api_url
 )
 
 #schema_view = get_swagger_view(title='textBase API')
