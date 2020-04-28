@@ -95,10 +95,22 @@ oddsratio,pvalue
 
 A first pass creates local copies of the enrichment data, as seen above. For this reason if a variable has not been run already it may take a few moments. However, if an existing variable is queried, the function runs in seconds.
 
-```
-time curl -o test.out -X POST 'http://textbase.mrcieu.ac.uk/api/overlap/' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{ "x": [ "Sleep duration" ], "y": [ "Breast cancer" ]}'
 
-real	0m0.367s
+```
+q=badgers
+
+#first time
+
+time curl -X POST "http://melodi-lite.mrcieu.ac.uk/api/enrich/" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"text\": [ \"$q\" ]}"
+real	0m3.906s
+user	0m0.009s
+sys	0m0.014s
+
+#second time 
+
+time curl -X POST "http://melodi-lite.mrcieu.ac.uk/api/enrich/" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"text\": [ \"$q\" ]}"
+
+real	0m0.249s
 user	0m0.010s
 sys	0m0.014s
 ```
