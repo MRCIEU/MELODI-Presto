@@ -1,6 +1,6 @@
 ### API and App
 
-[http://melodi-lite.mrcieu.ac.uk/](http://melodi-lite.mrcieu.ac.uk/)
+[http://melodi-lite.mrcieu.ac.uk/](https://melodi-lite.mrcieu.ac.uk/)
 
 [![DOI](https://zenodo.org/badge/259267887.svg)](https://zenodo.org/badge/latestdoi/259267887)
 
@@ -100,7 +100,7 @@ q="physical activity"
 
 #first time
 
-time curl -o "physical-activity.melodi-lite.json" -X POST "http://melodi-lite.mrcieu.ac.uk/api/enrich/" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"text\": [ \"$q\" ]}"
+time curl -o "physical-activity.melodi-lite.json" -X POST "https://melodi-lite.mrcieu.ac.uk/api/enrich/" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"text\": [ \"$q\" ]}"
 
 real	0m23.901s
 user	0m0.042s
@@ -108,7 +108,7 @@ sys	0m0.126s
 
 #second time 
 
-time curl -o "physical-activity.melodi-lite.json" -X POST "http://melodi-lite.mrcieu.ac.uk/api/enrich/" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"text\": [ \"$q\" ]}"
+time curl -o "physical-activity.melodi-lite.json" -X POST "https://melodi-lite.mrcieu.ac.uk/api/enrich/" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"text\": [ \"$q\" ]}"
 
 real	0m2.150s
 user	0m0.036s
