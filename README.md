@@ -1,6 +1,8 @@
-### API
+### API and App
 
 [http://melodi-lite.mrcieu.ac.uk/](http://melodi-lite.mrcieu.ac.uk/)
+
+[![DOI](https://zenodo.org/badge/259267887.svg)](https://zenodo.org/badge/latestdoi/259267887)
 
 ### Usage
 
