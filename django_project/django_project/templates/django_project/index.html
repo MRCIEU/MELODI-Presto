@@ -1,9 +1,20 @@
 {% extends 'base.html' %}
 {% block content %}
+<div class="container">
+  <h1 class="text-center"><img src="http://melodi.biocompute.org.uk/static/browser/img/melodi_logo.png" alt="MELODI"  height="30" style="position: relative; top: -3px;"> Lite</h1>
+  <hr/>
+  <div class="row">
+  <div class="col-4 text-center">
+    <h1 class="hw--blue"><a href='/docs/'>{{index.api}}</a></h1>
+  </div>
+  <div class="col-4 text-center">
+    <h1 class="hw--blue"><a href='/app/overlap/'>{{index.app}}</a></h1>
+  </div>
+  <div class="col-4 text-center">
+    <h1 class="hw--blue"><a href='https://github.com/MRCIEU/MELODI-Lite'>{{index.repo}}</a></h1>
+  </div>
+</div>
 <main role='main'>
-  <h1 class="hw--blue"><a href='/docs/'>{{index.api}}</a></h1>
-  <h1 class="hw--blue"><a href='/app/overlap/'>{{index.app}}</a></h1>
-  <h1 class="hw--blue"><a href='https://github.com/MRCIEU/MELODI-Lite'>{{index.repo}}</a></h1>
   <p>
     Previously we created MELODI, a method and tool to derive overlapping enriched literature elements connecting two biomedical terms, e.g. an exposure and a disease, <a href="https://doi.org/10.1093/ije/dyx251">(Elsworth et al., 2018)</a>. 
     The main data involved were derived from SemMedDB <a href="https://academic.oup.com/bioinformatics/article/28/23/3158/195282">(Kilicoglu et al., 2012)</a>, in particular a set of annotated ‘subject-predicate-object’ triples created from the titles and abstracts of almost 30 million biomedical articles. 

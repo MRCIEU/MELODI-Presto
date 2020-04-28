@@ -45,9 +45,9 @@ def index(request):
     template = loader.get_template('django_project/index.html')
     context = {
       'index': {
-        'api': 'MELODI Lite API',
-        'app': 'MELODI Lite App',
-        'repo': 'GitHub Repository'
+        'api': 'API',
+        'app': 'App',
+        'repo': 'GitHub'
       }
     }
     return HttpResponse(template.render(context, request))
