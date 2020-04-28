@@ -73,7 +73,7 @@ def StatusView(request):
 @api_view(['POST'])
 def SentencePostView(request):
     """
-    API endpoint for SemMedDB Sentence return, e.g. 23715093.
+    API endpoint for SemMedDB Sentence return for a given PubMed ID, e.g. 23715093.
     """
     if request.method == 'POST':
         data = json.loads(request.body)
@@ -111,7 +111,7 @@ def SentencePostView(request):
 @api_view(['POST'])
 def OverlapPostView(request):
     """
-    API endpoint for MELODI style overlap return.
+    API endpoint for MELODI style overlap return. Accepts two lists of query terms, x and y, e.g. ['NF1','MALAT1','NEAT2'] amd ['neuroblastoma','lung cancer']
     """
     if request.method == 'POST':
         data = json.loads(request.body)
@@ -141,7 +141,7 @@ def OverlapPostView(request):
 def EnrichPostView(request):
     """
     API endpoint for MELODI style SemMedDB triple enrichment.
-    Accepts comma separated values for biomedical terms.
+    Accepts a list of biomedical terms.
     """
     if request.method == 'POST':
         data = json.loads(request.body)
