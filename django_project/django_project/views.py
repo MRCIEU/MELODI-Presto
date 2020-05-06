@@ -10,7 +10,7 @@ from rest_framework.decorators import api_view
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from django.views.decorators.csrf import csrf_exempt
-from django_project.serializers import *
+from django_project.serializers import OverlapSerializer, EnrichSerializer, SentenceSerializer
 import config
 import requests
 import time
@@ -77,7 +77,8 @@ def SentencePostView(request):
     """
     if request.method == 'POST':
         data = json.loads(request.body)
-        if 'pmid' in data:
+        serializer = SentenceSerializer(data=data)
+        if serializer.is_valid():
             pmid = data['pmid']
             logger.info('Sentence query Post: '+pmid)
             es_logger.info('Sentence POST '+str(pmid))
@@ -104,7 +105,7 @@ def SentencePostView(request):
             #print(final_res)
             returnData={'count':count2,'results':final_res}
         else:
-            returnData = ['Error: need a PubMed ID']
+            returnData = serializer.errors
     return Response(returnData)
 
 @swagger_auto_schema(methods=['post'], request_body=OverlapSerializer)
@@ -115,9 +116,10 @@ def OverlapPostView(request):
     """
     if request.method == 'POST':
         data = json.loads(request.body)
-        #print(data)
-        logger.info('Overlap Query Post')
-        if 'x' in data and 'y' in data:
+        serializer = OverlapSerializer(data=data)
+        if serializer.is_valid():
+            #print(data)
+            logger.info('Overlap Query Post')
             x = [x.strip().replace(' ','_').lower() for x in data['x']]
             y = [x.strip().replace(' ','_').lower() for x in data['y']]
             logger.info('Overlap Get x: '+str(x))
@@ -131,10 +133,11 @@ def OverlapPostView(request):
                 logger.info('pub_sem: '+o)
                 pub_sem(o,sem_trip_dic)
             joinDic = compare_sem_df(x,y)
+            returnData = joinDic
             return Response(joinDic)
         else:
-            logger.info('missing data')
-            return Response('')
+            returnData = serializer.errors
+        return Response(returnData)
 
 @swagger_auto_schema(methods=['post'], request_body=EnrichSerializer)
 @api_view(['POST'])
@@ -148,18 +151,15 @@ def EnrichPostView(request):
         serializer = EnrichSerializer(data=data)
         if serializer.is_valid():
             logger.info('Enrich Query Post')
-            if 'query' in data:
-                text = [x.replace(' ','_').lower() for x in data['query']]
-                logger.info('Enrich Text: '+str(text))
-                sem_trip_dic={}
-                enrichDic={}
-                for e in text:
-                    logger.info('pub_sem: '+e+' '+str(len(e)))
-                    enrichDic[e] = pub_sem(e,sem_trip_dic)
-                es_logger.info('Enrich POST '+str(text))
-                returnData = enrichDic
-            else:
-                returnData = ['Error: need a list called \'text\''] 
+            text = [x.replace(' ','_').lower() for x in data['query']]
+            logger.info('Enrich Text: '+str(text))
+            sem_trip_dic={}
+            enrichDic={}
+            for e in text:
+                logger.info('pub_sem: '+e+' '+str(len(e)))
+                enrichDic[e] = pub_sem(e,sem_trip_dic)
+            es_logger.info('Enrich POST '+str(text))
+            returnData = enrichDic
         else:
             returnData = serializer.errors
         return Response(returnData)
