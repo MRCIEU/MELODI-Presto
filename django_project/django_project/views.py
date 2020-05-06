@@ -145,15 +145,21 @@ def EnrichPostView(request):
     """
     if request.method == 'POST':
         data = json.loads(request.body)
-        print(data)
-        logger.info('Enrich Query Post')
-        if 'text' in data:
-            text = [x.replace(' ','_').lower() for x in data['text']]
-            logger.info('Enrich Text: '+str(text))
-            sem_trip_dic={}
-            enrichDic={}
-            for e in text:
-                logger.info('pub_sem: '+e)
-                enrichDic[e] = pub_sem(e,sem_trip_dic)
-            es_logger.info('Enrich POST '+str(text))
-            return Response(enrichDic)
+        serializer = EnrichSerializer(data=data)
+        if serializer.is_valid():
+            logger.info('Enrich Query Post')
+            if 'query' in data:
+                text = [x.replace(' ','_').lower() for x in data['query']]
+                logger.info('Enrich Text: '+str(text))
+                sem_trip_dic={}
+                enrichDic={}
+                for e in text:
+                    logger.info('pub_sem: '+e+' '+str(len(e)))
+                    enrichDic[e] = pub_sem(e,sem_trip_dic)
+                es_logger.info('Enrich POST '+str(text))
+                returnData = enrichDic
+            else:
+                returnData = ['Error: need a list called \'text\''] 
+        else:
+            returnData = serializer.errors
+        return Response(returnData)
