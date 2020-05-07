@@ -115,3 +115,12 @@ user	0m0.036s
 sys	0m0.104s
 ```
 
+### Notebooks
+
+Issues with Sankey
+
+```
+jupyter labextension install @jupyter-widgets/jupyterlab-manager
+npm i -g npm to update
+```
+
