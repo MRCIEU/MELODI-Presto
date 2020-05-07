@@ -5,7 +5,7 @@
         <b>X:</b>
     </div>
     <div class="col-11">
-        <textarea rows="1" style="min-width: 90%" id='x'>MLH1, MSH2, MLH3, MSH6, PMS1, PMS2, APC</textarea><br>
+        <textarea rows="1" style="min-width: 90%" id='x'>PMS2, APC</textarea><br>
     </div>
   </div>
   <div class="row">
@@ -26,7 +26,7 @@
   <br>
   <div class="row">
       <div class="col">
-          <pre><code id='api-code'>curl -X POST 'http://melodi-lite.mrcieu.ac.uk/api/overlap/' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{ "x": [ "MLH1", "MSH2", "MLH3", "MSH6", "PMS1", "PMS2", "APC" ], "y": [ "Hereditary non-polyposis colon cancer" ]}'</code></pre>
+          <pre><code id='api-code'>curl -X POST 'http://melodi-lite.mrcieu.ac.uk/api/overlap/' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{ "x": [ "PMS2", "APC" ], "y": [ "Hereditary non-polyposis colon cancer" ]}'</code></pre>
       </div>
   </div>
   <div class="row">
@@ -98,7 +98,7 @@
     $(document).ready(function() {
         var res_table = $('#results').DataTable( {
             "processing": true,
-            "order": [[3, "asc"],[6,"asc"]],
+            "order": [[3, "asc"],[6,"asc"], [2,"desc"], [5, "desc"]],
             //"serverSide": true,
             "ajax":{
                 "type": "POST",
