@@ -1,6 +1,6 @@
 ### API and App
 
-[https://melodi-lite.mrcieu.ac.uk/](https://melodi-lite.mrcieu.ac.uk/)
+[https://melodi-presto.mrcieu.ac.uk/](https://melodi-presto.mrcieu.ac.uk/)
 
 [![DOI](https://zenodo.org/badge/259267887.svg)](https://zenodo.org/badge/latestdoi/259267887)
 
@@ -18,15 +18,15 @@ Previously we created MELODI, a method and tool to derive overlapping enriched l
 
 All data were housed in a Neo4j graph, and each query term of interest created connections between the query and the associated literature nodes. This approach provided a suitable method for this type of analysis, and storing the data in a graph made sense, however, creating new links and performing large queries (those that search large parts of the graph and return large amounts of data) was not efficient. In addition, the graph contained all data from the PREDICATION table from SemMedDB, which contains lots of predicates and types that were not informative. 
 
-It was also becoming apparent that limiting searches to two query terms was not ideal. For exaple, cases where a set of genes had been identified with potential links to a disease could not be queried efficiently and the results were impossible to disentangle. There was also a developing need to do many queries, and doing this via the web application was not practical, therefore the development of a programatic method was required.
+It was also becoming apparent that limiting searches to two query terms was not ideal. For example, cases where a set of genes had been identified with potential links to a disease could not be queried efficiently and the results were impossible to disentangle. There was also a developing need to do many queries, and doing this via the web application was not practical, therefore the development of a programmatic method was required.
 
-To address all these issues, we created MELODI Lite. A quicker and more agile method to identify overlapping elements between any number of exposures and outcomes. The modifications made to the data, architecture and method are listed below:
+To address all these issues, we created MELODI Presto. A quicker and more agile method to identify overlapping elements between any number of exposures and outcomes. The modifications made to the data, architecture and method are listed below:
 
 ##### Filter by term type
 
 SemMedDB triples were filtered to include only those matching particular ‘term types’. These types are defined by the UMLS semantic type abbreviations (https://mmtx.nlm.nih.gov/MMTx/semanticTypes.shtml). We decided to focus on terms that would be most relevant to mechanistic inference. Table 1 lists the terms that were selected.
 
-Table 1. UMLS semantic types included in MELODI Lite  
+Table 1. UMLS semantic types included in MELODI Presto 
 
 ```
 curl -X GET "localhost:9200/semmeddb-v40/_search?pretty" -H 'Content-Type: application/json' -d'
@@ -100,7 +100,7 @@ q="physical activity"
 
 #first time
 
-time curl -o "physical-activity.melodi-lite.json" -X POST "https://melodi-lite.mrcieu.ac.uk/api/enrich/" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"text\": [ \"$q\" ]}"
+time curl -o "physical-activity.melodi-presto.json" -X POST "https://melodi-presto.mrcieu.ac.uk/api/enrich/" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"text\": [ \"$q\" ]}"
 
 real	0m23.901s
 user	0m0.042s
@@ -108,7 +108,7 @@ sys	0m0.126s
 
 #second time 
 
-time curl -o "physical-activity.melodi-lite.json" -X POST "https://melodi-lite.mrcieu.ac.uk/api/enrich/" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"text\": [ \"$q\" ]}"
+time curl -o "physical-activity.melodi-presto.json" -X POST "https://melodi-presto.mrcieu.ac.uk/api/enrich/" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"text\": [ \"$q\" ]}"
 
 real	0m2.150s
 user	0m0.036s
