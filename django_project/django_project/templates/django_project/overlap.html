@@ -26,7 +26,7 @@
   <br>
   <div class="row">
       <div class="col">
-          <pre><code id='api-code'>curl -X POST 'http://melodi-lite.mrcieu.ac.uk/api/overlap/' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{ "x": [ "TMPRSS2ERG", "ERG" ], "y": [ "Prostate cancer" ]}'</code></pre>
+          <pre><code id='api-code'>curl -X POST 'http://melodi-presto.mrcieu.ac.uk/api/overlap/' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{ "x": [ "TMPRSS2ERG", "ERG" ], "y": [ "Prostate cancer" ]}'</code></pre>
       </div>
   </div>
   <div class="row">
@@ -101,7 +101,7 @@ thead input {
         document.getElementById('x').innerHTML = a;
         //document.getElementById('y').innerHTML ='Hereditary non-polyposis colon cancer, Familial adenomatous polyposis';
         document.getElementById('y').innerHTML = b;
-        document.getElementById('api-code').innerHTML='curl -X POST \'http://melodi-lite.mrcieu.ac.uk/api/overlap/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "x": [ "'+a+'" ], "y": [ "'+b+'" ]}\''
+        document.getElementById('api-code').innerHTML='curl -X POST \'http://melodi-presto.mrcieu.ac.uk/api/overlap/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "x": [ "'+a+'" ], "y": [ "'+b+'" ]}\''
     }
     $(document).ready(function() {
         var res_table = $('#results').DataTable( {
@@ -170,14 +170,14 @@ thead input {
           console.log('change')
           var x=$("#x").val()
           var y=$("#y").val()
-          document.getElementById('api-code').innerHTML='curl -X POST \'http://melodi-lite.mrcieu.ac.uk/api/overlap/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "x": [ "'+x+'" ], "y": [ "'+y+'" ]}\''
+          document.getElementById('api-code').innerHTML='curl -X POST \'http://melodi-presto.mrcieu.ac.uk/api/overlap/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "x": [ "'+x+'" ], "y": [ "'+y+'" ]}\''
         });
 
         $("#y").on('change keydown paste input', function(){
           console.log('change')
           var x=$("#x").val()
           var y=$("#y").val()
-          document.getElementById('api-code').innerHTML='curl -X POST \'http://melodi-lite.mrcieu.ac.uk/api/overlap/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "x": [ "'+x+'" ], "y": [ "'+y+'" ]}\''
+          document.getElementById('api-code').innerHTML='curl -X POST \'http://melodi-presto.mrcieu.ac.uk/api/overlap/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "x": [ "'+x+'" ], "y": [ "'+y+'" ]}\''
         });
 
     } );
