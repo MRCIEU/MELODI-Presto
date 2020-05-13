@@ -16,9 +16,9 @@ from . import views
 #https://github.com/axnsan12/drf-yasg
 schema_view = get_schema_view(
    openapi.Info(
-      title="MELODI Lite API",
+      title="MELODI Presto API",
       default_version='v0.1',
-      description="MELODI Lite API",
+      description="MELODI Presto API",
       contact=openapi.Contact(email="ben.elsworth@bristol.ac.uk"),
       license=openapi.License(name="BSD License"),
    ),
