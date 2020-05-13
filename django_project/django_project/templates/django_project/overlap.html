@@ -89,6 +89,10 @@
   white-space: -o-pre-wrap;
   word-wrap: break-word;
 }
+
+thead input {
+        width: 100%;
+    }
 </style>
 <script>
     function populate_boxes(a,b){
@@ -115,7 +119,7 @@
             },
                 'copy', 'csv', 'excel'
             ],
-            "scrollY": "200px",
+            "scrollY": "300px",
             //"paging": false,
             "processing": true,
             "order": [[3, "asc"],[9,"asc"], [2,"desc"], [10, "desc"]],
