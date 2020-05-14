@@ -25,11 +25,11 @@
     <table class="display compact nowrap" style="width:60%" align="center">
         <tr><td></td><td><b>query</b></tr>
         <tr>
-            <td><a class="example-call" href="#" onclick="populate_boxes(['TMPRSS2ERG, ERG'])">Example 1</a></td>
+            <td><a class="example-call" href="#" onclick="populate_boxes(['TMPRSS2ERG,ERG'])">Example 1</a></td>
             <td>TMPRSS2ERG, ERG</td>
         </tr>
         <tr>
-            <td><a class="example-call" href="#" onclick="populate_boxes(['MLH1, MSH2, MLH3, MSH6, PMS1, PMS2, APC'])">Example 2</a></td>
+            <td><a class="example-call" href="#" onclick="populate_boxes(['MLH1,MSH2,MLH3,MSH6,PMS1,PMS2,APC'])">Example 2</a></td>
             <td>MLH1, MSH2, MLH3, MSH6, PMS1, PMS2, APC</td>
         </tr>
         <tr>
@@ -44,6 +44,7 @@
     <table id="results" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
+                <th>Query</th>
                 <th>PMIDs</th>
                 <th>Count</th>
                 <th>Pval</th>
@@ -107,8 +108,9 @@ thead input {
                 "url": "{{api_url}}enrich/",
                 data:function(d){
                     if (document.getElementById("query").value.length>0){
+                        console.log(document.getElementById("query").value.trim().split(','))
                         return JSON.stringify(
-                        {
+                        {   
                             'query': document.getElementById("query").value.trim().split(','),
                         });
                     }else{
@@ -118,6 +120,7 @@ thead input {
                 }
             },
             "columns": [
+              {"data":"query"},
               {"data":"pmids"},
               {"data":"localCount"},
               {"data":"pval"},
