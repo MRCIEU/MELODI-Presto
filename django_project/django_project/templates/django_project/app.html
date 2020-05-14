@@ -1,8 +1,23 @@
 {% extends 'base.html' %}
 {% block content %}
-<main class="hw-container" role='main'>
-    <a href='/app/overlap'>Overlap</a>
-</main>
+<div>
+    <h3>MELODI Presto provides three functions:</h3>
+</div>
+<div>
+    <br>
+    <a href='/app/enrich'>1. Enrich</a>
+    <p>Return the enriched semantic triples for a list of query terms</p>
+</div>
+<div>
+    <a href='/app/overlap'>2. Overlap</a>
+    <p>Return the overlapping enriched semantic triples for two lists of queries</p>
+</div>
+<div>
+    <a href='/app/sentence'>3. Sentence</a>
+    <p>Return the semantic triples for a given PubMed ID</p>
+</div>
+<b>Note, this web application serves only as a demonstration. For any real queries, please use the <a href=/docs/>API</a>.</b>
+
 {% endblock %}
 {% block javascript %}
 {% endblock %}

@@ -57,8 +57,18 @@ def app(request):
     context = {}
     return HttpResponse(template.render(context, request))
 
+def enrich(request):
+    template = loader.get_template('django_project/enrich.html')
+    context = {'api_url':api_url}
+    return HttpResponse(template.render(context, request))
+
 def overlap(request):
     template = loader.get_template('django_project/overlap.html')
+    context = {'api_url':api_url}
+    return HttpResponse(template.render(context, request))
+
+def sentence(request):
+    template = loader.get_template('django_project/sentence.html')
     context = {'api_url':api_url}
     return HttpResponse(template.render(context, request))
 
