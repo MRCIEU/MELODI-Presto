@@ -164,12 +164,13 @@ def EnrichPostView(request):
             text = [x.replace(' ','_').lower() for x in data['query']]
             logger.info('Enrich Text: '+str(text))
             sem_trip_dic={}
-            enrichDic={}
+            enrichData=[]
             for e in text:
                 logger.info('pub_sem: '+e+' '+str(len(e)))
-                enrichDic[e] = pub_sem(e,sem_trip_dic)
+                d = pub_sem(e,sem_trip_dic)
+                enrichData.extend(d)
             es_logger.info('Enrich POST '+str(text))
-            returnData = enrichDic
+            returnData = enrichData
         else:
             returnData = serializer.errors
         return Response(returnData)

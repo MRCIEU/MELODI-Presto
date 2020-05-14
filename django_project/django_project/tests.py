@@ -14,7 +14,7 @@ class APITests(APITestCase, URLPatternsTestCase):
         url = '/django_project/api/enrich/'
         data = {'query':[query]}
         response = self.client.post(url,data,format='json')
-        self.assertEqual(len(response.data[query]), 267)
+        self.assertEqual(len(response.data), 267)
 
     def test_overlap(self):
         """

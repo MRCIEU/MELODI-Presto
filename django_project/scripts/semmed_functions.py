@@ -226,6 +226,7 @@ def pub_sem(query,sem_trip_dic):
             for line in f:
                 lineData=line.decode('utf-8').rstrip().split('\t')
                 enrichData.append({
+                    'query':query,
                     'triple':lineData[0],
                     'subject_name':lineData[1],
                     'subject_type':lineData[2],
@@ -302,6 +303,7 @@ def pub_sem(query,sem_trip_dic):
                         t=k+'\t'+resDic[k]['subject_name']+'\t'+resDic[k]['subject_type']+'\t'+resDic[k]['subject_id']+'\t'+resDic[k]['predicate']+'\t'+resDic[k]['object_name']+'\t'+resDic[k]['object_type']+'\t'+resDic[k]['object_id']+'\t'+str(predCounts[k])+'\t'+str(totalRes)+'\t'+str(tripleFreqs[k])+'\t'+str(globalPub)+'\t'+str(odds)+'\t'+str(pval)+'\t'+" ".join(list(set(resDic[k]['pmids'])))+'\n'
                         o.write(t.encode('utf-8'))
                         enrichData.append({
+                            'query':query,
                             'triple':k,
                             'subject_name':resDic[k]['subject_name'],
                             'subject_type':resDic[k]['subject_type'],

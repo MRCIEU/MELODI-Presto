@@ -5,7 +5,7 @@
         <b>X:</b>
     </div>
     <div class="col-11">
-        <textarea rows="1" style="min-width: 90%" id='x'>TMPRSS2ERG, ERG</textarea><br>
+        <textarea rows="1" style="min-width: 90%" id='query'>TMPRSS2ERG, ERG</textarea><br>
     </div>
   </div>
   <div class="row">
@@ -18,27 +18,23 @@
   <br>
   <div class="row">
       <div class="col">
-          <pre><code id='api-code'>curl -X POST 'http://melodi-presto.mrcieu.ac.uk/api/overlap/' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{ "x": [ "TMPRSS2ERG", "ERG" ], "y": [ "Prostate cancer" ]}'</code></pre>
+          <pre><code id='api-code'>curl -X POST 'http://melodi-presto.mrcieu.ac.uk/api/enrich/' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{ "query": [ "TMPRSS2ERG", "ERG" ]}'</code></pre>
       </div>
   </div>
   <div class="row">
-    <!--https://www.cancer.org/cancer/colon-rectal-cancer/causes-risks-prevention/what-causes.html-->
     <table class="display compact nowrap" style="width:60%" align="center">
-        <tr><td></td><td><b>X</b></td><td><b>Y</b></td></tr>
+        <tr><td></td><td><b>query</b></tr>
         <tr>
-            <td><a class="example-call" href="#" onclick="populate_boxes(['TMPRSS2ERG, ERG'],['Prostate cancer'])">Example 1</a></td>
+            <td><a class="example-call" href="#" onclick="populate_boxes(['TMPRSS2ERG, ERG'])">Example 1</a></td>
             <td>TMPRSS2ERG, ERG</td>
-            <td>Prostate cancer</td>
         </tr>
         <tr>
-            <td><a class="example-call" href="#" onclick="populate_boxes(['MLH1, MSH2, MLH3, MSH6, PMS1, PMS2, APC'],['Hereditary non-polyposis colon cancer'])">Example 2</a></td>
+            <td><a class="example-call" href="#" onclick="populate_boxes(['MLH1, MSH2, MLH3, MSH6, PMS1, PMS2, APC'])">Example 2</a></td>
             <td>MLH1, MSH2, MLH3, MSH6, PMS1, PMS2, APC</td>
-            <td>Hereditary non-polyposis colon cancer</td>
         </tr>
         <tr>
-            <td><a class="example-call" href="#" onclick="populate_boxes(['Sleep duration'],['Breast cancer'])">Example 3</a></td>
+            <td><a class="example-call" href="#" onclick="populate_boxes(['Sleep duration'])">Example 3</a></td>
             <td>Sleep duration</td>
-            <td>Breast cancer</td>
         </tr>
 
     </table>
@@ -48,19 +44,12 @@
     <table id="results" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
-                <th>X</th>
-                <th>X PMIDs</th>
-                <th>X Count</th>
-                <th>X Pval</th>
-                <th>X Subject</th>
-                <th>X Predicate</th>
-                <th>Overlap</th>
-                <th>Y Predicate</th>
-                <th>Y Object</th>
-                <th>Y Pval</th>
-                <th>Y Count</th>
-                <th>Y PMIDs</th>
-                <th>Y</th>
+                <th>PMIDs</th>
+                <th>Count</th>
+                <th>Pval</th>
+                <th>Subject</th>
+                <th>Predicate</th>
+                <th>Object</th>
             </tr>
         </thead>
     </table>
@@ -87,20 +76,17 @@ thead input {
     }
 </style>
 <script>
-    function populate_boxes(a,b){
-        console.log(a,b)
-        //document.getElementById('x').innerHTML = 'MLH1,MSH2,MLH3,MSH6,PMS1,PMS2,APC';
-        document.getElementById('x').innerHTML = a;
-        //document.getElementById('y').innerHTML ='Hereditary non-polyposis colon cancer, Familial adenomatous polyposis';
-        document.getElementById('y').innerHTML = b;
-        document.getElementById('api-code').innerHTML='curl -X POST \'http://melodi-presto.mrcieu.ac.uk/api/overlap/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "x": [ "'+a+'" ], "y": [ "'+b+'" ]}\''
+    function populate_boxes(a){
+        console.log(a)
+        document.getElementById('query').innerHTML = a;
+        document.getElementById('api-code').innerHTML='curl -X POST \'http://melodi-presto.mrcieu.ac.uk/api/enrich/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "query": [ "'+a+'" ]}\''
     }
     $(document).ready(function() {
         var res_table = $('#results').DataTable( {
             dom: 'Bfrtip',
             columnDefs: [
             {
-                "targets": [ 1,2,10,11 ],
+                "targets": [ 1,2 ],
                 "visible": false
             }
             ],
@@ -114,17 +100,16 @@ thead input {
             "scrollY": "300px",
             //"paging": false,
             "processing": true,
-            "order": [[3, "asc"],[9,"asc"], [2,"desc"], [10, "desc"]],
+            "order": [[3, "asc"], [2,"desc"]],
             //"serverSide": true,
             "ajax":{
                 "type": "POST",
-                "url": "{{api_url}}overlap/",
+                "url": "{{api_url}}enrich/",
                 data:function(d){
-                    if (document.getElementById("x").value.length>0){
+                    if (document.getElementById("query").value.length>0){
                         return JSON.stringify(
                         {
-                            'x': document.getElementById("x").value.trim().split(','),
-                            'y': document.getElementById("y").value.trim().split(',')
+                            'query': document.getElementById("query").value.trim().split(','),
                         });
                     }else{
                         console.log('empty')
@@ -133,19 +118,12 @@ thead input {
                 }
             },
             "columns": [
-              {"data":"set_x"},
-              {"data":"pmids_x"},
-              {"data":"localCount_x"},
-              {"data":"pval_x"},
-              {"data":"subject_name_x"},
-              {"data":"predicate_x"},
-              {"data":"object_name_x"},
-              {"data":"predicate_y"},
-              {"data":"object_name_y"},
-              {"data":"pval_y"},
-              {"data":"localCount_y"},
-              {"data":"pmids_y"},
-              {"data":"set_y"},
+              {"data":"pmids"},
+              {"data":"localCount"},
+              {"data":"pval"},
+              {"data":"subject_name"},
+              {"data":"predicate"},
+              {"data":"object_name"},
             ]
         } );
 
@@ -160,16 +138,8 @@ thead input {
 
         $("#x").on('change keydown paste input', function(){
           console.log('change')
-          var x=$("#x").val()
-          var y=$("#y").val()
-          document.getElementById('api-code').innerHTML='curl -X POST \'http://melodi-presto.mrcieu.ac.uk/api/overlap/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "x": [ "'+x+'" ], "y": [ "'+y+'" ]}\''
-        });
-
-        $("#y").on('change keydown paste input', function(){
-          console.log('change')
-          var x=$("#x").val()
-          var y=$("#y").val()
-          document.getElementById('api-code').innerHTML='curl -X POST \'http://melodi-presto.mrcieu.ac.uk/api/overlap/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "x": [ "'+x+'" ], "y": [ "'+y+'" ]}\''
+          var x=$("#query").val()
+          document.getElementById('api-code').innerHTML='curl -X POST \'http://melodi-presto.mrcieu.ac.uk/api/enrich/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "query": [ "'+x+'" ]}\''
         });
 
     } );
