@@ -83,10 +83,10 @@ docker-compose up -d
 
 ```
 #all
-python manage.py test django_project
+python django_project/manage.py test django_project
 
 #specific
-python manage.py test django_project.tests.OverlapTests
+python django_project/manage.py test django_project.tests.APITests
 ```
 
 
