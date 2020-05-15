@@ -167,7 +167,7 @@ def OverlapPostView(request):
 def EnrichPostView(request):
     """
     API endpoint for triple enrichment.
-    Accepts a list of biomedical terms.
+    Accepts a list of biomedical terms, e.g. ["PCSK9","NF1","MALAT1","Sleep duration"]
     """
     if request.method == "POST":
         data = json.loads(request.body)
