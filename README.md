@@ -10,7 +10,7 @@ Details on how to use the method can be found [here](Usage.md)
 
 ### Creation
 
-Details on how the method was created can be found [here](Creation.md)
+Details on how the method was created can be found [here](create/Creation.md)
 
 ### About
 
@@ -33,7 +33,10 @@ curl -X GET "localhost:9200/semmeddb-v40/_search?pretty" -H 'Content-Type: appli
 {
     "aggs" : {
         "sub_type" : {
-            "terms" : { "field" : "SUBJECT_SEMTYPE" }
+            "terms" : { 
+                "field" : "SUBJECT_SEMTYPE" ,
+                "size" : 10000
+                }
         }
     }
 }
@@ -55,22 +58,39 @@ curl -X GET "localhost:9200/semmeddb-v40/_search?pretty" -H 'Content-Type: appli
 
 ##### Filter by predicate type
 
-To improve the usabilty of the data some of the more ambiguous predicates. Table 2 lists the predicates that were included from the data set and their counts.
+To improve the usabilty of the data some of the more ambiguous predicates. Table 2 lists the predicates that were excluded from the data set.
 
-Table 2. SemMedDB predicate counts
+```
+zless semmedVER40_R_PREDICATION.tsv.gz | cut -f 4 | sort | uniq -c | sort -nr
+```
+
+Table 2. Exluded SemMedDB predicates and their frequency counts
 
 |Predicate	|Count|
 |---|---|
-|INTERACTS_WITH	|1,380,989|
-|COEXISTS_WITH	|1,140,016|
-|STIMULATES	|963,361|
-|INHIBITS	|811,880|
-|ASSOCIATED_WITH	|588,931|
-|CAUSES	|440,794|
-|PRODUCES	|191,128|
-|AFFECTS	|165,378|
-|PREDISPOSES	|163,829|
-|TREATS	|127,225|
+| PROCESS_OF | 19,628,964 |
+| LOCATION_OF |	16,647,580 |
+| PART_OF |	9,920,521 |
+| ISA |	5,886,751 |
+| USES |	4,487,945 |
+| compared_with |	1,056,642 |
+| ADMINISTERED_TO	| 1,535,833 |
+| METHOD_OF	| 581,303 |
+
+Combined, these two criteria reduce the number of PREDICATE triples from 97,972,561 to 6,533,824.
+
+```
+curl -XGET 'localhost:9200/semmeddb-v40/_count?pretty'
+{
+  "count" : 6533824,
+  "_shards" : {
+    "total" : 3,
+    "successful" : 3,
+    "skipped" : 0,
+    "failed" : 0
+  }
+}
+```
 
 
 ##### Use Elasticsearch instead of Neo4j
@@ -100,7 +120,7 @@ q="physical activity"
 
 #first time
 
-time curl -o "physical-activity.melodi-presto.json" -X POST "https://melodi-presto.mrcieu.ac.uk/api/enrich/" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"text\": [ \"$q\" ]}"
+time curl -o "physical-activity.melodi-presto.json" -X POST "https://melodi-presto.mrcieu.ac.uk/api/enrich/" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"query\": [ \"$q\" ]}"
 
 real	0m23.901s
 user	0m0.042s
@@ -108,7 +128,7 @@ sys	0m0.126s
 
 #second time 
 
-time curl -o "physical-activity.melodi-presto.json" -X POST "https://melodi-presto.mrcieu.ac.uk/api/enrich/" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"text\": [ \"$q\" ]}"
+time curl -o "physical-activity.melodi-presto.json" -X POST "https://melodi-presto.mrcieu.ac.uk/api/enrich/" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"query\": [ \"$q\" ]}"
 
 real	0m2.150s
 user	0m0.036s

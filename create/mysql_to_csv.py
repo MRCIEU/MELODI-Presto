@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-#https://github.com/jamesmishra/mysqldump-to-csv
+# https://github.com/jamesmishra/mysqldump-to-csv
 
 import fileinput
 import csv
@@ -9,20 +9,22 @@ import sys
 # This prevents prematurely closed pipes from raising
 # an exception in Python
 from signal import signal, SIGPIPE, SIG_DFL
+
 signal(SIGPIPE, SIG_DFL)
+
 
 def is_insert(line):
     """
     Returns true if the line begins a SQL insert statement.
     """
-    return line.startswith('INSERT INTO') or False
+    return line.startswith("INSERT INTO") or False
 
 
 def get_values(line):
     """
     Returns the portion of an INSERT statement containing values
     """
-    return line.partition('` VALUES ')[2]
+    return line.partition("` VALUES ")[2]
 
 
 def values_sanity_check(values):
@@ -30,7 +32,7 @@ def values_sanity_check(values):
     Ensures that values from the INSERT statement meet basic checks.
     """
     assert values
-    assert values[0] == '('
+    assert values[0] == "("
     # Assertions have not been raised
     return True
 
@@ -42,15 +44,17 @@ def parse_values(values, outfile):
     """
     latest_row = []
 
-    reader = csv.reader([values], delimiter=',',
-                        doublequote=False,
-                        escapechar='\\',
-                        quotechar="'",
-                        strict=True
+    reader = csv.reader(
+        [values],
+        delimiter=",",
+        doublequote=False,
+        escapechar="\\",
+        quotechar="'",
+        strict=True,
     )
 
-    #change the delimiter to whatever
-    writer = csv.writer(outfile, quoting=csv.QUOTE_MINIMAL,delimiter='\t')
+    # change the delimiter to whatever
+    writer = csv.writer(outfile, quoting=csv.QUOTE_MINIMAL, delimiter="\t")
     for reader_row in reader:
         for column in reader_row:
             # If our current string is empty...
@@ -110,6 +114,7 @@ def main():
                     parse_values(values, sys.stdout)
     except KeyboardInterrupt:
         sys.exit(0)
+
 
 if __name__ == "__main__":
     main()
