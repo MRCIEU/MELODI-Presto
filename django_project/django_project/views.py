@@ -134,7 +134,7 @@ def SentencePostView(request):
 @api_view(["POST"])
 def OverlapPostView(request):
     """
-    API endpoint for MELODI style overlap return. Accepts two lists of query terms, x and y, e.g. ['NF1','MALAT1','NEAT2'] amd ['neuroblastoma','lung cancer']
+    API endpoint for returning overlapping triples. Accepts two lists of query terms, x and y, e.g. ['NF1','MALAT1','NEAT2'] amd ['neuroblastoma','lung cancer']
     """
     if request.method == "POST":
         data = json.loads(request.body)
@@ -166,7 +166,7 @@ def OverlapPostView(request):
 @api_view(["POST"])
 def EnrichPostView(request):
     """
-    API endpoint for MELODI style SemMedDB triple enrichment.
+    API endpoint for triple enrichment.
     Accepts a list of biomedical terms.
     """
     if request.method == "POST":
