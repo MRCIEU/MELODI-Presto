@@ -124,7 +124,8 @@ def SentencePostView(request):
                     # tmp_dic.update({'SENTENCE_SECTION':sentence_section})
                 final_res.append(tmp_dic)
             # print(final_res)
-            returnData = {"count": count2, "results": final_res}
+            returnData = {"count": count2, "data": final_res}
+            print(returnData)
         else:
             returnData = serializer.errors
     return Response(returnData)

@@ -34,17 +34,17 @@
     <table class="display compact nowrap" style="width:60%" align="center">
         <tr><td></td><td><b>X</b></td><td><b>Y</b></td></tr>
         <tr>
-            <td><a class="example-call" href="#" onclick="populate_boxes(['TMPRSS2ERG, ERG'],['Prostate cancer'])">Example 1</a></td>
+            <td><a class="example-call" href="#" data-x="TMPRSS2ERG, ERG" data-y="Prostate cancer">Example 1</a></td>
             <td>TMPRSS2ERG, ERG</td>
             <td>Prostate cancer</td>
         </tr>
         <tr>
-            <td><a class="example-call" href="#" onclick="populate_boxes(['MLH1, MSH2, MLH3, MSH6, PMS1, PMS2, APC'],['Hereditary non-polyposis colon cancer'])">Example 2</a></td>
+            <td><a class="example-call" href="#" data-x="MLH1, MSH2, MLH3, MSH6, PMS1, PMS2, APC" data-y = "Hereditary non-polyposis colon cancer">Example 2</a></td>
             <td>MLH1, MSH2, MLH3, MSH6, PMS1, PMS2, APC</td>
             <td>Hereditary non-polyposis colon cancer</td>
         </tr>
         <tr>
-            <td><a class="example-call" href="#" onclick="populate_boxes(['Sleep duration'],['Breast cancer'])">Example 3</a></td>
+            <td><a class="example-call" href="#" data-x="Sleep duration" data-y = "Breast cancer">Example 3</a></td>
             <td>Sleep duration</td>
             <td>Breast cancer</td>
         </tr>
@@ -104,6 +104,14 @@ thead input {
         document.getElementById('api-code').innerHTML='curl -X POST \'http://melodi-presto.mrcieu.ac.uk/api/overlap/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "x": [ "'+a+'" ], "y": [ "'+b+'" ]}\''
     }
     $(document).ready(function() {
+        $(".example-call").on('click', function(event){
+            var a = $(this).attr('data-x');
+            var b = $(this).attr('data-y');
+            console.log(a,b)
+            $("#x").val(a);
+            $("#y").val(b);
+            $("#api-code").val('curl -X POST \'http://melodi-presto.mrcieu.ac.uk/api/overlap/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "x": [ "'+a+'" ], "y": [ "'+b+'" ]}\'');
+        })
         var res_table = $('#results').DataTable( {
             dom: 'Bfrtip',
             columnDefs: [

@@ -25,15 +25,15 @@
     <table class="display compact nowrap" style="width:60%" align="center">
         <tr><td></td><td><b>query</b></tr>
         <tr>
-            <td><a class="example-call" href="#" onclick="populate_boxes('TMPRSS2')">Example 1</a></td>
+            <td><a class="example-call" href="#" id='TMPRSS2'>Example 1</a></td>
             <td>TMPRSS2</td>
         </tr>
         <tr>
-            <td><a class="example-call" href="#" onclick="populate_boxes('MLH1')">Example 2</a></td>
+            <td><a class="example-call" href="#" id='MLH1'>Example 2</a></td>
             <td>MLH1</td>
         </tr>
         <tr>
-            <td><a class="example-call" href="#" onclick="populate_boxes('Sleep duration')">Example 3</a></td>
+            <td><a class="example-call" href="#" id='Sleep duration'>Example 3</a></td>
             <td>Sleep duration</td>
         </tr>
 
@@ -77,12 +77,13 @@ thead input {
     }
 </style>
 <script>
-    function populate_boxes(a){
-        //console.log(a)
-        document.getElementById('query').innerHTML = a;
-        document.getElementById('api-code').innerHTML='curl -X POST \'http://melodi-presto.mrcieu.ac.uk/api/enrich/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "query":  "'+a+'" }\''
-    }
     $(document).ready(function() {
+        $(".example-call").on('click', function(event){
+            console.log(this.id);
+            a = this.id;
+            $("#query").val(a);
+            $("#api-code").val('curl -X POST \'http://melodi-presto.mrcieu.ac.uk/api/enrich/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "query":  "'+a+'" }\'');
+        })
         var res_table = $('#results').DataTable( {
             dom: 'Bfrtip',
             columnDefs: [
@@ -101,7 +102,7 @@ thead input {
             "scrollY": "300px",
             //"paging": false,
             "processing": true,
-            "order": [[3, "asc"], [2,"desc"]],
+            "order": [[3,"asc"]],
             //"serverSide": true,
             "ajax":{
                 "type": "POST",
@@ -144,7 +145,7 @@ thead input {
         $("#x").on('change keydown paste input', function(){
           console.log('change')
           var x=$("#query").val()
-          document.getElementById('api-code').innerHTML='curl -X POST \'http://melodi-presto.mrcieu.ac.uk/api/enrich/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "query": [ "'+x+'" ]}\''
+          document.getElementById('api-code').innerHTML='curl -X POST \'http://melodi-presto.mrcieu.ac.uk/api/enrich/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "query": "'+x+'" }\''
         });
 
     } );
