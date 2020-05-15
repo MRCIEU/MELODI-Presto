@@ -24,4 +24,4 @@ class EnrichSerializer(serializers.Serializer):
     Enrich Post API endpoint.
     """
 
-    query = serializers.ListField(child=serializers.CharField(min_length=2))
+    query = serializers.CharField(min_length=2)

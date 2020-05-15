@@ -167,23 +167,22 @@ def OverlapPostView(request):
 def EnrichPostView(request):
     """
     API endpoint for triple enrichment.
-    Accepts a list of biomedical terms, e.g. ["PCSK9","NF1","MALAT1","Sleep duration"]
+    Accepts a single biomedical term query, e.g. "PCSK9", "NF1", "MALAT1", "Sleep duration"
     """
     if request.method == "POST":
         data = json.loads(request.body)
         serializer = EnrichSerializer(data=data)
         if serializer.is_valid():
             logger.info("Enrich Query Post")
-            text = [x.replace(" ", "_").lower() for x in data["query"]]
+            text = data["query"].replace(" ", "_").lower()
             logger.info("Enrich Text: " + str(text))
             sem_trip_dic = {}
-            enrichData = []
-            for e in text:
-                logger.info("pub_sem: " + e + " " + str(len(e)))
-                d = pub_sem(e, sem_trip_dic)
-                enrichData.extend(d)
+            logger.info("pub_sem: " + text + " " + str(len(text)))
+            d = pub_sem(text, sem_trip_dic)
+            enrichData = (d)
             es_logger.info("Enrich POST " + str(text))
             returnData = enrichData
+            logger.info(enrichData)
         else:
             returnData = serializer.errors
         return Response(returnData)
