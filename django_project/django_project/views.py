@@ -179,10 +179,9 @@ def EnrichPostView(request):
             sem_trip_dic = {}
             logger.info("pub_sem: " + text + " " + str(len(text)))
             d = pub_sem(text, sem_trip_dic)
-            enrichData = (d)
+            enrichData = d
             es_logger.info("Enrich POST " + str(text))
             returnData = enrichData
-            logger.info(enrichData)
         else:
             returnData = serializer.errors
         return Response(returnData)

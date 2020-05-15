@@ -5,7 +5,7 @@
         <b>X:</b>
     </div>
     <div class="col-11">
-        <textarea rows="1" style="min-width: 90%" id='query'>TMPRSS2ERG, ERG</textarea><br>
+        <textarea rows="1" style="min-width: 90%" id='query'>TMPRSS2</textarea><br>
     </div>
   </div>
   <div class="row">
@@ -18,22 +18,22 @@
   <br>
   <div class="row">
       <div class="col">
-          <pre><code id='api-code'>curl -X POST 'http://melodi-presto.mrcieu.ac.uk/api/enrich/' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{ "query": [ "TMPRSS2ERG", "ERG" ]}'</code></pre>
+          <pre><code id='api-code'>curl -X POST 'http://melodi-presto.mrcieu.ac.uk/api/enrich/' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{ "query": "TMPRSS2"}'</code></pre>
       </div>
   </div>
   <div class="row">
     <table class="display compact nowrap" style="width:60%" align="center">
         <tr><td></td><td><b>query</b></tr>
         <tr>
-            <td><a class="example-call" href="#" onclick="populate_boxes(['TMPRSS2ERG,ERG'])">Example 1</a></td>
-            <td>TMPRSS2ERG, ERG</td>
+            <td><a class="example-call" href="#" onclick="populate_boxes('TMPRSS2')">Example 1</a></td>
+            <td>TMPRSS2</td>
         </tr>
         <tr>
-            <td><a class="example-call" href="#" onclick="populate_boxes(['MLH1,MSH2,MLH3,MSH6,PMS1,PMS2,APC'])">Example 2</a></td>
-            <td>MLH1, MSH2, MLH3, MSH6, PMS1, PMS2, APC</td>
+            <td><a class="example-call" href="#" onclick="populate_boxes('MLH1')">Example 2</a></td>
+            <td>MLH1</td>
         </tr>
         <tr>
-            <td><a class="example-call" href="#" onclick="populate_boxes(['Sleep duration'])">Example 3</a></td>
+            <td><a class="example-call" href="#" onclick="populate_boxes('Sleep duration')">Example 3</a></td>
             <td>Sleep duration</td>
         </tr>
 
@@ -78,16 +78,16 @@ thead input {
 </style>
 <script>
     function populate_boxes(a){
-        console.log(a)
+        //console.log(a)
         document.getElementById('query').innerHTML = a;
-        document.getElementById('api-code').innerHTML='curl -X POST \'http://melodi-presto.mrcieu.ac.uk/api/enrich/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "query": [ "'+a+'" ]}\''
+        document.getElementById('api-code').innerHTML='curl -X POST \'http://melodi-presto.mrcieu.ac.uk/api/enrich/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "query":  "'+a+'" }\''
     }
     $(document).ready(function() {
         var res_table = $('#results').DataTable( {
             dom: 'Bfrtip',
             columnDefs: [
             {
-                "targets": [ 1,2 ],
+                "targets": [ 1 ],
                 "visible": false
             }
             ],
@@ -105,13 +105,15 @@ thead input {
             //"serverSide": true,
             "ajax":{
                 "type": "POST",
+                //set dataSrc to "" to deal with no "data" key in json
+                "dataSrc": "",
                 "url": "{{api_url}}enrich/",
                 data:function(d){
                     if (document.getElementById("query").value.length>0){
-                        console.log(document.getElementById("query").value.trim().split(','))
+                        console.log(document.getElementById("query").value.trim())
                         return JSON.stringify(
                         {   
-                            'query': document.getElementById("query").value.trim().split(','),
+                            'query': document.getElementById("query").value.trim(),
                         });
                     }else{
                         console.log('empty')
