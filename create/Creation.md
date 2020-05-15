@@ -17,8 +17,8 @@ Need the SENTENCE and PREDICATION tables - https://skr3.nlm.nih.gov/SemMedDB/dow
 Downloads are in SQL format, need to convert to something more manageable
 
 ```
-python django_project/scripts/mysql_to_csv.py <(gunzip -c semmedVER40_R_PREDICATION.sql.gz) | gzip > semmedVER40_R_PREDICATION.tsv.gz
-python django_project/scripts/mysql_to_csv.py <(gunzip -c semmedVER40_R_SENTENCE.sql.gz) | gzip > semmedVER40_R_SENTENCE.tsv.gz
+python create/mysql_to_csv.py <(gunzip -c semmedVER40_R_PREDICATION.sql.gz) | gzip > semmedVER40_R_PREDICATION.tsv.gz
+python create/mysql_to_csv.py <(gunzip -c semmedVER40_R_SENTENCE.sql.gz) | gzip > semmedVER40_R_SENTENCE.tsv.gz
 ```
 
 ### Create config file
@@ -55,21 +55,21 @@ DEPLOYMENT='dev/prod'
 
 ### Create frequency counts
 
-`python django_project/scripts/create_semmed_freqs.py`
+`python create/create_semmed_freqs.py`
 
 ### Index the data
 
 PREDICATION data
 
-`python django_project/scripts/index-semmeddb.py`
+`python create/index-semmeddb.py`
 
 SENTENCE data
 
-`python django_project/scripts/index-semmeddb-sentences.py`
+`python create/index-semmeddb-sentences.py`
 
 PREDICATION frequency data
 
-`python django_project/scripts/index-semmeddb_freqs.py`
+`python create/index-semmeddb_freqs.py`
 
 ### Create App and API
 
