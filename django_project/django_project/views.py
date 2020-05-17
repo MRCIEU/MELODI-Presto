@@ -83,14 +83,41 @@ def sentence(request):
 
 @api_view(["GET"])
 def StatusView(request):
-    return Response(True)
+    """
+    API endpoint for status of API .
 
+    Returns true/false
+    """
 
 @swagger_auto_schema(methods=["post"], request_body=SentenceSerializer)
 @api_view(["POST"])
 def SentencePostView(request):
     """
     API endpoint for SemMedDB Sentence return for a given PubMed ID, e.g. 23715093.
+
+    Returns JSON:
+    - count: The number of records returned,
+    - data: The records:
+      - PREDICATION_ID: the SemMedDB predication ID,
+      - SENTENCE_ID: Auto-generated primary key for each sentence,
+      - PMID: The PubMed identifier of the citation to which the sentence belongs,
+      - PREDICATE: The string representation of each predicate (for example TREATS, PROCESS_OF),
+      - SUBJECT_CUI: The CUI of the subject of the predication,
+      - SUBJECT_NAME: The preferred name of the subject of the predication,
+      - SUBJECT_SEMTYPE: The semantic type of the subject of the predication,
+      - SUBJECT_NOVELTY: The novelty of the subject of the predication,
+      - OBJECT_CUI: The CUI of the object of the predication,
+      - OBJECT_NAME: The preferred name of the object of the predication,
+      - OBJECT_SEMTYPE: The semantic type of the object of the predication,
+      - OBJECT_NOVELTY: The novelty of the object of the predication,
+      - SUB_PRED_OBJ: ID created from combindata of subject name:predicate:object_name,
+      - NORMALIZED_SECTION_HEADER: Normalized section header name of structured abstract (from Version 3.1),
+      - SECTION_HEADER: Section header name of structured abstract (from Version 3.1),
+      - SENT_START_INDEX: The starting index in the sentence for the triple,
+      - SENTENCE: The actual string or text of the sentence
+      - TYPE: 'ti' for the title of the citation, 'ab' for the abstract,
+      - NUMBER: The location of the sentence within the title or abstract,
+      - SENT_END_INDEX: The starting index in the sentence for the triple
     """
     if request.method == "POST":
         data = json.loads(request.body)
@@ -136,6 +163,42 @@ def SentencePostView(request):
 def OverlapPostView(request):
     """
     API endpoint for returning overlapping triples. Accepts two lists of query terms, x and y, e.g. ['NF1','MALAT1','NEAT2'] amd ['neuroblastoma','lung cancer']
+    
+    Returns JSON:
+    - count: The number of records returned,
+    - data: The records
+      - triple_x: ID created from combindata of subject name:predicate:object_name (query X),
+      - subject_name_x: The preferred name of the subject of the predication (query x),
+      - subject_type_x: The semantic type of the subject of the predication (query x),
+      - subject_id_x: The Concept Unique Identifier (CUI) of the subject of the predication (query x),
+      - predicate_x: The string representation of each predicate (for example TREATS, PROCESS_OF) (query x),
+      - object_name_x: The preferred name of the object of the predication (query x),
+      - object_type_x: The semantic type of the object of the predication (query x),
+      - object_id_x: The Concept Unique Identifier (CUI) of the object of the predication (query x),
+      - localCount_x: The triple count for a given triple from the search query (query x),
+      - localTotal_x: The total number of triples from the search query (query x),
+      - globalCount_x: The global count for a given triple (query x),
+      - globalTotal_x: The global number of triples (query x),
+      - odds_x: Odds ration from the Fisher's Exact Test (query x),
+      - pval_x: P-value from the Fisher's Exact Test (query x),
+      - pmids_x: The PubMed IDs from which the triples were derived (query x),
+      - set_x: The query name used (query x),
+      - triple_y: Cardiovascular Diseases:COEXISTS_WITH:Marfan Syndrome (query y),
+      - subject_name_y: Cardiovascular Diseases (query y),
+      - subject_type_y: The semantic type of the subject of the predication (query y),
+      - subject_id_y: The Concept Unique Identifier (CUI) of the subject of the predication (query y),
+      - predicate_y: The string representation of each predicate (for example TREATS, PROCESS_OF) (query y),
+      - object_name_y: MThe preferred name of the object of the predication (query y),
+      - object_type_y: The semantic type of the object of the predication (query y),
+      - object_id_y: The Concept Unique Identifier (CUI) of the object of the predication (query y),
+      - localCount_y: The triple count for a given triple from the search query (query y),
+      - localTotal_y: The total number of triples from the search query (query y),
+      - globalCount_y: The global count for a given triple (query y),
+      - globalTotal_y: The global number of triples (query y),
+      - odds_y: Odds ration from the Fisher's Exact Test (query y),
+      - pval_y: P-value from the Fisher's Exact Test (query y),
+      - pmids_y: The PubMed IDs from which the triples were derived (query y),
+      - set_y: The query name used (query y)
     """
     if request.method == "POST":
         data = json.loads(request.body)
@@ -167,8 +230,25 @@ def OverlapPostView(request):
 @api_view(["POST"])
 def EnrichPostView(request):
     """
-    API endpoint for triple enrichment.
-    Accepts a single biomedical term query, e.g. "PCSK9", "NF1", "MALAT1", "Sleep duration"
+    API endpoint for triple enrichment. Accepts a single biomedical term query, e.g. "PCSK9", "NF1", "MALAT1", "Sleep duration"
+
+    Returns JSON:
+      - query: The query term used,
+      - triple: ID created from combindata of subject name:predicate:object_name,
+      - subject_name: The preferred name of the subject of the predication,
+      - subject_type: The semantic type of the subject of the predication,
+      - subject_id: The Concept Unique Identifier (CUI) of the subject of the predication,
+      - predicate: The string representation of each predicate (for example TREATS, PROCESS_OF),
+      - object_name: The preferred name of the object of the predication,
+      - object_type: The semantic type of the object of the predication,
+      - object_id: The Concept Unique Identifier (CUI) of the object of the predication,
+      - localCount: The triple count for a given triple from the search query,
+      - localTotal: The total number of triples from the search query,
+      - globalCount: The global count for a given triple,
+      - globalTotal: The global number of triples,
+      - odds: Odds ration from the Fisher's Exact Test,
+      - pval: P-value from the Fisher's Exact Test,
+      - pmids: The PubMed IDs from which the triples were derived
     """
     if request.method == "POST":
         data = json.loads(request.body)
