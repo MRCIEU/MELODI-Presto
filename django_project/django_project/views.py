@@ -88,6 +88,7 @@ def StatusView(request):
 
     Returns true/false
     """
+    return Response(True)
 
 @swagger_auto_schema(methods=["post"], request_body=SentenceSerializer)
 @api_view(["POST"])
