@@ -27,7 +27,9 @@ SECRET_KEY = config.secret_key
 DEBUG = config.debug
 
 # ALLOWED_HOSTS = ["textbase.biocompute.org.uk","webapps-scmv-p1.epi.bris.ac.uk"]
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = [config.allowed_hosts]
+
+ADMIN_ENABLED = False
 
 
 # Application definition
@@ -57,7 +59,9 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "django_project.urls"
 
-REST_FRAMEWORK = {"DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema"}
+REST_FRAMEWORK = {
+    "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
+    }
 
 
 TEMPLATES = [
@@ -155,4 +159,8 @@ LOGGING = {
         "debug_logger": {"handlers": ["debug_logfile"], "level": "DEBUG",},
         "elastic_logger": {"handlers": ["elastic_logfile"], "level": "INFO",},
     },
+}
+
+SWAGGER_SETTINGS = {
+    'USE_SESSION_AUTH': False
 }
