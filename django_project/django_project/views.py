@@ -34,7 +34,6 @@ logger = logging.getLogger("debug_logger")
 es_logger = logging.getLogger("elastic_logger")
 
 from scripts.pubmed_functions import pubmed_query_to_pmids
-from scripts.es_functions import check_medline_ngram_index, get_pubmed_data_from_elastic
 from scripts.semmed_functions import *
 
 api_url = config.api_url

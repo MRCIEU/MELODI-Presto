@@ -13,7 +13,7 @@ class APITests(APITestCase, URLPatternsTestCase):
         """
         query = "pcsk9"
         url = "/django_project/api/enrich/"
-        data = {"query": [query]}
+        data = {"query": query}
         response = self.client.post(url, data, format="json")
         self.assertEqual(len(response.data), 267)
 

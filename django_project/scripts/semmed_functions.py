@@ -14,8 +14,6 @@ import json
 import pandas as pd
 from scripts.pubmed_functions import pubmed_query_to_pmids
 
-#check by id
-#curl -X GET "localhost:9200/semmeddb-v40_triple_freqs/_search?pretty" -H 'Content-Type: application/json' -d' {"query": {"ids" : {"values" : ["Adiponectin:NEG_COEXISTS_WITH:Insulin"]}}}'
 
 #globals
 
@@ -25,17 +23,11 @@ es = Elasticsearch(
 	[{'host': config.elastic_host,'port': config.elastic_port}],
 )
 
-es_local = Elasticsearch(
-        [{'host': config.elastic_host_local,'port': config.elastic_port_local}],
-)
-
 textbase_data=os.path.join(config.dataPath,'textbase','data/')
 
-#total number of publications
-#curl -XGET 'localhost:9200/semmeddb/_search?pretty' -H "Content-Type: application/json" -d '{"size":0, "aggs" : {"type_count":{"cardinality" :{ "field" : "PMID" }}}}'
-globalPub=6611441
-
-#time python scripts/run.py -m compare -a 'CR1,CCDC6,KAT8' -b 'Alzheimers_disease'
+#total number of triples
+#curl -XGET 'localhost:9200/semmeddb-v40/_count?pretty'
+globalPub=6533824
 
 ignoreTerms=['Patients','Disease','Genes','Proteins','Lipids','Neoplasm','Malignant Neoplasms']
 
@@ -43,7 +35,7 @@ def run_standard_query(filterData,index,size=100000):
     print('run_standard_query')
     #print(index)
     start=time.time()
-    res=es_local.search(
+    res=es.search(
         #ignore_unavailable=True,
     	request_timeout=timeout,
     	index=index,
@@ -108,10 +100,7 @@ def get_term_stats(index=config.semmed_triple_freqs_index,query=[]):
 	return res['hits']['hits']
 
 def create_sem_es_filter(pmidList):
-    #don't need the typeFiterList if used when indexin the data
-	#typeFilterList = [
-	#	"aapp","amas","anab","bacs","biof","bpoc","chem","comd","dsyn","emod","enzy","genf","gngm","hcpp","hops","horm","imft","inch",
-	#	"moft","mosq","neop","nnon","nsba","orch","orgf","ortf","patf","rcpt","sbst","socb","tisu","topp","virs","vita"]
+    #don't need the typeFiterList if used when indexing the data
     typeFilterList = [
         "aapp","enzy","gngm","chem","clnd","dysn","horm","hops","inch","orch"
     ]
@@ -161,49 +150,7 @@ def sem_es_query(filterData,index,predCounts,resDic):
     #print(resDic)
     return t,resCount,resDic,predCounts
 
-def sem_es_counts(pmidList,index):
-	filterData = [
-			{"terms":{"PMID":pmidList}},
-			]
-	#print(filterData)
-	t,resCount,res=run_sem_query(filterData,index)
-	tripleDic={}
-	subjectDic={}
-	objectDic={}
-	pMatch=[]
-	if resCount>0:
-		#print(filterData)
-		#print(t,resCount)
-		for r in res:
-			PMID=r['_source']['PMID']
-			pMatch.append(PMID)
-			#PREDICATION_ID=r['_source']['PREDICATION_ID']
-			PREDICATE=r['_source']['PREDICATE']
-			OBJECT_NAME=r['_source']['OBJECT_NAME']
-			SUBJECT_NAME=r['_source']['SUBJECT_NAME']
-			PREDICATION_ID=SUBJECT_NAME+':'+PREDICATE+':'+OBJECT_NAME
-			#resDic[PREDICATION_ID]={'sub':SUBJECT_NAME,'pred':PREDICATE,'obj':OBJECT_NAME}
-			#print(PMID,PREDICATION_ID)
-			if SUBJECT_NAME in subjectDic:
-				subjectDic[SUBJECT_NAME]+=1
-			else:
-				subjectDic[SUBJECT_NAME]=1
 
-			if OBJECT_NAME in objectDic:
-				objectDic[OBJECT_NAME]+=1
-			else:
-				objectDic[OBJECT_NAME]=1
-
-			if PREDICATION_ID in tripleDic:
-				tripleDic[PREDICATION_ID]+=1
-			else:
-				tripleDic[PREDICATION_ID]=1
-	#find missing - there are loads of PMIDS not in the raw predicate file, e.g. 15252980, not sure why
-	missing=set(pmidList).difference(pMatch)
-	subjectDic=sorted(subjectDic.items(), key=lambda kv: kv[1],reverse=True)
-	objectDic=sorted(objectDic.items(), key=lambda kv: kv[1],reverse=True)
-	tripleDic=sorted(tripleDic.items(), key=lambda kv: kv[1],reverse=True)
-	return missing,t,resCount,subjectDic,objectDic,tripleDic
 
 def fet(localSem,localPub,globalSem,globalPub):
 	#print(localSem,localPub,globalSem,globalPub)
@@ -220,6 +167,7 @@ def pub_sem(query,sem_trip_dic):
     fName=textbase_data+query+'.gz'
     if os.path.exists(fName):
         print(query,'already done')
+        start = time.time()
         enrichData=[]
         with gzip.open(fName,'r') as f:
             header=next(f)
@@ -243,6 +191,9 @@ def pub_sem(query,sem_trip_dic):
                     'pval':lineData[13],
                     'pmids':lineData[14]
                     })
+        end = time.time()
+        t = "{:.4f}".format(end-start)
+        print('Time to read',t)
         return enrichData
     else:
         pmidList = pubmed_query_to_pmids(query.replace('_',' '))
@@ -333,122 +284,6 @@ def pub_sem(query,sem_trip_dic):
             print("\tTime taken:", round((end - start) / 60, 3), "minutes")
             return enrichData
 
-def read_sem_triples():
-	print('getting background freqs...')
-	sem_trip_dic={}
-	start = time.time()
-	with gzip.open(textbase_data+'semmeddb_triple_freqs.txt.gz') as f:
-		for line in f:
-			s,f = line.rstrip().split('\t')
-			sem_trip_dic[s]=f
-	print(len(sem_trip_dic))
-	end = time.time()
-	print("\tTime taken:", round((end - start) / 60, 3), "minutes")
-	return sem_trip_dic
-
-def compare_sem(aList,bList):
-    pValCut=1e-5
-    predIgnore = ['PART_OF','ISA','LOCATION_OF','PROCESS_OF','ADMINISTERED_TO','METHOD_OF','USES','COEXISTS_WITH','ASSOCIATED_WITH','compared_with']
-
-    aDic=defaultdict(dict)
-    print('Reading',aList)
-    for a in aList:
-    	print(a)
-    	with gzip.open(os.path.join(textbase_data,a+'.gz')) as f:
-    		for line in f:
-    			s,sub_name,sub_type,sub_id,pred,obj_name,obj_type,obj_id,f1,f2,f3,f4,o,p = line.decode('utf-8').rstrip().split('\t')
-    			if float(p)<pValCut:
-    				if pred not in predIgnore:
-    					aDic[a][s]={'subject_name':sub_name,'subject_type':sub_type,'subject_id':sub_id,'object_name':obj_name,'object_type':obj_type,'object_id':obj_id,'predicate':pred,'localCounts':f1,'localTotal':f2,'globalCounts':f3,'globalTotal':f4,'odds':o,'pval':p}
-    bDic=defaultdict(dict)
-    print('Reading',bList)
-    for b in bList:
-    	print(b)
-    	with gzip.open(os.path.join(textbase_data,b+'.gz')) as f:
-    		for line in f:
-    			s,sub,pred,obj,f1,f2,f3,f4,o,p = line.decode('utf-8').rstrip().split('\t')
-    			if float(p)<pValCut:
-    				#ignore less useful predicates
-    				if pred not in predIgnore:
-    					bDic[b][s]={'subject_name':sub_name,'subject_type':sub_type,'subject_id':sub_id,'object_name':obj_name,'object_type':obj_type,'object_id':obj_id,'predicate':pred,'localCounts':f1,'localTotal':f2,'globalCounts':f3,'globalTotal':f4,'odds':o,'pval':p}
-    print(len(aDic))
-    print(len(bDic))
-
-
-    #compare two sets of data
-    aComDic=defaultdict(dict)
-    bComDic=defaultdict(dict)
-    joinDic={}
-    predDic={}
-    joinCount=0
-
-    #this is inefficient, looping through both dictionaries is not necessary
-
-    for a in aDic:
-    	print(a)
-    	counter=0
-    	for s1 in aDic[a]:
-    		counter+=1
-    		pc = round((float(counter)/float(len(aDic[a])))*100,1)
-    		#print(counter,pc,pc%10)
-    		if pc % 10 == 0:
-    			print(pc,'%')
-    		aSub,aPred,aObj,aPval = aDic[a][s1]['subject_name'],aDic[a][s1]['pred'],aDic[a][s1]['object_name'],aDic[a][s1]['pval']
-    		for b in bDic:
-    			#print(b)
-    			for s2 in bDic[b]:
-    				#print(s1,s2)
-    				bSub,bPred,bObj,bPval = bDic[b][s2]['subject_name'],bDic[b][s2]['pred'],bDic[b][s2]['object_name'],bDic[b][s2]['pval']
-    				#print(aObj,bSub)
-    				#testing
-    				if bSub in ignoreTerms:
-    					continue
-    				if aObj == bSub:
-                        #this just creates counts of predicates
-    					if aPred in predDic:
-    						predDic[aPred]+=1
-    					else:
-    						predDic[aPred]=1
-    					if bPred in predDic:
-    						predDic[bPred]+=1
-    					else:
-    						predDic[bPred]=1
-    					#print(a,s1,aDic[a][s1],b,s2,bDic[b][s2])
-    					aComDic[a][s1]=aDic[a][s1]
-    					bComDic[b][s2]=bDic[b][s2]
-    					joinCount+=1
-    					joinDic[joinCount]={'s1':s1,'s2':s2,'overlap':aObj,'d1':a,'d2':b,'pval1':aPval,'pval2':bPval}
-    #get some summaries
-    #print(predDic)
-    #for c in aComDic:
-    #	print(c,len(aComDic[c]))
-
-    #with open(textbase_data+'compare/a_nodes.json','w') as outfile:
-    	#outfile={'source':a:'sem':s1:aDic[a][s1]}
-    #	json.dump(aComDic,outfile)
-
-    #with open(textbase_data+'compare/b_nodes.json','w') as outfile:
-    	#outfile={'source':a:'sem':s1:aDic[a][s1]}
-    #	json.dump(bComDic,outfile)
-
-    #o = open(textbase_data+'compare/rels.tsv','w')
-    #for i in joinDic:
-    #outfile={'source':a:'sem':s1:aDic[a][s1]}
-    #	o.write(
-    #        str(i)+'\t'+
-    #        joinDic[i]['s1']+'\t'+
-    #        joinDic[i]['s2']+'\t'+
-    #        joinDic[i]['overlap']+'\t'+
-    #        joinDic[i]['d1']+'\t'+
-    #        joinDic[i]['d2']+'\n')
-    #o.close()
-
-    res={}
-    res['count']=len(joinDic)
-    res['overlaps']=joinDic
-
-    return res
-
 #use pandas
 def compare_sem_df(aList,bList):
     pValCut=1e-5
@@ -496,43 +331,4 @@ def compare_sem_df(aList,bList):
     else:
         return json.dumps({'error':'no overlaps'})
 
-if __name__ == '__main__':
 
-	parser = argparse.ArgumentParser(description='SemMedDB enrichment search')
-	#parser.add_argument('integers', metavar='N', type=int, nargs='+',
-	#                   help='an integer for the accumulator')
-	parser.add_argument('-m,--method', dest='method', help='(get_data, compare)')
-	parser.add_argument('-q,--query', dest='query', help='the pubmed query')
-	parser.add_argument('-a,--query_a', dest='query_a', help='list of enriched data sets')
-	parser.add_argument('-b,--query_b', dest='query_b', help='list of enriched data sets')
-
-	args = parser.parse_args()
-	print(args)
-	if args.method == None:
-		print("Please provide a method (-m): [get_data, compare]")
-	else:
-		if args.method == 'get_data':
-			if args.query == None:
-				print('Please provide a query (-q) [e.g. pcsk9]')
-			else:
-				#sem_trip_dic=read_sem_triples()
-				sem_trip_dic={}
-				print('creating enriched article set')
-				queries=args.query.rstrip().split(',')
-				for q in queries:
-					pub_sem(q,sem_trip_dic)
-		elif args.method == 'compare':
-			if args.query_a == None or args.query_b == None:
-				print('Please provide two lists of data sets to compare (-a and -b)')
-			else:
-				print('Comparing data...')
-				compare_sem(args.query_a,args.query_b)
-				#delete_index(args.index_name)
-		else:
-			print("Not a good method")
-
-#pub_sem('pcsk9')
-#pub_sem('oropharyngeal cancer')
-#pub_sem('prostate cancer')
-#pub_sem('breast cancer')
-#get_term_stats('semmeddb_triple_freqs',filterData={"terms":{"SUB_PRED_OBJ":['Encounter due to counseling:PROCESS_OF:Family']}})
