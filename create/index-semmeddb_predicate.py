@@ -173,4 +173,4 @@ def index_predicate_data(predicate_data, index_name):
         print("counting index timeout", index_name)
 
 
-index_predicate_data(config.semmed_data, "semmeddb-v40")
+index_predicate_data(config.semmed_predicate_data, config.semmed_predicate_index)

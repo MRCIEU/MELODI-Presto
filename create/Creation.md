@@ -32,15 +32,11 @@ secret_key=django_secret_key
 elastic_host='localhost'
 elastic_port='9300'
 
-#elastic host 2
-elastic_host_local='localhost'
-elastic_port_local='9200'
-
 #path to data storage directory, e.g. where temporary files are stored
 dataPath='/path/to/data/'
 
 #Elasticsearch index names
-semmed_index = 'name of predicate index'
+semmed_predicate_index = 'name of predicate index'
 semmed_sentence_index = 'name of sentence index'
 semmed_triple_freqs_index = 'name predicate frequency index '
 
@@ -51,6 +47,8 @@ maxPubs=10000000
 api_url='http://localhost:8000/api/'
 debug='True/False'
 DEPLOYMENT='dev/prod'
+
+allowed_hosts="allowed hosts"
 ```
 
 ### Create frequency counts

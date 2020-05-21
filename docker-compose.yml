@@ -2,9 +2,9 @@ version: '2'
 services:
 
   django:
-    image: melodi-lite/django
+    image: melodi-presto/django
     restart: always
-    container_name: melodi-lite-django
+    container_name: melodi-presto-django
     build:
       context: .
     networks:
@@ -17,9 +17,9 @@ services:
       - 8801:8000
 
   nginx:
-    image: melodi-lite/nginx
+    image: melodi-presto/nginx
     restart: always
-    container_name: melodi-lite-nginx
+    container_name: melodi-presto-nginx
     build:
       context: ./nginx
       dockerfile: nginx.dockerfile
