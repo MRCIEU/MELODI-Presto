@@ -49,31 +49,31 @@ else:
 
 def index(request):
     template = loader.get_template("django_project/index.html")
-    context = {"index": {"api": "API", "app": "App", "repo": "GitHub"}}
+    context = {"nbar":"home","index": {"api": "API", "app": "App", "repo": "GitHub"}}
     return HttpResponse(template.render(context, request))
 
 
 def app(request):
     template = loader.get_template("django_project/app.html")
-    context = {}
+    context = {"nbar":"app"}
     return HttpResponse(template.render(context, request))
 
 
 def enrich(request):
     template = loader.get_template("django_project/enrich.html")
-    context = {"api_url": api_url}
+    context = {"nbar":"app","api_url": api_url}
     return HttpResponse(template.render(context, request))
 
 
 def overlap(request):
     template = loader.get_template("django_project/overlap.html")
-    context = {"api_url": api_url}
+    context = {"nbar":"app","api_url": api_url}
     return HttpResponse(template.render(context, request))
 
 
 def sentence(request):
     template = loader.get_template("django_project/sentence.html")
-    context = {"api_url": api_url}
+    context = {"nbar":"app","api_url": api_url}
     return HttpResponse(template.render(context, request))
 
 

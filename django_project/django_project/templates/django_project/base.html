@@ -59,10 +59,10 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav mr-auto">
-              <li class="nav-item active">
+              <li class="{%if nbar == 'home' %}active{% endif %} nav-item">
                 <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
               </li>
-              <li class="nav-item">
+              <li class="{%if nbar == 'app' %}active{% endif %} nav-item">
                 <a class="nav-link" href="/app/">App</a>
               </li>
               <li class="nav-item">
