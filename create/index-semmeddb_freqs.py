@@ -13,7 +13,7 @@ es = Elasticsearch([{"host": config.elastic_host, "port": config.elastic_port}],
 
 timeout = 300
 
-index_name = "semmeddb-v40"
+index_name = config.semmed_predicate_index
 outDir = "data/freqs/" + index_name
 
 

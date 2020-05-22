@@ -109,7 +109,7 @@ def index_sentence_data(sentence_data, index_name):
                     "_source": data_dict,
                 }
                 bulk_data.append(op_dict)
-    print bulk_data[0]
+    print(bulk_data[0])
     # print len(bulk_data)
     deque(
         helpers.streaming_bulk(
@@ -133,4 +133,4 @@ def index_sentence_data(sentence_data, index_name):
         print ("counting index timeout", index_name)
 
 
-index_sentence_data(config.semmed_sentence_data, "semmeddb-sentence-v40")
+index_sentence_data(config.semmed_sentence_data, config.semmed_sentence_index)
