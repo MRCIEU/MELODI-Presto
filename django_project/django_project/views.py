@@ -71,9 +71,9 @@ def overlap(request):
     return HttpResponse(template.render(context, request))
 
 
-def sentence(request):
+def sentence(request,pmid=''):
     template = loader.get_template("django_project/sentence.html")
-    context = {"nbar":"app","api_url": api_url}
+    context = {"nbar":"app","api_url": api_url,"pmid":pmid}
     return HttpResponse(template.render(context, request))
 
 

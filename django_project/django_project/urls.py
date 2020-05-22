@@ -41,6 +41,7 @@ urlpatterns = [
     path(r"app/enrich/", views.enrich, name="enrich"),
     path(r"app/overlap/", views.overlap, name="overlap"),
     path(r"app/sentence/", views.sentence, name="sentence"),
+    path(r"app/sentence/<str:pmid>/", views.sentence, name="sentence-p"),
     ### API ###
     # https://github.com/axnsan12/drf-yasg
     url(

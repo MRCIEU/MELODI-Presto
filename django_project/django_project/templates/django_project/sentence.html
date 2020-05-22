@@ -5,7 +5,7 @@
         <b>PubMed ID:</b>
     </div>
     <div class="col-10">
-        <textarea rows="1" style="min-width: 90%" id='pmid'>23715093</textarea><br>
+        <textarea rows="1" style="min-width: 90%" id='pmid'>{% if pmid != '' %}{{pmid}}{%else%}23715093{%endif%}</textarea><br>
     </div>
   </div>
   <div class="row">
@@ -18,7 +18,7 @@
   <br>
   <div class="row">
       <div class="col">
-          <pre><code id='api-code'>curl -X POST 'http://melodi-presto.mrcieu.ac.uk/api/sentence/' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{ "pmid": "23715093"}'</code></pre>
+          <pre><code id='api-code'>curl -X POST 'http://melodi-presto.mrcieu.ac.uk/api/sentence/' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{ "pmid": {% if pmid != '' %}{{pmid}}{%else%}23715093{%endif%}'</code></pre>
       </div>
   </div>
   <div class="row">

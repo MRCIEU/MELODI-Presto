@@ -97,7 +97,8 @@ thead input {
                     var data=''
                     var d = v.split(" ")
                     for (i = 0; i < d.length; i++) {
-                        p = '<a href="https://pubmed.ncbi.nlm.nih.gov/'+d[i]+'/" target="_blank">'+d[i]+'</a>'
+                        //p = '<a href="https://pubmed.ncbi.nlm.nih.gov/'+d[i]+'/" target="_blank">'+d[i]+'</a>'
+                        p = '<a href="/app/sentence/'+d[i]+'/">'+d[i]+'</a>'
                         data=data+p+' '
                     }
                     return data
