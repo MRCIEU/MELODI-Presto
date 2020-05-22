@@ -125,7 +125,19 @@ thead input {
                     num = parseFloat(v).toPrecision(4);
                     return Number(num)
                 }
-            }
+            },
+            {"targets": [1,11],
+                render(v){
+                    var i;
+                    var data=''
+                    var d = v.split(" ")
+                    for (i = 0; i < d.length; i++) {
+                        p = '<a href="https://pubmed.ncbi.nlm.nih.gov/'+d[i]+'/" target="_blank">'+d[i]+'</a>'
+                        data=data+p+' '
+                    }
+                    return data
+                }
+            },
             ],
             buttons: [
             {

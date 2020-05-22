@@ -23,7 +23,7 @@
   </div>
   <div class="row">
     <table class="display compact nowrap" style="width:60%" align="center">
-        <tr><td></td><td><b>pmid</b></tr>
+        <tr><td></td><td><b>PubMed ID</b></tr>
         <tr>
             <td><a class="example-call" href="#" id='23715093'>Example 1</a></td>
             <td>23715093</td>
@@ -84,6 +84,20 @@ thead input {
         })
         var res_table = $('#results').DataTable( {
             dom: 'Bfrtip',
+            columnDefs: [
+            {"targets": [0],
+                render(v){
+                    var i;
+                    var data=''
+                    var d = v.split(" ")
+                    for (i = 0; i < d.length; i++) {
+                        p = '<a href="https://pubmed.ncbi.nlm.nih.gov/'+d[i]+'/" target="_blank">'+d[i]+'</a>'
+                        data=data+p+' '
+                    }
+                    return data
+                }
+            },
+            ],
             buttons: [
             {
                 extend: 'colvis',
@@ -129,9 +143,9 @@ thead input {
             res_table.ajax.reload()
             });
 
-        $("#x").on('change keydown paste input', function(){
+        $("#pmid").on('change keydown paste input', function(){
           console.log('change')
-          var x=$("#query").val()
+          var x=$("#pmid").val()
           document.getElementById('api-code').innerHTML='curl -X POST \'http://melodi-presto.mrcieu.ac.uk/api/sentence/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "pmid":  "'+x+'" }\''
         });
 
