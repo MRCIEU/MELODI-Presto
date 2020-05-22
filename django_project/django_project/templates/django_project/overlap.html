@@ -110,7 +110,7 @@ thead input {
             console.log(a,b)
             $("#x").val(a);
             $("#y").val(b);
-            $("#api-code").val('curl -X POST \'http://melodi-presto.mrcieu.ac.uk/api/overlap/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "x": [ "'+a+'" ], "y": [ "'+b+'" ]}\'');
+            document.getElementById('api-code').innerHTML='curl -X POST \'http://melodi-presto.mrcieu.ac.uk/api/overlap/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "x": [ "'+a+'" ], "y": [ "'+b+'" ]}\'';
         })
         var res_table = $('#results').DataTable( {
             dom: 'Bfrtip',
