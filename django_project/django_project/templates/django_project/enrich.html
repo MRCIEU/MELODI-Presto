@@ -90,6 +90,13 @@ thead input {
             {
                 "targets": [ 1 ],
                 "visible": false
+            },
+            {
+                "targets": [3],
+                render(v){
+                    num = parseFloat(v).toPrecision(4);
+                    return Number(num)
+                }
             }
             ],
             buttons: [
