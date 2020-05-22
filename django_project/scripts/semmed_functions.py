@@ -154,7 +154,7 @@ def sem_es_query(filterData,index,predCounts,resDic):
 
 def fet(localSem,localPub,globalSem,globalPub):
 	#print(localSem,localPub,globalSem,globalPub)
-	oddsratio, pvalue = stats.fisher_exact([[localSem, localPub], [globalSem, globalPub]])
+	oddsratio, pvalue = stats.fisher_exact([[localSem, localPub-localSem], [globalSem, globalPub-globalSem]])
 	#print(oddsratio, pvalue)
 	return oddsratio,pvalue
 
@@ -212,7 +212,7 @@ def pub_sem(query,sem_trip_dic):
             for i in range(0,len(pmidChunks)):
                 print(i,chunkSize)
                 filterOptions = create_sem_es_filter(pmidChunks[i])
-                t,resCount,resDic,predCounts=sem_es_query(filterData=filterOptions,index=config.semmed_index,predCounts=predCounts,resDic=resDic)
+                t,resCount,resDic,predCounts=sem_es_query(filterData=filterOptions,index=config.semmed_predicate_index,predCounts=predCounts,resDic=resDic)
                 totalRes+=resCount
 
             pc = round((float(counter)/float(pCount))*100)
@@ -226,7 +226,7 @@ def pub_sem(query,sem_trip_dic):
             t="\t".join(['triple','subject_name','subject_type','subject_id','predicate','object_name','object_type','object_id','localCount','localTotal','globalCount','globalTotal','odds','pval','pmids'])+'\n'
             o.write(t.encode('utf-8'))
             #get global number of publications
-            globalSem=es.count(index=config.semmed_index)['count']
+            globalSem=es.count(index=config.semmed_predicate_index)['count']
             print('globalSem = '+str(globalSem))
             #globalSem=25000000
 
@@ -250,7 +250,7 @@ def pub_sem(query,sem_trip_dic):
                     print(str(pc)+' % : '+str(counter))
                 if predCounts[k]>1:
                     if freq_res:
-                        odds,pval=fet(predCounts[k],totalRes,tripleFreqs[k],globalSem)
+                        odds,pval=fet(int(predCounts[k]),int(totalRes),int(tripleFreqs[k]),int(globalSem))
                         t=k+'\t'+resDic[k]['subject_name']+'\t'+resDic[k]['subject_type']+'\t'+resDic[k]['subject_id']+'\t'+resDic[k]['predicate']+'\t'+resDic[k]['object_name']+'\t'+resDic[k]['object_type']+'\t'+resDic[k]['object_id']+'\t'+str(predCounts[k])+'\t'+str(totalRes)+'\t'+str(tripleFreqs[k])+'\t'+str(globalPub)+'\t'+str(odds)+'\t'+str(pval)+'\t'+" ".join(list(set(resDic[k]['pmids'])))+'\n'
                         o.write(t.encode('utf-8'))
                         enrichData.append({
