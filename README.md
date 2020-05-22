@@ -105,10 +105,10 @@ For enrichment analysis counts of all triples were performed using Elasticsearch
 import scipy.stats as stats
 
 a,b,c,d=[10,3505,147,6611441]
-oddsratio, pvalue = stats.fisher_exact([[a, b], [c, d]])
+oddsratio, pvalue = stats.fisher_exact([[a, b-a], [c, d-c]])
 oddsratio,pvalue
 
-(128.31894184207206, 3.088447435637683e-18)
+(128.68323065993206, 3.002903135377263e-18)
 ```
 
 ##### Performance

@@ -2,22 +2,17 @@
 {% load staticfiles %}
 {% block content %}
 <div class="row">
+  <div class="col-5">
+    <p><br><br>
+      Previously we created MELODI, a method and tool to derive overlapping enriched literature elements connecting two biomedical terms, e.g. an exposure and a disease, <a href="https://doi.org/10.1093/ije/dyx251">(Elsworth et al., 2018)</a>. 
+      The main data involved were derived from SemMedDB <a href="https://academic.oup.com/bioinformatics/article/28/23/3158/195282">(Kilicoglu et al., 2012)</a>, in particular a set of annotated ‘subject-predicate-object’ triples created from the titles and abstracts of almost 30 million biomedical articles. 
+      <br><br>
+      Here, we present MELODI Presto. A quicker and more agile method to identify overlapping elements between any number of exposures and outcomes. The modifications made to the data, architecture and method are listed here <a href="https://github.com/MRCIEU/MELODI-Presto">https://github.com/MRCIEU/MELODI-Presto</a>.
+    </div>  
   <div class="col-7">
     <img src="{% static 'django_project/paper-figure.png' %}" alt="MELODI Presto"  height="400">
   </div>
-  <div class="col-5">
-  <p>
-    Previously we created MELODI, a method and tool to derive overlapping enriched literature elements connecting two biomedical terms, e.g. an exposure and a disease, <a href="https://doi.org/10.1093/ije/dyx251">(Elsworth et al., 2018)</a>. 
-    The main data involved were derived from SemMedDB <a href="https://academic.oup.com/bioinformatics/article/28/23/3158/195282">(Kilicoglu et al., 2012)</a>, in particular a set of annotated ‘subject-predicate-object’ triples created from the titles and abstracts of almost 30 million biomedical articles. 
-    <br><br>
-    All data were housed in a Neo4j graph, and each query term of interest created connections between the query and the associated literature nodes. This approach provided a suitable method for this type of analysis, and storing the data in a graph made sense, however, creating new links and performing large queries (those that search large parts of the graph and return large amounts of data) was not efficient. In addition, the graph contained all data from the PREDICATION table from SemMedDB, which contains lots of predicates and types that were not informative. 
-  </div>  
-  <p>
-    <br>
-    It was also becoming apparent that limiting searches to two query terms was not ideal. For example, cases where a set of genes had been identified with potential links to a disease could not be queried efficiently and the results were impossible to disentangle. There was also a developing need to do many queries, and doing this via the web application was not practical, therefore the development of a programmatic method was required.
-    <br><br>
-    To address all these issues, we created MELODI Presto. A quicker and more agile method to identify overlapping elements between any number of exposures and outcomes. The modifications made to the data, architecture and method are listed here <a href="https://github.com/MRCIEU/MELODI-Presto">https://github.com/MRCIEU/MELODI-Presto</a>.
-  </p>
+
   
 
 {% endblock %}

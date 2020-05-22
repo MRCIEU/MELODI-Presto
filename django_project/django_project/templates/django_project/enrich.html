@@ -128,7 +128,7 @@ thead input {
                 "type": "POST",
                 //set dataSrc to "" to deal with no "data" key in json
                 "dataSrc": "",
-                "url": "{{api_url}}enrich/",
+                "url": "/api/enrich/",
                 data:function(d){
                     if (document.getElementById("query").value.length>0){
                         console.log(document.getElementById("query").value.trim())

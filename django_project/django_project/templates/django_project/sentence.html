@@ -18,7 +18,7 @@
   <br>
   <div class="row">
       <div class="col">
-          <pre><code id='api-code'>curl -X POST 'http://melodi-presto.mrcieu.ac.uk/api/sentence/' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{ "pmid": {% if pmid != '' %}{{pmid}}{%else%}23715093{%endif%}'</code></pre>
+          <pre><code id='api-code'>curl -X POST 'http://melodi-presto.mrcieu.ac.uk/api/sentence/' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{ "pmid": {% if pmid != '' %}"{{pmid}}"{%else%}"23715093"{%endif%} }' </code></pre>
       </div>
   </div>
   <div class="row">
@@ -40,9 +40,11 @@
     </table>
     </div>
     </div>
+    <br>
     <div id='div1'>
-        PMID: <span id="pmid-ajax"></span>
-        Year: <span id="year-ajax"></span>
+        <b>PMID:</b> <span id="pmid-ajax"></span>
+        <b>Year:</b> <span id="year-ajax"></span>
+        <b>ISSN:</b> <span id="issn-ajax"></span>
     <table id="results" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
@@ -78,10 +80,10 @@ thead input {
 <script>
     $(document).ready(function() {
         $(".example-call").on('click', function(event){
-            console.log(this.id);
+            //console.log(this.id);
             a = this.id;
             $("#pmid").val(a);
-            $("#api-code").val('curl -X POST \'http://melodi-presto.mrcieu.ac.uk/api/sentence/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "pmid":  "'+a+'" }\'');
+            document.getElementById('api-code').innerHTML='curl -X POST \'http://melodi-presto.mrcieu.ac.uk/api/sentence/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "pmid":  "'+a+'" }\'';
         })
         var res_table = $('#results').DataTable( {
             dom: 'Bfrtip',
@@ -98,7 +100,7 @@ thead input {
             //"serverSide": true,
             "ajax":{
                 "type": "POST",
-                "url": "{{api_url}}sentence/",
+                "url": "/api/sentence/",
                 data:function(d){
                     if (document.getElementById("pmid").value.length>0){
                         console.log(document.getElementById("pmid").value.trim())
@@ -124,12 +126,13 @@ thead input {
                 for(var key in data) {
                     var value = data[key];
                     if (key == 'PMID'){
-                        console.log(key,value)
                         $("#pmid-ajax").html('<a href="https://pubmed.ncbi.nlm.nih.gov/'+value+'/" target="_blank">'+value+'</a>');
                     }
-                    if (key == 'PYEAR'){
-                        console.log(key,value)
+                    else if (key == 'PYEAR'){
                         $("#year-ajax").text(value);
+                    }
+                    else if (key == 'ISSN'){
+                        $("#issn-ajax").html('<a href="https://portal.issn.org/resource/ISSN/'+value+'/" target="_blank">'+value+'</a>');
                     }
                 }
             }
