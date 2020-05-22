@@ -87,7 +87,7 @@ def index_sentence_data(sentence_data, index_name):
             l = line.rstrip().decode("utf-8").split("\t")
             if len(l) == 5:
                 data_dict = {
-                    "PMID": l[0],
+                    "PMID": l[0].replace("'",""),
                     "ISSN": l[1],
                     "DP": l[2],
                     "EDAT": l[3],
