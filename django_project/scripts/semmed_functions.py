@@ -27,7 +27,7 @@ textbase_data=os.path.join(config.dataPath,'textbase','data/')
 
 #total number of triples
 #curl -XGET 'localhost:9200/semmeddb-v40/_count?pretty'
-globalPub=6533824
+globalPub=int(config.semmed_triple_total)
 
 ignoreTerms=['Patients','Disease','Genes','Proteins','Lipids','Neoplasm','Malignant Neoplasms']
 

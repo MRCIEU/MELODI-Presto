@@ -118,6 +118,13 @@ thead input {
             {
                 "targets": [ 1,2,10,11 ],
                 "visible": false
+            },
+            {
+                "targets": [3,9],
+                render(v){
+                    num = parseFloat(v).toPrecision(4);
+                    return Number(num)
+                }
             }
             ],
             buttons: [
