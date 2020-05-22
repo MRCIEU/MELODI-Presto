@@ -129,30 +129,37 @@ def SentencePostView(request):
             # get sentence data
             filterData = {"term": {"PMID": pmid}}
             time1, count1, res1 = run_standard_query(
-                filterData=filterData, index=config.semmed_sentence_index, size=1000
+                filterData=filterData, index=config.semmed_sentence_index+','+config.semmed_citation_index, size=1000
             )
-            # get sentence IDs
+            # get sentence IDs and CITATION data
             sent_dic = {}
+            citation_dic = {}
+            #print(res1)
             for r in res1:
-                sent_dic[r["_source"]["SENTENCE_ID"]] = r["_source"]
+                if r['_index']==config.semmed_citation_index:
+                    citation_dic[r["_source"]["PMID"]] = r["_source"]
+                if r['_index']==config.semmed_sentence_index:
+                    sent_dic[r["_source"]["SENTENCE_ID"]] = r["_source"]
             filterData = {"terms": {"SENTENCE_ID": list(sent_dic.keys())}}
             time2, count2, res2 = run_standard_query(
-                filterData=filterData, index=config.semmed_index, size=1000
+                filterData=filterData, index=config.semmed_predicate_index, size=1000
             )
             # stitch them together
             final_res = []
             for r in res2:
                 tmp_dic = r["_source"]
                 sent_id = r["_source"]["SENTENCE_ID"]
+                pubmed_id = r["_source"]["PMID"]
                 if sent_id in sent_dic:
                     tmp_dic.update(sent_dic[sent_id])
                     # this doesn't work as start and end appear to map to the abstract
                     # sentence_section = sent_dic[sent_id]['SENTENCE'][int(sent_dic[sent_id]['SENT_START_INDEX'])-2:int(sent_dic[sent_id]['SENT_END_INDEX'])-2]
                     # tmp_dic.update({'SENTENCE_SECTION':sentence_section})
+                if pubmed_id in citation_dic:
+                    tmp_dic.update(citation_dic[pubmed_id])
                 final_res.append(tmp_dic)
             # print(final_res)
             returnData = {"count": count2, "data": final_res}
-            print(returnData)
         else:
             returnData = serializer.errors
     return Response(returnData)
