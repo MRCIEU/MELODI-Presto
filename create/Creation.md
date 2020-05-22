@@ -52,6 +52,8 @@ debug='True/False'
 DEPLOYMENT='dev/prod'
 
 allowed_hosts="allowed hosts"
+
+semmed_triple_total=total number of triples in predicate index
 ```
 
 ### Create frequency counts
