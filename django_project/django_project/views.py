@@ -37,6 +37,7 @@ from scripts.pubmed_functions import pubmed_query_to_pmids
 from scripts.semmed_functions import *
 
 api_url = config.api_url
+root_url = config.root_url
 
 deploy = config.DEPLOYMENT
 if deploy == "prod":
@@ -49,7 +50,7 @@ else:
 
 def index(request):
     template = loader.get_template("django_project/index.html")
-    context = {"nbar":"home","index": {"api": "API", "app": "App", "repo": "GitHub"}}
+    context = {"nbar":"home","root_url": root_url}
     return HttpResponse(template.render(context, request))
 
 

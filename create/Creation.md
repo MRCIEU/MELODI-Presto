@@ -47,7 +47,8 @@ semmed_sentence_data = 'location of SENTENCE data file, e.g. semmedVER40_R_SENTE
 semmed_citation_data = 'location of modified CITATION data file, e.g. semmedVER42_2020_R_CITATIONS.tsv.gz'
 maxPubs=10000000
 
-api_url='http://localhost:8000/api/'
+api_url='api url, e.g. https://www.some.thing/api/'
+root_url='root url, e.g. https://www.some.thing/'
 debug='True/False'
 DEPLOYMENT='dev/prod'
 

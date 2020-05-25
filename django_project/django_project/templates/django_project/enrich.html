@@ -18,7 +18,7 @@
   <br>
   <div class="row">
       <div class="col">
-          <pre><code id='api-code'>curl -X POST 'http://melodi-presto.mrcieu.ac.uk/api/enrich/' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{ "query": "TMPRSS2"}'</code></pre>
+          <pre><code id='api-code'>curl -X POST '{{api_url}}enrich/' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{ "query": "TMPRSS2"}'</code></pre>
       </div>
   </div>
   <div class="row">
@@ -82,7 +82,7 @@ thead input {
             console.log(this.id);
             a = this.id;
             $("#query").val(a);
-            document.getElementById('api-code').innerHTML='curl -X POST \'http://melodi-presto.mrcieu.ac.uk/api/enrich/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "query":  "'+a+'" }\'';
+            document.getElementById('api-code').innerHTML='curl -X POST \'{{api_url}}enrich/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "query":  "'+a+'" }\'';
         })
         var res_table = $('#results').DataTable( {
             dom: 'Bfrtip',
@@ -166,7 +166,7 @@ thead input {
           console.log('change')
           var x=$("#query").val()
           console.log(x)
-          document.getElementById('api-code').innerHTML='curl -X POST \'http://melodi-presto.mrcieu.ac.uk/api/enrich/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "query": "'+x+'" }\''
+          document.getElementById('api-code').innerHTML='curl -X POST \'{{api_url}}enrich/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "query": "'+x+'" }\''
         });
 
     } );

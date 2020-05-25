@@ -18,7 +18,7 @@
   <br>
   <div class="row">
       <div class="col">
-          <pre><code id='api-code'>curl -X POST 'http://melodi-presto.mrcieu.ac.uk/api/sentence/' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{ "pmid": {% if pmid != '' %}"{{pmid}}"{%else%}"23715093"{%endif%} }' </code></pre>
+          <pre><code id='api-code'>curl -X POST '{{api_url}}sentence/' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{ "pmid": {% if pmid != '' %}"{{pmid}}"{%else%}"23715093"{%endif%} }' </code></pre>
       </div>
   </div>
   <div class="row">
@@ -83,7 +83,7 @@ thead input {
             //console.log(this.id);
             a = this.id;
             $("#pmid").val(a);
-            document.getElementById('api-code').innerHTML='curl -X POST \'http://melodi-presto.mrcieu.ac.uk/api/sentence/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "pmid":  "'+a+'" }\'';
+            document.getElementById('api-code').innerHTML='curl -X POST \'{{api_url}}sentence/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "pmid":  "'+a+'" }\'';
         })
         var res_table = $('#results').DataTable( {
             dom: 'Bfrtip',
@@ -151,7 +151,7 @@ thead input {
         $("#pmid").on('change keydown paste input', function(){
           console.log('change')
           var x=$("#pmid").val()
-          document.getElementById('api-code').innerHTML='curl -X POST \'http://melodi-presto.mrcieu.ac.uk/api/sentence/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "pmid":  "'+x+'" }\''
+          document.getElementById('api-code').innerHTML='curl -X POST \'{{api_url}}sentence/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "pmid":  "'+x+'" }\''
         });
 
     } );
