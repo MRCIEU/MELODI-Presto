@@ -2,19 +2,14 @@
 {% load staticfiles %}
 {% block content %}
 <div class="row">
-  <div class="col-md-12">
-    <p>
+  <div class="col-md-4 text-center">
       Previously we created MELODI, a method and tool to derive overlapping enriched literature elements connecting two biomedical terms, e.g. an exposure and a disease, <a href="https://doi.org/10.1093/ije/dyx251" target="_blank">(Elsworth et al., 2018)</a>. 
-      The main data involved were derived from SemMedDB <a href="https://academic.oup.com/bioinformatics/article/28/23/3158/195282" target="_blank">(Kilicoglu et al., 2012)</a>, in particular a set of annotated ‘subject-predicate-object’ triples created from the titles and abstracts of almost 30 million biomedical articles. 
-      <br><br>
-      Here, we present MELODI Presto. A quicker and more agile method to identify overlapping elements between any number of exposures and outcomes. The modifications made to the data, architecture and method are listed here <a href="https://github.com/MRCIEU/MELODI-Presto" target="_blank">https://github.com/MRCIEU/MELODI-Presto</a>.
-      <br><br>
-      Access via:
-      <ul>
-        <li>App - <a href="{{root_url}}app/">{{root_url}}app/</a></li>
-        <li>API - <a href="{{root_url}}docs/">{{root_url}}docs/</a></li>
-        <li>Notebook - <a href='https://colab.research.google.com/github/MRCIEU/MELODI-Presto/blob/master/notebooks/api-demo.ipynb'>Google Colab</a></li>
-      </ul>
+  </div>
+  <div class="col-md-4 text-center">
+      Here, we present MELODI Presto. A quicker and more agile method to identify overlapping elements between any number of exposures and outcomes.
+  </div>
+  <div class="col-md-4 text-center">
+      Access via the <a href="{{root_url}}app/">Web App</a>, <a href="{{root_url}}docs/">API</a> or <a href='https://colab.research.google.com/github/MRCIEU/MELODI-Presto/blob/master/notebooks/api-demo.ipynb'>Notebook</a>. Code is available on <a href="https://github.com/MRCIEU/MELODI-Presto">GitHub</a>.
     </div>  
   </div>
   <div class="row">
