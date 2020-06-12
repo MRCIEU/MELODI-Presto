@@ -134,3 +134,11 @@ real	0m2.150s
 user	0m0.036s
 sys	0m0.104s
 ```
+
+### Notes
+
+The call to PubMed is limited to 1 million articles. 
+
+```
+http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi? {'db': 'pubmed', 'term': '', 'retmax': '1000000', 'rettype': 'uilist'}
+```
