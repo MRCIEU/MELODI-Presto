@@ -13,8 +13,8 @@ es = Elasticsearch([{"host": config.elastic_host, "port": config.elastic_port}],
 
 timeout = 300
 
-index_name = config.semmed_predicate_index
-outDir = "data/freqs/" + index_name
+index_name = config.semmed_triple_freqs_index
+outDir = "data/freqs/" + config.semmed_predicate_index
 
 
 def get_date():
@@ -113,7 +113,7 @@ def index_predicate_data(predicate_data, index_name):
 
 
 index_predicate_data(
-    outDir + "/semmeddb_triple_freqs.txt.gz", index_name + "_triple_freqs"
+    outDir + "/semmeddb_triple_freqs.txt.gz", index_name
 )
 # index_predicate_data(outDir+'/semmeddb_subject_freqs.txt.gz',index_name+'_subject_freqs')
 # index_predicate_data(outDir+'/semmeddb_object_freqs.txt.gz',index_name+'_object_freqs')

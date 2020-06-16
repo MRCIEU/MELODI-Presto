@@ -43,6 +43,8 @@ typeFilterList = [
     "hops",
     "inch",
     "orch",
+    "phsu",
+    "neop"
 ]
 
 timeout = 300
@@ -53,7 +55,7 @@ def get_date():
     return d
 
 
-def create_index(index_name, shards=3):
+def create_index(index_name, shards=5):
     print("Creating index", index_name)
     if es.indices.exists(index_name, request_timeout=timeout):
         print("Index name already exists, please choose another")
@@ -123,10 +125,10 @@ def index_predicate_data(predicate_data, index_name):
             if l[3] in predIgnore:
                 continue
             # ignore records with specified types
-            if l[6] in typeFilterList and l[10] in typeFilterList:
-                pred_id = l[5] + ":" + l[3] + ":" + l[9]
-                # print(l)
-                data_dict = {
+            #if l[6] in typeFilterList and l[10] in typeFilterList:
+            pred_id = l[5] + ":" + l[3] + ":" + l[9]
+            # print(l)
+            data_dict = {
                     "PREDICATION_ID": l[0],
                     "SENTENCE_ID": l[1],
                     "PMID": l[2],
@@ -141,14 +143,14 @@ def index_predicate_data(predicate_data, index_name):
                     "OBJECT_NOVELTY": int(l[11]),
                     "SUB_PRED_OBJ": pred_id,
                 }
-                op_dict = {
+            op_dict = {
                     "_index": index_name,
                     "_id": l[0],
                     "_op_type": "create",
                     "_type": "_doc",
                     "_source": data_dict,
                 }
-                bulk_data.append(op_dict)
+            bulk_data.append(op_dict)
     # print bulk_data[0]
     # print len(bulk_data)
     deque(
