@@ -79,6 +79,16 @@ CITATION data
 
 `python create/index-semmeddb-citations.py`
 
+### Increase result window and terms count size
+
+```
+curl -XPUT 'localhost:9200/semmeddb-v42-v3/_settings' -H 'Content-Type: application/json' -d '{"index.max_result_window" : "1000000"}'
+curl -XPUT 'localhost:9200/semmeddb-v42_triple_freqs-v3/_settings' -H 'Content-Type: application/json' -d '{"index.max_result_window" : "1000000"}'
+curl -XPUT 'localhost:9200/semmeddb-v42-v3/_settings' -H 'Content-Type: application/json' -d '{"index.max_terms_count" : "100000"}'
+curl -XPUT '192.168.0.18:9200/semmeddb-v42_triple_freqs-v3/_settings' -H 'Content-Type: application/json' -d '{"index.max_terms_count" : "100000"}'
+
+```
+
 ### Create App and API
 
 To create the App and API just run docker-compose

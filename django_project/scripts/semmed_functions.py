@@ -102,12 +102,12 @@ def get_term_stats(index=config.semmed_triple_freqs_index,query=[]):
 def create_sem_es_filter(pmidList):
     #don't need the typeFiterList if used when indexing the data
     typeFilterList = [
-        "aapp","enzy","gngm","chem","clnd","dysn","horm","hops","inch","orch"
+        "aapp","enzy","gngm","chem","clnd","dysn","horm","hops","inch","orch","phsu"
     ]
     filterOptions = [
-			{"terms":{"PMID":pmidList}}
-			#{"terms":{"OBJECT_SEMTYPE":typeFilterList}},
-			#{"terms":{"SUBJECT_SEMTYPE":typeFilterList}}
+			{"terms":{"PMID":pmidList}},
+			{"terms":{"OBJECT_SEMTYPE":typeFilterList}},
+			{"terms":{"SUBJECT_SEMTYPE":typeFilterList}}
 			]
     return filterOptions
 
