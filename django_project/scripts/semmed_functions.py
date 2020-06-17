@@ -44,10 +44,10 @@ def run_standard_query(filterData,index,size=100000):
     		"size":size,
     		"query": {
     			"bool" : {
-                    "must_not" : [
-    					{"terms": {"SUBJECT_NAME": ignoreTerms}},
-                        {"terms": {"OBJECT_NAME": ignoreTerms}}
-    				],
+                    #"must_not" : [
+    				#	{"terms": {"SUBJECT_NAME": ignoreTerms}},
+                    #    {"terms": {"OBJECT_NAME": ignoreTerms}}
+    				#],
     				"filter" : filterData
     			}
     		}
@@ -70,10 +70,10 @@ def run_sem_query(filterData,index,size=100000):
     		"size":size,
     		"query": {
     			"bool" : {
-    				"must_not" : [
-    					{"terms": {"SUBJECT_NAME": ignoreTerms}},
-                        {"terms": {"OBJECT_NAME": ignoreTerms}}
-    				],
+    				#"must_not" : [
+    				#	{"terms": {"SUBJECT_NAME": ignoreTerms}},
+                    #    {"terms": {"OBJECT_NAME": ignoreTerms}}
+    				#],
     				"filter" : filterData
     			}
     		}
@@ -110,9 +110,9 @@ def create_sem_es_filter(pmidList):
         "aapp","enzy","gngm","chem","clnd","dysn","horm","hops","inch","orch","phsu"
     ]
     filterOptions = [
-			{"terms":{"PMID":pmidList}},
-			{"terms":{"OBJECT_SEMTYPE":typeFilterList}},
-			{"terms":{"SUBJECT_SEMTYPE":typeFilterList}}
+			{"terms":{"PMID":pmidList}}
+			#{"terms":{"OBJECT_SEMTYPE":typeFilterList}},
+			#{"terms":{"SUBJECT_SEMTYPE":typeFilterList}}
 			]
     return filterOptions
 
