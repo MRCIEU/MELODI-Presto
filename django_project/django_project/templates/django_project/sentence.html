@@ -48,6 +48,8 @@
     <table id="results" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
+                <th>Start:End </th>
+                <th>Section </th>
                 <th>Subject </th>
                 <th>Predicate</th>
                 <th>Object</th>
@@ -115,11 +117,23 @@ thead input {
                 }
             },
             "columns": [
+              {"data":"SENT_START_INDEX"},
+              {"data":"TYPE"},
               {"data":"SUBJECT_NAME"},
               {"data":"PREDICATE"},
               {"data":"OBJECT_NAME"},
               {"data":"SENTENCE"},
             ],
+            "columnDefs": [{
+                "targets": 0,
+                "render": function ( data, type, row ) {
+                        return data + ' : ' + row.SENT_END_INDEX
+                    },
+                    "targets": 0
+            },
+             {"visible": false,  "targets": [ 1 ]}
+ 
+             ],
             "drawCallback": function( settings ) {
                 var api = this.api();
                 var data =  api.rows( 0 ).data()[0]

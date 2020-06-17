@@ -29,6 +29,7 @@ textbase_data=os.path.join(config.dataPath,'textbase','data/')
 #curl -XGET 'localhost:9200/semmeddb-v40/_count?pretty'
 globalPub=int(config.semmed_triple_total)
 
+#ignore these generic terms
 ignoreTerms=['Patients','Disease','Genes','Proteins','Lipids','Neoplasm','Malignant Neoplasms']
 
 def run_standard_query(filterData,index,size=100000):
@@ -43,6 +44,10 @@ def run_standard_query(filterData,index,size=100000):
     		"size":size,
     		"query": {
     			"bool" : {
+                    "must_not" : [
+    					{"terms": {"SUBJECT_NAME": ignoreTerms}},
+                        {"terms": {"OBJECT_NAME": ignoreTerms}}
+    				],
     				"filter" : filterData
     			}
     		}
