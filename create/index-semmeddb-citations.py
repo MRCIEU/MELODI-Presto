@@ -7,15 +7,11 @@ import datetime
 import time
 import gzip
 
-# `SENTENCE_ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
-# `PMID` varchar(20) NOT NULL DEFAULT '',
-# `TYPE` varchar(2) NOT NULL DEFAULT '',
-# `NUMBER` int(10) unsigned NOT NULL DEFAULT '0',
-# `SENT_START_INDEX` int(10) unsigned NOT NULL DEFAULT '0',
-# `SENT_END_INDEX` int(10) unsigned NOT NULL DEFAULT '0',
-# `SECTION_HEADER` varchar(100) DEFAULT NULL,
-# `NORMALIZED_SECTION_HEADER` varchar(50) DEFAULT NULL,
-# `SENTENCE` varchar(999) CHARACTER SET utf8 NOT NULL DEFAULT '',
+# PMID: PubMed identifier of the citation
+# ISSN: ISSN identifier of the journal or the proceedings where the article was published
+# DP: Publication date for the citation
+# EDAT: The date when the citation was added to PubMed
+# PYEAR: Completion date for the citation
 
 es = Elasticsearch([{"host": config.elastic_host, "port": config.elastic_port}],)
 

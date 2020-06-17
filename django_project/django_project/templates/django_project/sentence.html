@@ -22,18 +22,21 @@
       </div>
   </div>
   <div class="row">
-    <table class="display compact nowrap" style="width:60%" align="center">
-        <tr><td></td><td><b>PubMed ID</b></tr>
+    <table class="display compact nowrap" style="width:80%" align="center">
+        <tr><td></td><td><b>Title</b></td></td><td><b>PubMed ID</b></tr>
         <tr>
             <td><a class="example-call" href="#" id='23715093'>Example 1</a></td>
+            <td>Fibromuscular Dysplasia and Childhood Stroke</td>
             <td>23715093</td>
         </tr>
         <tr>
             <td><a class="example-call" href="#" id='19755659'>Example 2</a></td>
+            <td>Sulindac Effects on Inflammation and Tumorigenesis in the Intestine...</td>
             <td>19755659</td>
         </tr>
         <tr>
             <td><a class="example-call" href="#" id='15943554'>Example 3</a></td>
+            <td>Deletions Account for 17% of Pathogenic Germline Alterations in MLH1...</td>
             <td>15943554</td>
         </tr>
 
@@ -41,6 +44,7 @@
     </div>
     </div>
     <br>
+    <b>Title:</b> <span id="title-ajax"></span>
     <div id='div1'>
         <b>PMID:</b> <span id="pmid-ajax"></span>
         <b>Year:</b> <span id="year-ajax"></span>
@@ -48,7 +52,8 @@
     <table id="results" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
-                <th>Start:End </th>
+                <th>Start </th>
+                <!--th>End </th-->
                 <th>Section </th>
                 <th>Subject </th>
                 <th>Predicate</th>
@@ -81,10 +86,20 @@ thead input {
 </style>
 <script>
     $(document).ready(function() {
+        function update_title(){
+            var x=$("#pmid").val();
+            $.ajax({url: "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id="+x+"&retmode=json", success: function(result){
+                var title = result.result[x]['title']
+                console.log(title)
+                $("#title-ajax").html(title);
+            }});
+        }
+
         $(".example-call").on('click', function(event){
             //console.log(this.id);
             a = this.id;
             $("#pmid").val(a);
+            update_title()
             document.getElementById('api-code').innerHTML='curl -X POST \'{{api_url}}sentence/\' -H \'accept: application/json\' -H \'Content-Type: application/json\' -d \'{ "pmid":  "'+a+'" }\'';
         })
         var res_table = $('#results').DataTable( {
@@ -104,6 +119,7 @@ thead input {
                 "type": "POST",
                 "url": "/api/sentence/",
                 data:function(d){
+                    update_title()
                     if (document.getElementById("pmid").value.length>0){
                         console.log(document.getElementById("pmid").value.trim())
                         return JSON.stringify(
@@ -124,16 +140,16 @@ thead input {
               {"data":"OBJECT_NAME"},
               {"data":"SENTENCE"},
             ],
-            "columnDefs": [{
-                "targets": 0,
-                "render": function ( data, type, row ) {
-                        return data + ' : ' + row.SENT_END_INDEX
-                    },
-                    "targets": 0
-            },
-             {"visible": false,  "targets": [ 1 ]}
+            //"columnDefs": [{
+            //    "targets": 0,
+            //    "render": function ( data, type, row ) {
+            //            return data + ' : ' + row.SENT_END_INDEX
+            //        },
+            //        "targets": 0
+            //},
+            // {"visible": false,  "targets": [ 1 ]}
  
-             ],
+            // ],
             "drawCallback": function( settings ) {
                 var api = this.api();
                 var data =  api.rows( 0 ).data()[0]
@@ -156,6 +172,7 @@ thead input {
         $("button").click(function(){
             console.log('update')
             res_table.ajax.reload()
+            update_title()
             });
 
         $(".example-call").click(function(){

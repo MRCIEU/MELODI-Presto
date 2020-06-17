@@ -33,7 +33,7 @@ logging.basicConfig(
 logger = logging.getLogger("debug_logger")
 es_logger = logging.getLogger("elastic_logger")
 
-from scripts.pubmed_functions import pubmed_query_to_pmids
+from scripts.pubmed_functions import pubmed_query_to_pmids, get_pubmed_info
 from scripts.semmed_functions import *
 
 api_url = config.api_url
@@ -159,8 +159,12 @@ def SentencePostView(request):
                 if pubmed_id in citation_dic:
                     tmp_dic.update(citation_dic[pubmed_id])
                 final_res.append(tmp_dic)
-            # print(final_res)
-            returnData = {"count": count2, "data": final_res}
+
+            #get title and abstract
+            pubmed_data=get_pubmed_info(pubmed_id)
+            print(pubmed_data)
+            #print(final_res)
+            returnData = {"count": count2, "data": final_res, "title":pubmed_data['title']}
         else:
             returnData = serializer.errors
     return Response(returnData)
