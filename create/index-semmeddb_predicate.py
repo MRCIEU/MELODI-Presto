@@ -34,17 +34,17 @@ predIgnore = [
 ]
 typeFilterList = [
     "aapp",
+    "chem",
+    "clna"
+    "clnd",
     "dsyn",
     "enzy",
     "gngm",
-    "chem",
-    "clnd",
     "horm",
     "hops",
     "inch",
     "orch",
     "phsu",
-    "neop"
 ]
 
 timeout = 300

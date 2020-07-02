@@ -30,7 +30,7 @@ textbase_data=os.path.join(config.dataPath,'textbase','data/')
 globalPub=int(config.semmed_triple_total)
 
 #ignore these generic terms
-ignoreTerms=['Patients','Disease','Genes','Proteins','Lipids','Neoplasm','Malignant Neoplasms']
+ignoreTerms=['Patients','Disease','Genes','Proteins','Lipids','Neoplasm','Malignant Neoplasms','Peptides','receptor','Amino Acids','Pharmaceutical Preparations']
 
 def run_standard_query(filterData,index,size=100000):
     print('run_standard_query')
@@ -107,7 +107,7 @@ def get_term_stats(index=config.semmed_triple_freqs_index,query=[]):
 def create_sem_es_filter(pmidList):
     #don't need the typeFiterList if used when indexing the data
     typeFilterList = [
-        "aapp","enzy","gngm","chem","clnd","dysn","horm","hops","inch","orch","phsu"
+        "aapp","enzy","gngm","clna","chem","clnd","dysn","horm","hops","inch","orch","phsu"
     ]
     filterOptions = [
 			{"terms":{"PMID":pmidList}}
