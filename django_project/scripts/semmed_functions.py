@@ -44,10 +44,10 @@ def run_standard_query(filterData,index,size=100000):
     		"size":size,
     		"query": {
     			"bool" : {
-                    "must_not" : [
-    					{"terms": {"SUBJECT_NAME": ignoreTerms}},
-                        {"terms": {"OBJECT_NAME": ignoreTerms}}
-    				],
+                    #"must_not" : [
+    				#	{"terms": {"SUBJECT_NAME": ignoreTerms}},
+                    #    {"terms": {"OBJECT_NAME": ignoreTerms}}
+    				#],
     				"filter" : filterData
     			}
     		}
@@ -70,10 +70,10 @@ def run_sem_query(filterData,index,size=100000):
     		"size":size,
     		"query": {
     			"bool" : {
-    				"must_not" : [
-    					{"terms": {"SUBJECT_NAME": ignoreTerms}},
-                        {"terms": {"OBJECT_NAME": ignoreTerms}}
-    				],
+    				#"must_not" : [
+    				#	{"terms": {"SUBJECT_NAME": ignoreTerms}},
+                    #    {"terms": {"OBJECT_NAME": ignoreTerms}}
+    				#],
     				"filter" : filterData
     			}
     		}
@@ -107,7 +107,7 @@ def get_term_stats(index=config.semmed_triple_freqs_index,query=[]):
 def create_sem_es_filter(pmidList):
     #don't need the typeFiterList if used when indexing the data
     typeFilterList = [
-        "aapp","enzy","gngm","chem","clnd","dysn","horm","hops","inch","orch","phsu"
+        "aapp","enzy","gngm","clna","chem","clnd","dysn","horm","hops","inch","orch","phsu"
     ]
     filterOptions = [
 			{"terms":{"PMID":pmidList}},
