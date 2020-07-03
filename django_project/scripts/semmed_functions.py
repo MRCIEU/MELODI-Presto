@@ -44,10 +44,10 @@ def run_standard_query(filterData,index,size=100000):
     		"size":size,
     		"query": {
     			"bool" : {
-                    #"must_not" : [
-    				#	{"terms": {"SUBJECT_NAME": ignoreTerms}},
-                    #    {"terms": {"OBJECT_NAME": ignoreTerms}}
-    				#],
+                    "must_not" : [
+    					{"terms": {"SUBJECT_NAME": ignoreTerms}},
+                        {"terms": {"OBJECT_NAME": ignoreTerms}}
+    				],
     				"filter" : filterData
     			}
     		}
@@ -70,10 +70,10 @@ def run_sem_query(filterData,index,size=100000):
     		"size":size,
     		"query": {
     			"bool" : {
-    				#"must_not" : [
-    				#	{"terms": {"SUBJECT_NAME": ignoreTerms}},
-                    #    {"terms": {"OBJECT_NAME": ignoreTerms}}
-    				#],
+    				"must_not" : [
+    					{"terms": {"SUBJECT_NAME": ignoreTerms}},
+                        {"terms": {"OBJECT_NAME": ignoreTerms}}
+    				],
     				"filter" : filterData
     			}
     		}

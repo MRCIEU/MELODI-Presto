@@ -2,7 +2,8 @@ import requests
 import json
 import pandas as pd
 
-API_URL = "https://melodi-presto.mrcieu.ac.uk/api/"
+#API_URL = "https://melodi-presto.mrcieu.ac.uk/api/"
+API_URL = "http://localhost:8000/api"
 
 def enrich(q):
     endpoint = "/enrich/"
