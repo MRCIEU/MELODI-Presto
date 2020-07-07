@@ -98,7 +98,7 @@ def get_term_stats(index=config.semmed_triple_freqs_index,query=[]):
             request_timeout=timeout,
             index=index,
             body={
-                "size":1000000,
+                "size":100000,
                 "query": {
                     "bool" : {
                         "filter" : filterData
@@ -181,7 +181,7 @@ def divide_chunks(l, n):
 def pub_sem(query,sem_trip_dic):
     #check if already done
     fName=textbase_data+query+'.gz'
-    if os.path.exists(fName):
+    if os.path.exists(fName) and os.path.getsize(fName)>0:
         print(query,'already done')
         start = time.time()
         enrichData=[]
