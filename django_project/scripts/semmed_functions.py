@@ -209,7 +209,7 @@ def pub_sem(query,sem_trip_dic):
         totalRes=0
         predCounts={}
         resDic={}
-        chunkSize=100000
+        chunkSize=50000
         if 0<pCount<config.maxPubs:
             print("\n### Processing ids ###")
             start = time.time()
