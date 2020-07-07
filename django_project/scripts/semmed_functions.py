@@ -18,6 +18,8 @@ from scripts.pubmed_functions import pubmed_query_to_pmids
 #globals
 
 timeout=300
+#term list lookup size
+chunkSize=50000
 
 es = Elasticsearch(
 	[{'host': config.elastic_host,'port': config.elastic_port}],
@@ -85,24 +87,33 @@ def run_sem_query(filterData,index,size=100000):
     return t,res['hits']['total'],res['hits']['hits']
 
 def get_term_stats(index=config.semmed_triple_freqs_index,query=[]):
-	filterData={"terms":{"SUB_PRED_OBJ":query}}
-	start=time.time()
-	res=es.search(
-		request_timeout=timeout,
-		index=index,
-		body={
-			"size":1000000,
-			"query": {
-				"bool" : {
-					"filter" : filterData
-				}
-			}
-		}
-	)
-	end = time.time()
-	t=round((end - start), 4)
-	#print("Time taken:",t, "seconds")
-	return res['hits']['hits']
+    start=time.time()
+    tripleFreqs={}
+    chunks = list(divide_chunks(query, chunkSize))
+    #print(chunks)
+    for i in range(0,len(chunks)):
+        print(i,chunkSize)
+        filterData={"terms":{"SUB_PRED_OBJ":chunks[i]}}
+        res=es.search(
+            request_timeout=timeout,
+            index=index,
+            body={
+                "size":1000000,
+                "query": {
+                    "bool" : {
+                        "filter" : filterData
+                    }
+                }
+            }
+        )
+        #print(res['hits']['hits'])
+        #fullres.append(res['hits']['hits'][0])
+        for i in res['hits']['hits']:
+            tripleFreqs[i['_source']['SUB_PRED_OBJ']]=i['_source']['frequency']
+    end = time.time()
+    t=round((end - start), 4)
+    #print("Time taken:",t, "seconds")
+    return tripleFreqs
 
 def create_sem_es_filter(pmidList):
     #don't need the typeFiterList if used when indexing the data
@@ -219,30 +230,27 @@ def pub_sem(query,sem_trip_dic):
                 filterOptions = create_sem_es_filter(pmidChunks[i])
                 t,resCount,resDic,predCounts=sem_es_query(filterData=filterOptions,index=config.semmed_predicate_index,predCounts=predCounts,resDic=resDic)
                 totalRes+=resCount
-
+                print('resDic',len(resDic))
             pc = round((float(counter)/float(pCount))*100)
             print(str(pc)+' % : '+str(counter)+' '+str(len(predCounts)))
             end = time.time()
             print("\tTime taken:", round((end - start) / 60, 3), "minutes")
             print('Total results:',totalRes)
+            
             outFile=query.replace(' ','_')+'.gz'
             o = gzip.open(textbase_data+outFile,'w')
             #print(predCounts)
             t="\t".join(['triple','subject_name','subject_type','subject_id','predicate','object_name','object_type','object_id','localCount','localTotal','globalCount','globalTotal','odds','pval','pmids'])+'\n'
             o.write(t.encode('utf-8'))
+
             #get global number of publications
-            globalSem=es.count(index=config.semmed_predicate_index)['count']
+            #globalSem=es.count(index=config.semmed_predicate_index)['count']
+            globalSem=config.semmed_triple_total
             print('globalSem = '+str(globalSem))
-            #globalSem=25000000
 
             #get triple freqs
-            tripleFreqs = {}
             print('Geting freqs...',len(predCounts))
-            #print(list(predCounts.keys()))
-            freq_res = get_term_stats(query=list(predCounts.keys()))
-            #print(freq_res)
-            for i in freq_res:
-                tripleFreqs[i['_source']['SUB_PRED_OBJ']]=i['_source']['frequency']
+            tripleFreqs = get_term_stats(query=list(predCounts.keys()))
 
             print('Doing enrichment...')
             start = time.time()
@@ -254,7 +262,7 @@ def pub_sem(query,sem_trip_dic):
                     pc = round((float(counter)/float(len(predCounts)))*100)
                     print(str(pc)+' % : '+str(counter))
                 if predCounts[k]>1:
-                    if freq_res:
+                    if tripleFreqs:
                         odds,pval=fet(int(predCounts[k]),int(totalRes),int(tripleFreqs[k]),int(globalSem))
                         t=k+'\t'+resDic[k]['subject_name']+'\t'+resDic[k]['subject_type']+'\t'+resDic[k]['subject_id']+'\t'+resDic[k]['predicate']+'\t'+resDic[k]['object_name']+'\t'+resDic[k]['object_type']+'\t'+resDic[k]['object_id']+'\t'+str(predCounts[k])+'\t'+str(totalRes)+'\t'+str(tripleFreqs[k])+'\t'+str(globalPub)+'\t'+str(odds)+'\t'+str(pval)+'\t'+" ".join(list(set(resDic[k]['pmids'])))+'\n'
                         o.write(t.encode('utf-8'))
