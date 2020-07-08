@@ -3,7 +3,7 @@ import json
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-
+plt.rcParams["figure.figsize"] = (30,30)
 
 API_URL = "https://melodi-presto.mrcieu.ac.uk/api/"
 
@@ -69,13 +69,18 @@ def pub_check(row):
 def plot_overlap_counts(overlap_counts):
 	#convert to df
 	overlap_counts = overlap_counts.reset_index(name='counts')
+	#add type to term to avoid duplicate terms with different types
+	overlap_counts.object_name_x=overlap_counts.object_name_x+' ('+overlap_counts.object_type_x+')'
+
+	#this just makes it look a bit better
+	sns.set(rc={'figure.figsize':(20,20)})
 
 	g = sns.catplot(
 		y="object_name_x", 
 		x="counts", 
 		hue="object_type_x", 
 		data=overlap_counts, 
-		height=5, 
+		height=10, 
 		kind="bar", 
 		palette="muted", 
 		orient='horizontal',
@@ -85,6 +90,7 @@ def plot_overlap_counts(overlap_counts):
 	#add numbers to the bars
 	for i, v in enumerate(overlap_counts['counts']):
 		plt.text(v + 1, i + .25, str(v))
+		
 	g.set(ylabel='Overlapping term', xlabel='Term frequency')
 	plt.legend(title='Term Type',loc='lower right')
 	#plt.savefig('overlaps.png',dpi=1000)
