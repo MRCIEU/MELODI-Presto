@@ -16,6 +16,7 @@ dependencies:
   - scipy
   - pandas
   - matplotlib
+  - seaborn
   - pip
   - pip:
     - drf-yasg

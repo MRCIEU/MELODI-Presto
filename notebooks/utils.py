@@ -1,6 +1,9 @@
 import requests
 import json
 import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
 
 API_URL = "https://melodi-presto.mrcieu.ac.uk/api/"
 
@@ -62,3 +65,27 @@ def pub_check(row):
         return False
     else:
         return True
+	
+def plot_overlap_counts(overlap_counts):
+	#convert to df
+	overlap_counts = overlap_counts.reset_index(name='counts')
+
+	g = sns.catplot(
+		y="object_name_x", 
+		x="counts", 
+		hue="object_type_x", 
+		data=overlap_counts, 
+		height=5, 
+		kind="bar", 
+		palette="muted", 
+		orient='horizontal',
+		dodge=False,   
+		legend=False
+	)
+	#add numbers to the bars
+	for i, v in enumerate(overlap_counts['counts']):
+		plt.text(v + 1, i + .25, str(v))
+	g.set(ylabel='Overlapping term', xlabel='Term frequency')
+	plt.legend(title='Term Type',loc='lower right')
+	#plt.savefig('overlaps.png',dpi=1000)
+	return plt
