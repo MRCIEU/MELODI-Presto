@@ -17,6 +17,8 @@ dependencies:
   - pandas
   - matplotlib
   - seaborn
+  - networkx
+  - pydot
   - pip
   - pip:
     - drf-yasg
