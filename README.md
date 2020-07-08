@@ -135,9 +135,13 @@ user	0m0.036s
 sys	0m0.104s
 ```
 
+### Limitations
+
+[SemMedDB](https://ii.nlm.nih.gov/SemRep_SemMedDB_SKR/SemMedDB/SemMedDB_download.shtml) is an excellent resource but it is not a perfect representation of the literature. Precision ranges from 73-96% (https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3509487/) meaning that many of the semantic triples are incorrect and missing. By refining the SemMedDB data we have attempted to reduce some of the noise, but will have inadvertently removed some useful content too. This trade off of signal to noise, as well as performance is difficult to obtain.
+ 
 ### Notes
 
-The call to PubMed is limited to 1 million articles. 
+The call to PubMed is limited to most recent 1 million articles. 
 
 ```
 http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi? {'db': 'pubmed', 'term': '', 'retmax': '1000000', 'rettype': 'uilist'}
