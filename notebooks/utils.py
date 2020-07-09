@@ -183,7 +183,5 @@ def create_overlap_network(overlap_df):
         node_size=node_size,
         alpha=0.5,
     )
-    # plt.show()
-    plt.savefig("network.png")
     
     return plt,G
