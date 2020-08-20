@@ -90,7 +90,7 @@ thead input {
             var x=$("#pmid").val();
             $.ajax({url: "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id="+x+"&retmode=json", success: function(result){
                 var title = result.result[x]['title']
-                console.log(title)
+                //console.log(title)
                 $("#title-ajax").html(title);
             }});
         }

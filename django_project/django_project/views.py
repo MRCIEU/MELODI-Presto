@@ -159,12 +159,14 @@ def SentencePostView(request):
                 if pubmed_id in citation_dic:
                     tmp_dic.update(citation_dic[pubmed_id])
                 final_res.append(tmp_dic)
-
-            #get title and abstract
-            pubmed_data=get_pubmed_info([pmid])
-            print(pubmed_data)
-            #print(final_res)
-            returnData = {"count": count2, "data": final_res, "title":pubmed_data['title']}
+            if pmid in citation_dic:
+                #get title and abstract
+                pubmed_data=get_pubmed_info([pmid])
+                print(pubmed_data)
+                #print(final_res)
+                returnData = {"count": count2, "data": final_res, "title":pubmed_data['title']}
+            else:
+                returnData = {"count":0,"data":final_res,"title":"NA","Error":pmid+" not in database"}
         else:
             returnData = serializer.errors
     return Response(returnData)
