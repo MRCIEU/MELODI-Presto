@@ -342,6 +342,6 @@ def compare_sem_df(aList,bList):
         #overlap.to_csv('o.txt',sep='\t')
         return {'count':overlap.shape[0],'data':json.loads(overlap.to_json(orient='records'))}
     else:
-        return json.dumps({'error':'no overlaps'})
+        return {'count':0,'data':[],'Error':'no overlaps'}
 
 

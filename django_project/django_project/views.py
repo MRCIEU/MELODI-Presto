@@ -234,7 +234,6 @@ def OverlapPostView(request):
                 pub_sem(o, sem_trip_dic)
             joinDic = compare_sem_df(x, y)
             returnData = joinDic
-            # print(returnData)
         else:
             returnData = serializer.errors
         return Response(returnData)
