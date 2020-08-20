@@ -276,7 +276,11 @@ def EnrichPostView(request):
             d = pub_sem(text, sem_trip_dic)
             enrichData = d
             es_logger.info("Enrich POST " + str(text))
-            returnData = enrichData
+            if d is None:
+                es_logger.info('no results')
+                returnData = []
+            else:
+                returnData = enrichData
         else:
             returnData = serializer.errors
         return Response(returnData)
