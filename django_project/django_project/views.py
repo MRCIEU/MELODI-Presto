@@ -161,7 +161,7 @@ def SentencePostView(request):
                 final_res.append(tmp_dic)
 
             #get title and abstract
-            pubmed_data=get_pubmed_info(pubmed_id)
+            pubmed_data=get_pubmed_info([pmid])
             print(pubmed_data)
             #print(final_res)
             returnData = {"count": count2, "data": final_res, "title":pubmed_data['title']}
