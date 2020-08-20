@@ -276,7 +276,7 @@ def EnrichPostView(request):
             enrichData = d
             es_logger.info("Enrich POST " + str(text))
             if d is None:
-                es_logger.info('no results')
+                logger.info('no results')
                 returnData = []
             else:
                 returnData = enrichData
