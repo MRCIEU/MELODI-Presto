@@ -1,9 +1,18 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block content %}
-<div class="row">
-  Publication: 
-   <a href="https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btaa726/5893950">MELODI Presto: A fast and agile tool to explore semantic triples derived from biomedical literature, Bioinformatics,2020.</a>
-</div>
+  <div>
+    <h3>Publication:</h3>
+  </div> 
+  <div>
+     <a href="https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btaa726/5893950">MELODI Presto: A fast and agile tool to explore semantic triples derived from biomedical literature, Bioinformatics, 2020.</a>
+  </div>
+  <br>
+  <div>
+    <h5>Abstract:</h5>
+    <p>
+      The field of literature based discovery is growing in step with the volume of literature being produced. From modern natural language processing algorithms to high quality entity tagging, the methods and their impact are developing rapidly. One annotation object that arises from these approaches, the subject-predicate-object triple, is proving to be very useful in representing knowledge. We have implemented efficient search methods and an application programming interface (API), to create fast and convenient functions to utilize triples extracted from the biomedical literature by SemMedDB. By refining these data we have identified a set of triples that focus on the mechanistic aspects of the literature, and provide simple methods to explore both enriched triples from single queries, and overlapping triples across two query lists.
+    </p>
+  </div>
 
 {% endblock %}
