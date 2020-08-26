@@ -38,6 +38,7 @@ urlpatterns = [
     ### web app ###
     #path("admin/", admin.site.urls),
     path(r"app/", views.app, name="app"),
+    path(r"about/", views.about, name="about"),
     path(r"app/enrich/", views.enrich, name="enrich"),
     path(r"app/overlap/", views.overlap, name="overlap"),
     path(r"app/sentence/", views.sentence, name="sentence"),

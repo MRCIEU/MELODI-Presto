@@ -53,6 +53,10 @@ def index(request):
     context = {"nbar":"home","root_url": root_url}
     return HttpResponse(template.render(context, request))
 
+def about(request):
+    template = loader.get_template("django_project/about.html")
+    context = {"nbar":"about"}
+    return HttpResponse(template.render(context, request))    
 
 def app(request):
     template = loader.get_template("django_project/app.html")
