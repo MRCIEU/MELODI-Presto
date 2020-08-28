@@ -1,3 +1,7 @@
+### Publication
+
+[MELODI Presto: A fast and agile tool to explore semantic triples derived from biomedical literature](https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btaa726/5893950)
+
 ### API and App
 
 [https://melodi-presto.mrcieu.ac.uk/](https://melodi-presto.mrcieu.ac.uk/)
