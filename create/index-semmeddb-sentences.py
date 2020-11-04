@@ -7,6 +7,19 @@ import datetime
 import time
 import gzip
 
+#VER43_R has different structure
+#new
+#`SENTENCE_ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+#`PMID` varchar(20) NOT NULL DEFAULT '',
+#`TYPE` varchar(2) NOT NULL DEFAULT '',
+#`NUMBER` int(10) unsigned NOT NULL DEFAULT '0',
+#`SENT_START_INDEX` int(10) unsigned NOT NULL DEFAULT '0',
+#`SENTENCE` varchar(999) DEFAULT NULL,
+#`SENT_END_INDEX` int(10) unsigned NOT NULL DEFAULT '0',
+#`SECTION_HEADER` varchar(100) DEFAULT NULL,
+#`NORMALIZED_SECTION_HEADER` varchar(50) DEFAULT NULL,
+
+#old
 # `SENTENCE_ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
 # `PMID` varchar(20) NOT NULL DEFAULT '',
 # `TYPE` varchar(2) NOT NULL DEFAULT '',
@@ -96,10 +109,10 @@ def index_sentence_data(sentence_data, index_name):
                     "TYPE": l[2],
                     "NUMBER": l[3],
                     "SENT_START_INDEX": l[4],
-                    "SENT_END_INDEX": l[5],
-                    "SECTION_HEADER": l[6],
-                    "NORMALIZED_SECTION_HEADER": l[7],
-                    "SENTENCE": l[8],
+                    "SENTENCE": l[5],
+                    "SENT_END_INDEX": l[6],
+                    "SECTION_HEADER": l[7],
+                    "NORMALIZED_SECTION_HEADER": l[8],
                 }
                 op_dict = {
                     "_index": index_name,
@@ -117,7 +130,7 @@ def index_sentence_data(sentence_data, index_name):
             actions=bulk_data,
             chunk_size=chunkSize,
             request_timeout=timeout,
-            raise_on_error=True,
+            raise_on_error=False,
         ),
         maxlen=0,
     )

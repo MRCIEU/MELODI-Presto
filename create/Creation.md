@@ -57,10 +57,6 @@ allowed_hosts="allowed hosts"
 semmed_triple_total=total number of triples in predicate index
 ```
 
-### Create frequency counts
-
-`python create/create_semmed_freqs.py`
-
 ### Index the data
 
 PREDICATION data
@@ -71,13 +67,14 @@ SENTENCE data
 
 `python create/index-semmeddb-sentences.py`
 
-PREDICATION frequency data
-
-`python create/index-semmeddb_freqs.py`
-
 CITATION data
 
 `python create/index-semmeddb-citations.py`
+
+### Create and index frequency counts
+
+`python create/create_semmed_freqs.py`
+`python create/index-semmeddb_freqs.py`
 
 ### Increase result window and terms count size
 
@@ -88,6 +85,10 @@ curl -XPUT 'localhost:9200/semmeddb-v42-v3/_settings' -H 'Content-Type: applicat
 curl -XPUT '192.168.0.18:9200/semmeddb-v42_triple_freqs-v3/_settings' -H 'Content-Type: application/json' -d '{"index.max_terms_count" : "100000"}'
 
 ```
+
+### Set total triples in config
+
+Update params in `django/config.py` including `semmed_triple_total`
 
 ### Create App and API
 
