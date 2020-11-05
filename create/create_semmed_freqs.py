@@ -66,7 +66,7 @@ def create_counts(type):
 
     r = requests.post(url, json=payload, headers=headers)
     res = r.json()
-    print(res)
+    #print(res)
     masterDic = {}
     for r in res["aggregations"]["my_buckets"]["buckets"]:
         val = r["key"][type]

@@ -130,7 +130,7 @@ def index_sentence_data(sentence_data, index_name):
             actions=bulk_data,
             chunk_size=chunkSize,
             request_timeout=timeout,
-            raise_on_error=False,
+            raise_on_error=True,
         ),
         maxlen=0,
     )
