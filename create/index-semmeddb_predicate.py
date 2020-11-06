@@ -99,6 +99,7 @@ def index_predicate_data(predicate_data, index_name):
     counter = 1
     start = time.time()
     chunkSize = 100000
+    pmids=[]
     with gzip.open(predicate_data) as f:
         # next(f)
         for line in f:
@@ -127,6 +128,7 @@ def index_predicate_data(predicate_data, index_name):
             # ignore records with specified types
             if l[6] in typeFilterList and l[10] in typeFilterList:
                 pred_id = l[5] + ":" + l[3] + ":" + l[9]
+                pmids.append(l[2])
                 # print(l)
                 data_dict = {
                     "PREDICATION_ID": l[0],
@@ -164,6 +166,12 @@ def index_predicate_data(predicate_data, index_name):
         maxlen=0,
     )
 
+    #print pmids
+    print('Writing pmids...')
+    with open('data/pmids.txt', 'w') as f:
+        for item in list(set(pmids)):
+            f.write("%s\n" % item)
+
     # check number of records, doesn't work very well with low refresh rate
     print("Counting number of records...")
     try:
@@ -174,5 +182,5 @@ def index_predicate_data(predicate_data, index_name):
     except timeout:
         print("counting index timeout", index_name)
 
-
-index_predicate_data(config.semmed_predicate_data, config.semmed_predicate_index)
+if __name__ == "__main__":
+    index_predicate_data(config.semmed_predicate_data, config.semmed_predicate_index)

@@ -6,6 +6,7 @@ import config
 import datetime
 import time
 import gzip
+import pandas as pd
 
 #VER43_R has different structure
 #new
@@ -64,7 +65,7 @@ def create_index(index_name, shards=3):
                         "SENT_START_INDEX": {"type": "integer"},
                         "SENT_END_INDEX": {"type": "integer"},
                         "SECTION_HEADER": {"type": "keyword"},
-                        "NORMALIZED_SECTION_HEADER": {"type": "keyword"},
+                        #"NORMALIZED_SECTION_HEADER": {"type": "keyword"},
                         "SENTENCE": {"type": "text"},
                     }
                 }
@@ -72,6 +73,9 @@ def create_index(index_name, shards=3):
         }
         es.indices.create(index=index_name, body=request_body, request_timeout=timeout)
 
+def read_pmids():
+    df = pd.read_csv('data/pmids.txt',header=None, dtype=str,names=['pmid'])
+    return df['pmid'].tolist()
 
 def index_sentence_data(sentence_data, index_name):
     print (get_date(), "Indexing sentence data...")
@@ -80,6 +84,8 @@ def index_sentence_data(sentence_data, index_name):
     counter = 1
     start = time.time()
     chunkSize = 100000
+    #get list of pmids from predicates index
+    pmids = set(read_pmids())
     with gzip.open(sentence_data) as f:
         # next(f)
         for line in f:
@@ -87,7 +93,7 @@ def index_sentence_data(sentence_data, index_name):
             if counter % 100000 == 0:
                 end = time.time()
                 t = round((end - start), 4)
-                print (get_date(), sentence_data, t, counter)
+                print (len(bulk_data), get_date(), sentence_data, t, counter)
             if counter % chunkSize == 0:
                 deque(
                     helpers.streaming_bulk(
@@ -102,27 +108,27 @@ def index_sentence_data(sentence_data, index_name):
                 bulk_data = []
             # print(line.decode('utf-8'))
             l = line.rstrip().decode("utf-8").split("\t")
-            if len(l) == 9:
-                data_dict = {
-                    "SENTENCE_ID": l[0],
-                    "PMID": l[1],
-                    "TYPE": l[2],
-                    "NUMBER": l[3],
-                    "SENT_START_INDEX": l[4],
-                    "SENTENCE": l[5],
-                    "SENT_END_INDEX": l[6],
-                    "SECTION_HEADER": l[7],
-                    "NORMALIZED_SECTION_HEADER": l[8],
-                }
-                op_dict = {
-                    "_index": index_name,
-                    "_id": l[0],
-                    "_op_type": "create",
-                    "_type": "_doc",
-                    "_source": data_dict,
-                }
-                bulk_data.append(op_dict)
-    print(bulk_data[0])
+            #if l[1] in pmids:
+                #print(l)
+            data_dict = {
+                "SENTENCE_ID": l[0],
+                "PMID": l[1],
+                "TYPE": l[2],
+                "NUMBER": l[3],
+                "SENT_START_INDEX": int(l[4]),
+                "SENTENCE": l[5],
+                "SENT_END_INDEX": int(l[6]),
+                "SECTION_HEADER": l[7],
+                #"NORMALIZED_SECTION_HEADER": l[8],
+            }
+            op_dict = {
+                "_index": index_name,
+                #"_id": l[0],
+                #"_op_type": "create",
+                "_type": "_doc",
+                "_source": data_dict,
+            }
+            bulk_data.append(op_dict)
     # print len(bulk_data)
     deque(
         helpers.streaming_bulk(
@@ -145,5 +151,7 @@ def index_sentence_data(sentence_data, index_name):
     except timeout:
         print ("counting index timeout", index_name)
 
-
-index_sentence_data(config.semmed_sentence_data, config.semmed_sentence_index)
+if __name__ == "__main__":
+    #read_pmids()
+    index_sentence_data(config.semmed_sentence_data, config.semmed_sentence_index)
+    

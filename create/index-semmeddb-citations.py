@@ -6,6 +6,7 @@ import config
 import datetime
 import time
 import gzip
+import pandas as pd
 
 # PMID: PubMed identifier of the citation
 # ISSN: ISSN identifier of the journal or the proceedings where the article was published
@@ -16,7 +17,6 @@ import gzip
 es = Elasticsearch([{"host": config.elastic_host, "port": config.elastic_port}],)
 
 timeout = 300
-
 
 def get_date():
     d = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -51,6 +51,9 @@ def create_index(index_name, shards=3):
         }
         es.indices.create(index=index_name, body=request_body, request_timeout=timeout)
 
+def read_pmids():
+    df = pd.read_csv('data/pmids.txt',header=None, dtype=str,names=['pmid'])
+    return df['pmid'].tolist()
 
 def index_sentence_data(sentence_data, index_name):
     print (get_date(), "Indexing sentence data...")
@@ -59,6 +62,7 @@ def index_sentence_data(sentence_data, index_name):
     counter = 1
     start = time.time()
     chunkSize = 100000
+    pmids = set(read_pmids())
     with gzip.open(sentence_data) as f:
         # next(f)
         for line in f:
@@ -66,7 +70,7 @@ def index_sentence_data(sentence_data, index_name):
             if counter % 100000 == 0:
                 end = time.time()
                 t = round((end - start), 4)
-                print (get_date(), sentence_data, t, counter)
+                print (len(bulk_data),get_date(), sentence_data, t, counter)
             if counter % chunkSize == 0:
                 deque(
                     helpers.streaming_bulk(
@@ -81,9 +85,10 @@ def index_sentence_data(sentence_data, index_name):
                 bulk_data = []
             # print(line.decode('utf-8'))
             l = line.rstrip().decode("utf-8").split("\t")
-            if len(l) == 5:
+            PMID = l[0].replace("'","")
+            if PMID in pmids:
                 data_dict = {
-                    "PMID": l[0].replace("'",""),
+                    "PMID": PMID,
                     "ISSN": l[1],
                     "DP": l[2],
                     "EDAT": l[3],
@@ -91,16 +96,13 @@ def index_sentence_data(sentence_data, index_name):
                 }
                 op_dict = {
                     "_index": index_name,
-                    "_id": l[0],
-                    "_op_type": "create",
+                    #"_id": l[0],
+                    #"_op_type": "create",
                     "_type": "_doc",
                     "_source": data_dict,
                 }
                 bulk_data.append(op_dict)
-            else:
-                print('row error',len(l))	
-    print(bulk_data[0])
-    # print len(bulk_data)
+    print(len(bulk_data))
     deque(
         helpers.streaming_bulk(
             client=es,
@@ -122,5 +124,5 @@ def index_sentence_data(sentence_data, index_name):
     except timeout:
         print ("counting index timeout", index_name)
 
-
-index_sentence_data(config.semmed_citation_data, config.semmed_citation_index)
+if __name__ == "__main__":
+    index_sentence_data(config.semmed_citation_data, config.semmed_citation_index)
