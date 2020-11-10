@@ -264,7 +264,7 @@ def pub_sem(query,sem_trip_dic):
                 if predCounts[k]>1:
                     if tripleFreqs:
                         odds,pval=fet(int(predCounts[k]),int(totalRes),int(tripleFreqs[k]),int(globalSem))
-                        t=k+'\t'+resDic[k]['subject_name']+'\t'+resDic[k]['subject_type']+'\t'+resDic[k]['subject_id']+'\t'+resDic[k]['predicate']+'\t'+resDic[k]['object_name']+'\t'+resDic[k]['object_type']+'\t'+resDic[k]['object_id']+'\t'+str(predCounts[k])+'\t'+str(totalRes)+'\t'+str(tripleFreqs[k])+'\t'+str(globalPub)+'\t'+str(odds)+'\t'+str(pval)+'\t'+" ".join(list(set(resDic[k]['pmids'])))+'\n'
+                        t=k+'\t'+resDic[k]['subject_name']+'\t'+resDic[k]['subject_type']+'\t'+resDic[k]['subject_id']+'\t'+resDic[k]['predicate']+'\t'+resDic[k]['object_name']+'\t'+resDic[k]['object_type']+'\t'+resDic[k]['object_id']+'\t'+str(predCounts[k])+'\t'+str(totalRes)+'\t'+str(tripleFreqs[k])+'\t'+str(globalPub)+'\t'+str(odds)+'\t'+str(pval)+'\t'+" ".join(sorted(list(set(resDic[k]['pmids'])),reverse=True))+'\n'
                         o.write(t.encode('utf-8'))
                         enrichData.append({
                             'query':query,
@@ -282,7 +282,7 @@ def pub_sem(query,sem_trip_dic):
                             'globalTotal':globalPub,
                             'odds':odds,
                             'pval':pval,
-                            'pmids':" ".join(list(set(resDic[k]['pmids'])))
+                            'pmids':" ".join(sorted(list(set(resDic[k]['pmids'])),reverse=True))
                             })
                     else:
                         continue

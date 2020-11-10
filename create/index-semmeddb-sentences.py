@@ -108,27 +108,27 @@ def index_sentence_data(sentence_data, index_name):
                 bulk_data = []
             # print(line.decode('utf-8'))
             l = line.rstrip().decode("utf-8").split("\t")
-            #if l[1] in pmids:
+            if l[1] in pmids:
                 #print(l)
-            data_dict = {
-                "SENTENCE_ID": l[0],
-                "PMID": l[1],
-                "TYPE": l[2],
-                "NUMBER": l[3],
-                "SENT_START_INDEX": int(l[4]),
-                "SENTENCE": l[5],
-                "SENT_END_INDEX": int(l[6]),
-                "SECTION_HEADER": l[7],
-                #"NORMALIZED_SECTION_HEADER": l[8],
-            }
-            op_dict = {
-                "_index": index_name,
-                #"_id": l[0],
-                #"_op_type": "create",
-                "_type": "_doc",
-                "_source": data_dict,
-            }
-            bulk_data.append(op_dict)
+                data_dict = {
+                    "SENTENCE_ID": l[0],
+                    "PMID": l[1],
+                    "TYPE": l[2],
+                    "NUMBER": l[3],
+                    "SENT_START_INDEX": int(l[4]),
+                    "SENTENCE": l[5],
+                    "SENT_END_INDEX": int(l[6]),
+                    "SECTION_HEADER": l[7],
+                    #"NORMALIZED_SECTION_HEADER": l[8],
+                }
+                op_dict = {
+                    "_index": index_name,
+                    #"_id": l[0],
+                    #"_op_type": "create",
+                    "_type": "_doc",
+                    "_source": data_dict,
+                }
+                bulk_data.append(op_dict)
     # print len(bulk_data)
     deque(
         helpers.streaming_bulk(
