@@ -12,8 +12,13 @@ import argparse
 import os
 import json
 import pandas as pd
+import logging
 from scripts.pubmed_functions import pubmed_query_to_pmids
 
+logging.basicConfig(
+    format="%(asctime)s %(message)s", datefmt="%m/%d/%Y %I:%M:%S %p", level=logging.INFO
+)
+logger = logging.getLogger("debug_logger")
 
 #globals
 
@@ -181,8 +186,10 @@ def divide_chunks(l, n):
 def pub_sem(query,sem_trip_dic):
     #check if already done
     fName=textbase_data+query+'.gz'
-    if os.path.exists(fName) and os.path.getsize(fName)>0:
-        print(query,'already done')
+    processed=False
+    try:
+    #if os.path.exists(fName) and os.path.getsize(fName)>0:
+        #print(query,'already done')
         start = time.time()
         enrichData=[]
         with gzip.open(fName,'r') as f:
@@ -210,8 +217,12 @@ def pub_sem(query,sem_trip_dic):
         end = time.time()
         t = "{:.4f}".format(end-start)
         print('Time to read',t)
+        processed=True
         return enrichData
-    else:
+    except:
+        logger.info('%s not already processed',query)
+    
+    if processed == False:
         pmidList = pubmed_query_to_pmids(query.replace('_',' '))
         #print(pmidList)
         pCount=len(pmidList)
