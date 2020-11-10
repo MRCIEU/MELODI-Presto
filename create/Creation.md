@@ -102,10 +102,10 @@ docker-compose up -d
 
 ```
 #all
-python django_project/manage.py test django_project
+docker exec melodi-presto-django python django_project/manage.py test django_project
 
 #specific
-python django_project/manage.py test django_project.tests.APITests
+docker exec melodi-presto-django python django_project/manage.py test django_project.tests.APITests
 ```
 
 
