@@ -10,17 +10,8 @@
 
 ### Get SemMedDB Data
 
-Need the SENTENCE, PREDICATION and CITATION tables - https://ii.nlm.nih.gov/SemRep_SemMedDB_SKR/SemMedDB/SemMedDB_download.shtml
+Need the SENTENCE, PREDICATION, CITATION and GENERIC_CONCEPT CSV files - https://ii.nlm.nih.gov/SemRep_SemMedDB_SKR/SemMedDB/SemMedDB_download.shtml
 
-### Convert to delimited 
-
-Downloads are in SQL format, need to convert to something more manageable
-
-```
-python create/mysql_to_csv.py <(gunzip -c semmedVER42_2020_R_PREDICATION.sql.gz) | gzip > semmedVER42_2020_R_PREDICATION.tsv.gz
-python create/mysql_to_csv.py <(gunzip -c semmedVER42_2020_R_SENTENCE.sql.gz) | gzip > semmedVER42_2020_R_SENTENCE.tsv.gz
-python create/mysql_to_csv.py <(gunzip -c semmedVER42_2020_R_CITATIONS.sql.gz) | gzip > semmedVER42_2020_R_CITATIONS.tsv.gz
-```
 
 ### Create config file
 
@@ -42,9 +33,10 @@ semmed_sentence_index = 'name of sentence index'
 semmed_triple_freqs_index = 'name predicate frequency index'
 semmed_citation_index = 'name of citation index'
 
-semmed_predicate_data = 'location of PREDICATION file, e.g. semmedVER40_R_PREDICATION.psv.gz'
-semmed_sentence_data = 'location of SENTENCE data file, e.g. semmedVER40_R_SENTENCE.tsv.gz'
-semmed_citation_data = 'location of modified CITATION data file, e.g. semmedVER42_2020_R_CITATIONS.tsv.gz'
+semmed_predicate_data = 'location of PREDICATION file, e.g. semmedVER40_R_PREDICATION.csv.gz'
+semmed_sentence_data = 'location of SENTENCE data file, e.g. semmedVER40_R_SENTENCE.csv.gz'
+semmed_citation_data = 'location of modified CITATION data file, e.g. semmedVER42_2020_R_CITATIONS.csv.gz'
+semmed_concept_data = 'location of modified GENERIC_CONCEPT data file, e.g. semmedVER42_2020_R_GENERIC_CONCEPT.csv.gz'
 maxPubs=10000000
 
 api_url='api url, e.g. https://www.some.thing/api/'

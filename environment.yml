@@ -19,6 +19,7 @@ dependencies:
   - seaborn
   - networkx
   - pydot
+  - loguru
   - pip
   - pip:
     - drf-yasg
