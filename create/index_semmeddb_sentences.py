@@ -64,7 +64,7 @@ def create_index(index_name, shards=3):
                         "NUMBER": {"type": "keyword"},
                         "SENT_START_INDEX": {"type": "integer"},
                         "SENT_END_INDEX": {"type": "integer"},
-                        "SECTION_HEADER": {"type": "keyword"},
+                        #"SECTION_HEADER": {"type": "keyword"},
                         #"NORMALIZED_SECTION_HEADER": {"type": "keyword"},
                         "SENTENCE": {"type": "text"},
                     }
@@ -133,7 +133,7 @@ def index_sentence_data(sentence_data, index_name):
                 "SENT_START_INDEX": int(row['SENT_START_INDEX']),
                 "SENTENCE": row['SENTENCE'],
                 "SENT_END_INDEX": int(row['SENT_END_INDEX']),
-                "SECTION_HEADER": row['SECTION_HEADER'],
+                #"SECTION_HEADER": row['SECTION_HEADER'],
                 #"NORMALIZED_SECTION_HEADER": l[8],
             }
             op_dict = {
@@ -143,7 +143,13 @@ def index_sentence_data(sentence_data, index_name):
                 "_type": "_doc",
                 "_source": data_dict,
             }
-            bulk_data.append(op_dict)
+            # check for bad entries
+            nan_check = True
+            for i in data_dict:
+                if not data_dict[i]:
+                    nan_check = False
+            if nan_check == True:
+                bulk_data.append(op_dict)
     # print len(bulk_data)
     deque(
         helpers.streaming_bulk(
