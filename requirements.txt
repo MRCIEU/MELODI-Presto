@@ -1,4 +1,4 @@
-Django==2.2.13
+Django>=2.2.18
 gunicorn==19.7.0
 djangorestframework
 requests

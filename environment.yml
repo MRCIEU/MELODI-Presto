@@ -23,5 +23,5 @@ dependencies:
   - pip
   - pip:
     - drf-yasg
-    - Django==2.2.12
+    - Django>=2.2.18
 
