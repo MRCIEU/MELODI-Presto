@@ -37,7 +37,7 @@ predIgnore = [
 typeFilterList = [
     "aapp",
     "chem",
-    "clna"
+    "clna",
     "clnd",
     "dsyn",
     "enzy",
@@ -99,7 +99,7 @@ def index_predicate_data(predicate_data, concept_data, index_name):
     counter = 1
     start = time.time()
     chunkSize = 100000
-    pmids=[]
+    pmids = []
 
     df = pd.read_csv(predicate_data, encoding="ISO-8859-1")
     col_names = [
@@ -160,25 +160,27 @@ def index_predicate_data(predicate_data, concept_data, index_name):
             bulk_data = []
 
         # ignore records with specified types
-        pred_id = row['SUBJECT_NAME'] + ":" + row['PREDICATE'] + ":" + row['OBJECT_NAME']
-        pmids.append(row['PMID'])
+        pred_id = (
+            row["SUBJECT_NAME"] + ":" + row["PREDICATE"] + ":" + row["OBJECT_NAME"]
+        )
+        pmids.append(row["PMID"])
         # print(l)
         data_dict = {
-            "PREDICATION_ID": row['PREDICATION_ID'],
-            "SENTENCE_ID": row['SENTENCE_ID'],
-            "PMID": row['PMID'],
-            "PREDICATE": row['PREDICATE'],
-            "SUBJECT_CUI": row['SUBJECT_CUI'],
-            "SUBJECT_NAME": row['SUBJECT_NAME'],
-            "SUBJECT_SEMTYPE": row['SUBJECT_SEMTYPE'],
-            "OBJECT_CUI": row['OBJECT_CUI'],
-            "OBJECT_NAME": row['OBJECT_NAME'],
-            "OBJECT_SEMTYPE": row['OBJECT_SEMTYPE'],
+            "PREDICATION_ID": row["PREDICATION_ID"],
+            "SENTENCE_ID": row["SENTENCE_ID"],
+            "PMID": row["PMID"],
+            "PREDICATE": row["PREDICATE"],
+            "SUBJECT_CUI": row["SUBJECT_CUI"],
+            "SUBJECT_NAME": row["SUBJECT_NAME"],
+            "SUBJECT_SEMTYPE": row["SUBJECT_SEMTYPE"],
+            "OBJECT_CUI": row["OBJECT_CUI"],
+            "OBJECT_NAME": row["OBJECT_NAME"],
+            "OBJECT_SEMTYPE": row["OBJECT_SEMTYPE"],
             "SUB_PRED_OBJ": pred_id,
         }
         op_dict = {
             "_index": index_name,
-            "_id": row['PREDICATION_ID'],
+            "_id": row["PREDICATION_ID"],
             "_op_type": "create",
             "_type": "_doc",
             "_source": data_dict,
@@ -197,9 +199,9 @@ def index_predicate_data(predicate_data, concept_data, index_name):
         maxlen=0,
     )
 
-    #print pmids
-    print('Writing pmids...')
-    with open('data/pmids.txt', 'w') as f:
+    # print pmids
+    print("Writing pmids...")
+    with open("data/pmids.txt", "w") as f:
         for item in list(set(pmids)):
             f.write("%s\n" % item)
 
@@ -213,5 +215,10 @@ def index_predicate_data(predicate_data, concept_data, index_name):
     except timeout:
         print("counting index timeout", index_name)
 
+
 if __name__ == "__main__":
-    index_predicate_data(config.semmed_predicate_data, config.semmed_concept_data, config.semmed_predicate_index)
+    index_predicate_data(
+        config.semmed_predicate_data,
+        config.semmed_concept_data,
+        config.semmed_predicate_index,
+    )

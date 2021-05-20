@@ -36,7 +36,7 @@ urlpatterns = [
     # home of app and api
     path("", views.index, name="index"),
     ### web app ###
-    #path("admin/", admin.site.urls),
+    # path("admin/", admin.site.urls),
     path(r"app/", views.app, name="app"),
     path(r"about/", views.about, name="about"),
     path(r"app/enrich/", views.enrich, name="enrich"),
@@ -63,5 +63,5 @@ urlpatterns = [
     url(r"api/overlap/", views.OverlapPostView, name="overlap-post"),
     url(r"api/sentence/", views.SentencePostView, name="sentence-post"),
     url(r"api/enrich/", views.EnrichPostView, name="enrich-post"),
-    #url(r"^api-auth/", include("rest_framework.urls", namespace="rest_framework")),
+    # url(r"^api-auth/", include("rest_framework.urls", namespace="rest_framework")),
 ]

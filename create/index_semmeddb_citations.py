@@ -18,17 +18,18 @@ es = Elasticsearch([{"host": config.elastic_host, "port": config.elastic_port}],
 
 timeout = 300
 
+
 def get_date():
     d = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     return d
 
 
 def create_index(index_name, shards=3):
-    print ("Creating index", index_name)
+    print("Creating index", index_name)
     if es.indices.exists(index_name, request_timeout=timeout):
-        print ("Index name already exists, please choose another")
+        print("Index name already exists, please choose another")
     else:
-        print ("Creating index " + index_name)
+        print("Creating index " + index_name)
         request_body = {
             "settings": {
                 "number_of_shards": shards,
@@ -51,12 +52,14 @@ def create_index(index_name, shards=3):
         }
         es.indices.create(index=index_name, body=request_body, request_timeout=timeout)
 
+
 def read_pmids():
-    df = pd.read_csv('data/pmids.txt',header=None, dtype=str,names=['pmid'])
-    return df['pmid'].tolist()
+    df = pd.read_csv("data/pmids.txt", header=None, dtype=str, names=["pmid"])
+    return df["pmid"].tolist()
+
 
 def index_sentence_data(sentence_data, index_name):
-    print (get_date(), "Indexing sentence data...")
+    print(get_date(), "Indexing sentence data...")
     create_index(index_name)
     bulk_data = []
     counter = 1
@@ -70,7 +73,7 @@ def index_sentence_data(sentence_data, index_name):
             if counter % 100000 == 0:
                 end = time.time()
                 t = round((end - start), 4)
-                print (len(bulk_data),get_date(), sentence_data, t, counter)
+                print(len(bulk_data), get_date(), sentence_data, t, counter)
             if counter % chunkSize == 0:
                 deque(
                     helpers.streaming_bulk(
@@ -85,7 +88,7 @@ def index_sentence_data(sentence_data, index_name):
                 bulk_data = []
             # print(line.decode('utf-8'))
             l = line.rstrip().decode("utf-8").split("\t")
-            PMID = l[0].replace("'","")
+            PMID = l[0].replace("'", "")
             if PMID in pmids:
                 data_dict = {
                     "PMID": PMID,
@@ -96,8 +99,8 @@ def index_sentence_data(sentence_data, index_name):
                 }
                 op_dict = {
                     "_index": index_name,
-                    #"_id": l[0],
-                    #"_op_type": "create",
+                    # "_id": l[0],
+                    # "_op_type": "create",
                     "_type": "_doc",
                     "_source": data_dict,
                 }
@@ -115,14 +118,15 @@ def index_sentence_data(sentence_data, index_name):
     )
 
     # check number of records, doesn't work very well with low refresh rate
-    print ("Counting number of records...")
+    print("Counting number of records...")
     try:
         es.indices.refresh(index=index_name, request_timeout=timeout)
         res = es.search(index=index_name, request_timeout=timeout)
         esRecords = res["hits"]["total"]
-        print ("Number of records in index", index_name, "=", esRecords)
+        print("Number of records in index", index_name, "=", esRecords)
     except timeout:
-        print ("counting index timeout", index_name)
+        print("counting index timeout", index_name)
+
 
 if __name__ == "__main__":
     index_sentence_data(config.semmed_citation_data, config.semmed_citation_index)

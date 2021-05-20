@@ -50,35 +50,37 @@ else:
 
 def index(request):
     template = loader.get_template("django_project/index.html")
-    context = {"nbar":"home","root_url": root_url}
+    context = {"nbar": "home", "root_url": root_url}
     return HttpResponse(template.render(context, request))
+
 
 def about(request):
     template = loader.get_template("django_project/about.html")
-    context = {"nbar":"about"}
-    return HttpResponse(template.render(context, request))    
+    context = {"nbar": "about"}
+    return HttpResponse(template.render(context, request))
+
 
 def app(request):
     template = loader.get_template("django_project/app.html")
-    context = {"nbar":"app"}
+    context = {"nbar": "app"}
     return HttpResponse(template.render(context, request))
 
 
 def enrich(request):
     template = loader.get_template("django_project/enrich.html")
-    context = {"nbar":"app","api_url": api_url}
+    context = {"nbar": "app", "api_url": api_url}
     return HttpResponse(template.render(context, request))
 
 
 def overlap(request):
     template = loader.get_template("django_project/overlap.html")
-    context = {"nbar":"app","api_url": api_url}
+    context = {"nbar": "app", "api_url": api_url}
     return HttpResponse(template.render(context, request))
 
 
-def sentence(request,pmid=''):
+def sentence(request, pmid=""):
     template = loader.get_template("django_project/sentence.html")
-    context = {"nbar":"app","api_url": api_url,"pmid":pmid}
+    context = {"nbar": "app", "api_url": api_url, "pmid": pmid}
     return HttpResponse(template.render(context, request))
 
 
@@ -93,6 +95,7 @@ def StatusView(request):
     Returns true/false
     """
     return Response(True)
+
 
 @swagger_auto_schema(methods=["post"], request_body=SentenceSerializer)
 @api_view(["POST"])
@@ -134,16 +137,18 @@ def SentencePostView(request):
             # get sentence data
             filterData = {"term": {"PMID": pmid}}
             time1, count1, res1 = run_standard_query(
-                filterData=filterData, index=config.semmed_sentence_index+','+config.semmed_citation_index, size=1000
+                filterData=filterData,
+                index=config.semmed_sentence_index + "," + config.semmed_citation_index,
+                size=1000,
             )
             # get sentence IDs and CITATION data
             sent_dic = {}
             citation_dic = {}
-            #print(res1)
+            # print(res1)
             for r in res1:
-                if r['_index']==config.semmed_citation_index:
+                if r["_index"] == config.semmed_citation_index:
                     citation_dic[r["_source"]["PMID"]] = r["_source"]
-                if r['_index']==config.semmed_sentence_index:
+                if r["_index"] == config.semmed_sentence_index:
                     sent_dic[r["_source"]["SENTENCE_ID"]] = r["_source"]
             filterData = {"terms": {"SENTENCE_ID": list(sent_dic.keys())}}
             time2, count2, res2 = run_standard_query(
@@ -164,13 +169,22 @@ def SentencePostView(request):
                     tmp_dic.update(citation_dic[pubmed_id])
                 final_res.append(tmp_dic)
             if pmid in citation_dic:
-                #get title and abstract
-                pubmed_data=get_pubmed_info([pmid])
+                # get title and abstract
+                pubmed_data = get_pubmed_info([pmid])
                 print(pubmed_data)
-                #print(final_res)
-                returnData = {"count": count2, "data": final_res, "title":pubmed_data['title']}
+                # print(final_res)
+                returnData = {
+                    "count": count2,
+                    "data": final_res,
+                    "title": pubmed_data["title"],
+                }
             else:
-                returnData = {"count":0,"data":final_res,"title":"NA","Error":pmid+" not in database"}
+                returnData = {
+                    "count": 0,
+                    "data": final_res,
+                    "title": "NA",
+                    "Error": pmid + " not in database",
+                }
         else:
             returnData = serializer.errors
     return Response(returnData)
@@ -280,7 +294,7 @@ def EnrichPostView(request):
             enrichData = d
             es_logger.info("Enrich POST " + str(text))
             if d is None:
-                logger.info('no results')
+                logger.info("no results")
                 returnData = []
             else:
                 returnData = enrichData

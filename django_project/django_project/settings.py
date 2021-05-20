@@ -61,7 +61,7 @@ ROOT_URLCONF = "django_project.urls"
 
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
-    }
+}
 
 
 TEMPLATES = [
@@ -161,6 +161,4 @@ LOGGING = {
     },
 }
 
-SWAGGER_SETTINGS = {
-    'USE_SESSION_AUTH': False
-}
+SWAGGER_SETTINGS = {"USE_SESSION_AUTH": False}

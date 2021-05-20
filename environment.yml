@@ -24,4 +24,5 @@ dependencies:
   - pip:
     - drf-yasg
     - Django>=2.2.18
+    - coreapi
 
