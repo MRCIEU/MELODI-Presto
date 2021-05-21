@@ -101,7 +101,8 @@ def index_predicate_data(predicate_data, concept_data, index_name):
     chunkSize = 100000
     pmids = []
 
-    df = pd.read_csv(predicate_data, encoding="ISO-8859-1")
+    print('Reading',predicate_data)
+    df = pd.read_csv(predicate_data, encoding="ISO-8859-1",low_memory=False)
     col_names = [
         "PREDICATION_ID",
         "SENTENCE_ID",
@@ -129,6 +130,10 @@ def index_predicate_data(predicate_data, concept_data, index_name):
     df = df[~df.PREDICATE.isin(predIgnore)]
     logger.info(df.shape)
 
+    # filter on types
+    df = df[(df["SUBJECT_SEMTYPE"].isin(typeFilterList)) & (df["OBJECT_SEMTYPE"].isin(typeFilterList))]
+    logger.info(df.shape)
+
     # use generic concept file instead of novelty columns
     gc_df = pd.read_csv(concept_data, names=["concept_id", "cui", "name"])
     gc_ids = list(gc_df["cui"])
@@ -138,7 +143,7 @@ def index_predicate_data(predicate_data, concept_data, index_name):
     logger.info(df.shape)
 
     # remove last three cols
-    df.drop(columns=["x", "y", "z"], inplace=True)
+    #df.drop(columns=["x", "y", "z"], inplace=True)
 
     for i, row in df.iterrows():
         counter += 1

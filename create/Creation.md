@@ -49,38 +49,45 @@ allowed_hosts="allowed hosts"
 semmed_triple_total=total number of triples in predicate index
 ```
 
-### Index the data
-
-PREDICATION data
-
-`python create/index-semmeddb_predicate.py`
-
-SENTENCE data
-
-`python create/index-semmeddb-sentences.py`
-
-CITATION data
-
-`python create/index-semmeddb-citations.py`
-
-### Create and index frequency counts
+### Create frequency counts
 
 `python create/create_semmed_freqs.py`
-`python create/index-semmeddb_freqs.py`
+
+### Index the data
+
+##### PREDICATION data
+ 
+ - takes ~30 mins
+
+`python create/index_semmeddb_predicate.py`
+
+##### SENTENCE data
+
+ - takes ~5-10 hours
+
+`python create/index_semmeddb_sentences.py`
+
+##### PREDICATION frequency data
+
+- takes 30 mins
+
+`python create/index_semmeddb_freqs.py`
+
+##### CITATION data
+
+- takes ~x hours
+
+`python create/index_semmeddb_citations.py`
 
 ### Increase result window and terms count size
 
 ```
-curl -XPUT 'localhost:9200/semmeddb-v43/_settings' -H 'Content-Type: application/json' -d '{"index.max_result_window" : "1000000"}'
-curl -XPUT 'localhost:9200/semmeddb-v43_triple_freqs/_settings' -H 'Content-Type: application/json' -d '{"index.max_result_window" : "1000000"}'
-curl -XPUT 'localhost:9200/semmeddb-v43/_settings' -H 'Content-Type: application/json' -d '{"index.max_terms_count" : "100000"}'
-curl -XPUT '192.168.0.18:9200/semmeddb-v43_triple_freqs/_settings' -H 'Content-Type: application/json' -d '{"index.max_terms_count" : "100000"}'
+curl -XPUT 'localhost:9200/semmeddb-v42/_settings' -H 'Content-Type: application/json' -d '{"index.max_result_window" : "1000000"}'
+curl -XPUT 'localhost:9200/semmeddb-v42_triple_freqs/_settings' -H 'Content-Type: application/json' -d '{"index.max_result_window" : "1000000"}'
+curl -XPUT 'localhost:9200/semmeddb-v42/_settings' -H 'Content-Type: application/json' -d '{"index.max_terms_count" : "100000"}'
+curl -XPUT '192.168.0.18:9200/semmeddb-v42_triple_freqs/_settings' -H 'Content-Type: application/json' -d '{"index.max_terms_count" : "100000"}'
 
 ```
-
-### Set total triples in config
-
-Update params in `django/config.py` including `semmed_triple_total`
 
 ### Create App and API
 

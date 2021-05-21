@@ -1,7 +1,7 @@
 from elasticsearch import Elasticsearch
 from elasticsearch import helpers
 from collections import deque
-
+from loguru import logger
 import config
 import datetime
 import time
@@ -66,45 +66,56 @@ def index_sentence_data(sentence_data, index_name):
     start = time.time()
     chunkSize = 100000
     pmids = set(read_pmids())
-    with gzip.open(sentence_data) as f:
-        # next(f)
-        for line in f:
-            counter += 1
-            if counter % 100000 == 0:
-                end = time.time()
-                t = round((end - start), 4)
-                print(len(bulk_data), get_date(), sentence_data, t, counter)
-            if counter % chunkSize == 0:
-                deque(
-                    helpers.streaming_bulk(
-                        client=es,
-                        actions=bulk_data,
-                        chunk_size=chunkSize,
-                        request_timeout=timeout,
-                        raise_on_error=True,
-                    ),
-                    maxlen=0,
-                )
-                bulk_data = []
-            # print(line.decode('utf-8'))
-            l = line.rstrip().decode("utf-8").split("\t")
-            PMID = l[0].replace("'", "")
-            if PMID in pmids:
-                data_dict = {
-                    "PMID": PMID,
-                    "ISSN": l[1],
-                    "DP": l[2],
-                    "EDAT": l[3],
-                    "PYEAR": int(l[4]),
-                }
-                op_dict = {
-                    "_index": index_name,
-                    # "_id": l[0],
-                    # "_op_type": "create",
-                    "_type": "_doc",
-                    "_source": data_dict,
-                }
-                bulk_data.append(op_dict)
+
+    logger.info(f'Reading {sentence_data}')
+    df = pd.read_csv(sentence_data)
+    col_names = [
+        "PMID",
+        "ISSN",
+        "DP",
+        "EDAT",
+        "PYEAR"
+    ]
+    df.columns = col_names
+    logger.info(f"\n{df.head()}")
+    logger.info(df.shape)
+
+    for i, row in df.iterrows():
+        counter += 1
+        if counter % 100000 == 0:
+            end = time.time()
+            t = round((end - start), 4)
+            print(len(bulk_data), get_date(), sentence_data, t, counter)
+        if counter % chunkSize == 0:
+            deque(
+                helpers.streaming_bulk(
+                    client=es,
+                    actions=bulk_data,
+                    chunk_size=chunkSize,
+                    request_timeout=timeout,
+                    raise_on_error=True,
+                ),
+                maxlen=0,
+            )
+            bulk_data = []
+        # print(line.decode('utf-8'))
+        PMID = row['PMID'].replace("'", "")
+        if PMID in pmids:
+            data_dict = {
+                "PMID": PMID,
+                "ISSN": row['ISSN'],
+                "DP": row['DP'],
+                "EDAT": row['EDAT'],
+                "PYEAR": int(row['PYEAR']),
+            }
+            op_dict = {
+                "_index": index_name,
+                # "_id": l[0],
+                # "_op_type": "create",
+                "_type": "_doc",
+                "_source": data_dict,
+            }
+            bulk_data.append(op_dict)
     print(len(bulk_data))
     deque(
         helpers.streaming_bulk(
