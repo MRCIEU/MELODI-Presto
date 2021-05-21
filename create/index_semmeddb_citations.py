@@ -77,6 +77,7 @@ def index_sentence_data(sentence_data, index_name):
         "PYEAR"
     ]
     df.columns = col_names
+    df.fillna('NA',inplace=True)
     logger.info(f"\n{df.head()}")
     logger.info(df.shape)
 
@@ -99,15 +100,16 @@ def index_sentence_data(sentence_data, index_name):
             )
             bulk_data = []
         # print(line.decode('utf-8'))
-        PMID = row['PMID'].replace("'", "")
-        if PMID in pmids:
+        #PMID = row['PMID'].replace("'", "")
+        if str(row['PMID']) in pmids:
             data_dict = {
-                "PMID": PMID,
+                "PMID": row['PMID'],
                 "ISSN": row['ISSN'],
                 "DP": row['DP'],
                 "EDAT": row['EDAT'],
                 "PYEAR": int(row['PYEAR']),
             }
+
             op_dict = {
                 "_index": index_name,
                 # "_id": l[0],

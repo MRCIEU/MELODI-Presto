@@ -105,7 +105,8 @@ def index_sentence_data(sentence_data, index_name):
     ]
     df.columns = col_names
     df.drop(columns=["SECTION_HEADER", "NORMALIZED_SECTION_HEADER"], inplace=True)
-    df.dropna(inplace=True)
+    #df.dropna(inplace=True)
+    df.fillna('NA',inplace=True)
     logger.info(f"\n{df.head()}")
     logger.info(df.shape)
     for i, row in df.iterrows():
