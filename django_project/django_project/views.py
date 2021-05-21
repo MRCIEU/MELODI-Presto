@@ -144,7 +144,7 @@ def SentencePostView(request):
             # get sentence IDs and CITATION data
             sent_dic = {}
             citation_dic = {}
-            print(res1)
+            #print(res1)
             for r in res1:
                 if r["_index"] == config.semmed_citation_index:
                     citation_dic[str(r["_source"]["PMID"])] = r["_source"]
