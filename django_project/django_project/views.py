@@ -144,10 +144,10 @@ def SentencePostView(request):
             # get sentence IDs and CITATION data
             sent_dic = {}
             citation_dic = {}
-            # print(res1)
+            print(res1)
             for r in res1:
                 if r["_index"] == config.semmed_citation_index:
-                    citation_dic[r["_source"]["PMID"]] = r["_source"]
+                    citation_dic[str(r["_source"]["PMID"])] = r["_source"]
                 if r["_index"] == config.semmed_sentence_index:
                     sent_dic[r["_source"]["SENTENCE_ID"]] = r["_source"]
             filterData = {"terms": {"SENTENCE_ID": list(sent_dic.keys())}}
