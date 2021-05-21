@@ -15,7 +15,7 @@ def get_pubmed_info(pmid):
         # https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=22368089&retmode=json
 
         params = {"db": "pubmed", "id": pmid, "retmode": "json"}
-        # print(url,params)
+        print(url,params)
         r = requests.get(url, params=params).json()
         title = r["result"][pmid]["title"]
         return {"title": title}
