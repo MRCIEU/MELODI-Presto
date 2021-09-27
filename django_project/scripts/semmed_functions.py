@@ -101,7 +101,11 @@ def run_sem_query(filterData, index, size=100000):
     end = time.time()
     t = round((end - start), 4)
     # print(res['hits']['total'])
-    return t, res["hits"]["total"], res["hits"]["hits"]
+    try:
+       total = int(res["hits"]["total"]["value"])
+    except:
+       total = 0
+    return t, total, res["hits"]["hits"]
 
 
 def get_term_stats(index=config.semmed_triple_freqs_index, query=[]):
@@ -155,6 +159,7 @@ def sem_es_query(filterData, index, predCounts, resDic):
     # print(filterData)
     t, resCount, res = run_sem_query(filterData, index)
     pMatch = []
+    logger.info(resCount)
     if resCount > 0:
         # print(filterData)
         # print(t,resCount)
