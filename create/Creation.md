@@ -49,9 +49,23 @@ allowed_hosts="allowed hosts"
 semmed_triple_total=total number of triples in predicate index
 ```
 
+### Setup virtualenv
+
+```
+python3 -m venv venv
+. ./venv/bin/activate
+pip install -r requirements.txt
+```
+
+### Create config symlink
+
+```
+ln -s django_project/config.py create/config.py
+```
+
 ### Create frequency counts
 
-`python create/create_semmed_freqs.py`
+`python -m create.create_semmed_freqs`
 
 ### Index the data
 
@@ -59,25 +73,25 @@ semmed_triple_total=total number of triples in predicate index
  
  - takes ~30 mins
 
-`python create/index_semmeddb_predicate.py`
+`python -m create.index_semmeddb_predicate`
 
 ##### SENTENCE data
 
  - takes ~5-10 hours
 
-`python create/index_semmeddb_sentences.py`
+`python -m create.index_semmeddb_sentences`
 
 ##### PREDICATION frequency data
 
 - takes 30 mins
 
-`python create/index_semmeddb_freqs.py`
+`python -m create.index_semmeddb_freqs`
 
 ##### CITATION data
 
 - takes ~x hours
 
-`python create/index_semmeddb_citations.py`
+`python -m create.index_semmeddb_citations`
 
 ### Increase result window and terms count size
 

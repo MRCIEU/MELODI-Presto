@@ -2,7 +2,7 @@ from elasticsearch import Elasticsearch
 from elasticsearch import helpers
 from collections import deque
 from loguru import logger
-import config
+import django_project.config
 import datetime
 import time
 import gzip
