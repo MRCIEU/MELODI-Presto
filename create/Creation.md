@@ -13,9 +13,19 @@
 Need the SENTENCE, PREDICATION, CITATION and GENERIC_CONCEPT CSV files - https://ii.nlm.nih.gov/SemRep_SemMedDB_SKR/SemMedDB/SemMedDB_download.shtml
 
 
+### Setup virtualenv
+
+Need this for building and testing local django setup.
+
+```
+python3 -m venv venv
+. ./venv/bin/activate
+pip install -r requirements.txt
+```
+
 ### Create config file
 
-`django_project` needs to have config.py file 
+`django_project` needs to have `config.py` file 
 
 ```
 secret_key=django_secret_key
@@ -39,23 +49,18 @@ semmed_citation_data = 'location of modified CITATION data file, e.g. semmedVER4
 semmed_concept_data = 'location of modified GENERIC_CONCEPT data file, e.g. semmedVER42_2020_R_GENERIC_CONCEPT.csv.gz'
 maxPubs=10000000
 
-api_url='api url, e.g. https://www.some.thing/api/'
-root_url='root url, e.g. https://www.some.thing/'
-debug='True/False'
+api_url='api url, e.g. http://127.0.0.1:8000/api or https://melodi-presto.mrcieu.ac.uk/api'
+root_url='root url, e.g. http://127.0.0.1:8000 or https://melodi-presto.mrcieu.ac.uk'
+debug='True/False' 
 DEPLOYMENT='dev/prod'
 
 allowed_hosts="allowed hosts"
 
-semmed_triple_total=total number of triples in predicate index
+semmed_triple_total='total number of triples in predicate index'
 ```
 
-### Setup virtualenv
+- create secret key ` python -c "import secrets; print(secrets.token_urlsafe())"`
 
-```
-python3 -m venv venv
-. ./venv/bin/activate
-pip install -r requirements.txt
-```
 
 ### Create config symlink
 
