@@ -26,7 +26,9 @@ timeout = 300
 # term list lookup size
 chunkSize = 50000
 
-es = Elasticsearch([{"host": config.elastic_host, "port": config.elastic_port}],)
+es = Elasticsearch(
+    [{"host": config.elastic_host, "port": config.elastic_port}],
+)
 
 textbase_data = os.path.join(config.dataPath, "textbase", "data/")
 
@@ -102,9 +104,9 @@ def run_sem_query(filterData, index, size=100000):
     t = round((end - start), 4)
     # print(res['hits']['total'])
     try:
-       total = int(res["hits"]["total"]["value"])
+        total = int(res["hits"]["total"]["value"])
     except:
-       total = 0
+        total = 0
     return t, total, res["hits"]["hits"]
 
 

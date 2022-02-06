@@ -2,14 +2,16 @@ from elasticsearch import Elasticsearch
 from elasticsearch import helpers
 from collections import deque
 
-import config
+import django_project.config as config
 import datetime
 import time
 import gzip
 
 # SUB_PRED_OBJ and frequency
 
-es = Elasticsearch([{"host": config.elastic_host, "port": config.elastic_port}],)
+es = Elasticsearch(
+    [{"host": config.elastic_host, "port": config.elastic_port}],
+)
 
 timeout = 300
 

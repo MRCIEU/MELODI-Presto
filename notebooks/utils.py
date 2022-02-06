@@ -164,10 +164,20 @@ def create_overlap_network(overlap_df):
     # colour the GWAS nodes
     # exposure_outcome_nodes = exposure+outcome
     nx.draw_networkx_nodes(
-        G, pos, nodelist=exposure, node_color="r", node_size=node_size, alpha=0.5,
+        G,
+        pos,
+        nodelist=exposure,
+        node_color="r",
+        node_size=node_size,
+        alpha=0.5,
     )
     nx.draw_networkx_nodes(
-        G, pos, nodelist=outcome, node_color="g", node_size=node_size, alpha=0.5,
+        G,
+        pos,
+        nodelist=outcome,
+        node_color="g",
+        node_size=node_size,
+        alpha=0.5,
     )
 
     return plt, G
