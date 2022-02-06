@@ -2,7 +2,7 @@ from elasticsearch import Elasticsearch
 from elasticsearch import helpers
 from collections import deque
 
-import django_project.config
+import django_project.config as config
 import datetime
 import time
 import gzip

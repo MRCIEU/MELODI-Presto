@@ -13,9 +13,9 @@
 Need the SENTENCE, PREDICATION, CITATION and GENERIC_CONCEPT CSV files - https://ii.nlm.nih.gov/SemRep_SemMedDB_SKR/SemMedDB/SemMedDB_download.shtml
 
 
-### Setup virtualenv
+### Local virtualenv
 
-Need this for building and testing local django setup.
+Can use this for building and testing local django setup.
 
 ```
 python3 -m venv venv
@@ -23,16 +23,35 @@ python3 -m venv venv
 pip install -r requirements.txt
 ```
 
+### Docker 
+
+To create the App and API just run docker-compose
+
+```
+docker-compose up -d
+```
+
+### Elasticsearch
+
+To create docker instance
+
+```
+docker pull docker.elastic.co/elasticsearch/elasticsearch:7.17.0
+docker run -p 127.0.0.1:9200:9200 -p 127.0.0.1:9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:7.17.0
+```
+
+- the above is for a single node cluster, ideally in production use a full cluster.
+
 ### Create config file
 
 Create `django_project/config.py` and modify
 
 ```
-secret_key=django_secret_key
+secret_key = '' # django secret key
 
-#elastic host 1 
-elastic_host='localhost'
-elastic_port='9300'
+#elastic host 
+elastic_host = 'localhost' # elasticsearch host
+elastic_port = '9200' # elasticsearch port
 
 dataPath = '' # path to data storage directory, e.g. where temporary files are stored
 
@@ -60,12 +79,6 @@ semmed_triple_total = '' # total number of triples in predicate index
 
 - create secret key `python -c "import secrets; print(secrets.token_urlsafe())"`
 
-
-### Create config symlink
-
-```
-ln -s django_project/config.py create/config.py
-```
 
 ### Create frequency counts
 
@@ -105,14 +118,6 @@ curl -XPUT 'localhost:9200/semmeddb-v42_triple_freqs/_settings' -H 'Content-Type
 curl -XPUT 'localhost:9200/semmeddb-v42/_settings' -H 'Content-Type: application/json' -d '{"index.max_terms_count" : "100000"}'
 curl -XPUT '192.168.0.18:9200/semmeddb-v42_triple_freqs/_settings' -H 'Content-Type: application/json' -d '{"index.max_terms_count" : "100000"}'
 
-```
-
-### Create App and API
-
-To create the App and API just run docker-compose
-
-```
-docker-compose up -d
 ```
 
 # Testing
