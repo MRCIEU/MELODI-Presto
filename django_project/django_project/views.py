@@ -144,18 +144,18 @@ def SentencePostView(request):
             # get sentence IDs and CITATION data
             sent_dic = {}
             citation_dic = {}
-            #logger.debug(res1)
+            # logger.debug(res1)
             for r in res1:
                 if r["_index"] == config.semmed_citation_index:
                     citation_dic[str(r["_source"]["PMID"])] = r["_source"]
                 if r["_index"] == config.semmed_sentence_index:
                     sent_dic[r["_source"]["SENTENCE_ID"]] = r["_source"]
             filterData = {"terms": {"SENTENCE_ID": list(sent_dic.keys())}}
-            #logger.debug(filterData)
+            # logger.debug(filterData)
             time2, count2, res2 = run_standard_query(
                 filterData=filterData, index=config.semmed_predicate_index, size=1000
             )
-            #logger.debug(res2)
+            # logger.debug(res2)
             # stitch them together
             final_res = []
             for r in res2:
@@ -170,11 +170,11 @@ def SentencePostView(request):
                 if pubmed_id in citation_dic:
                     tmp_dic.update(citation_dic[pubmed_id])
                 final_res.append(tmp_dic)
-            #logger.info(pmid)
+            # logger.info(pmid)
             if pmid in citation_dic:
                 # get title and abstract
                 pubmed_data = get_pubmed_info([pmid])
-                #logger.info(pubmed_data)
+                # logger.info(pubmed_data)
                 # print(final_res)
                 returnData = {
                     "count": count2,
@@ -198,7 +198,7 @@ def SentencePostView(request):
 def OverlapPostView(request):
     """
     API endpoint for returning overlapping triples. Accepts two lists of query terms, x and y, e.g. ['NF1','MALAT1','NEAT2'] amd ['neuroblastoma','lung cancer']
-    
+
     Returns JSON:
     - count: The number of records returned,
     - data: The records

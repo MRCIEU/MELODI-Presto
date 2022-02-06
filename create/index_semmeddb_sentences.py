@@ -31,7 +31,9 @@ import pandas as pd
 # `NORMALIZED_SECTION_HEADER` varchar(50) DEFAULT NULL,
 # `SENTENCE` varchar(999) CHARACTER SET utf8 NOT NULL DEFAULT '',
 
-es = Elasticsearch([{"host": config.elastic_host, "port": config.elastic_port}],)
+es = Elasticsearch(
+    [{"host": config.elastic_host, "port": config.elastic_port}],
+)
 
 timeout = 300
 
@@ -105,8 +107,8 @@ def index_sentence_data(sentence_data, index_name):
     ]
     df.columns = col_names
     df.drop(columns=["SECTION_HEADER", "NORMALIZED_SECTION_HEADER"], inplace=True)
-    #df.dropna(inplace=True)
-    df.fillna('NA',inplace=True)
+    # df.dropna(inplace=True)
+    df.fillna("NA", inplace=True)
     logger.info(f"\n{df.head()}")
     logger.info(df.shape)
     for i, row in df.iterrows():

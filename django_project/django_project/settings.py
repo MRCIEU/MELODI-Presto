@@ -101,9 +101,15 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
+    {
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+    },
 ]
 
 
@@ -153,11 +159,20 @@ LOGGING = {
             "filename": os.path.join(BASE_DIR, "logs/elastic.log"),
             "formatter": "verbose",
         },
-        "console": {"level": "DEBUG", "class": "logging.StreamHandler",},
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+        },
     },
     "loggers": {
-        "debug_logger": {"handlers": ["debug_logfile"], "level": "DEBUG",},
-        "elastic_logger": {"handlers": ["elastic_logfile"], "level": "INFO",},
+        "debug_logger": {
+            "handlers": ["debug_logfile"],
+            "level": "DEBUG",
+        },
+        "elastic_logger": {
+            "handlers": ["elastic_logfile"],
+            "level": "INFO",
+        },
     },
 }
 

@@ -9,7 +9,9 @@ from elasticsearch import (
     helpers,
 )
 
-es = Elasticsearch([{"host": config.elastic_host, "port": config.elastic_port}],)
+es = Elasticsearch(
+    [{"host": config.elastic_host, "port": config.elastic_port}],
+)
 es_local = Elasticsearch(
     [{"host": config.elastic_host_local, "port": config.elastic_port_local}],
 )

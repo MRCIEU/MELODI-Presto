@@ -14,7 +14,9 @@ import pandas as pd
 # EDAT: The date when the citation was added to PubMed
 # PYEAR: Completion date for the citation
 
-es = Elasticsearch([{"host": config.elastic_host, "port": config.elastic_port}],)
+es = Elasticsearch(
+    [{"host": config.elastic_host, "port": config.elastic_port}],
+)
 
 timeout = 300
 
@@ -67,17 +69,11 @@ def index_sentence_data(sentence_data, index_name):
     chunkSize = 100000
     pmids = set(read_pmids())
 
-    logger.info(f'Reading {sentence_data}')
+    logger.info(f"Reading {sentence_data}")
     df = pd.read_csv(sentence_data)
-    col_names = [
-        "PMID",
-        "ISSN",
-        "DP",
-        "EDAT",
-        "PYEAR"
-    ]
+    col_names = ["PMID", "ISSN", "DP", "EDAT", "PYEAR"]
     df.columns = col_names
-    df.fillna('NA',inplace=True)
+    df.fillna("NA", inplace=True)
     logger.info(f"\n{df.head()}")
     logger.info(df.shape)
 
@@ -100,14 +96,14 @@ def index_sentence_data(sentence_data, index_name):
             )
             bulk_data = []
         # print(line.decode('utf-8'))
-        #PMID = row['PMID'].replace("'", "")
-        if str(row['PMID']) in pmids:
+        # PMID = row['PMID'].replace("'", "")
+        if str(row["PMID"]) in pmids:
             data_dict = {
-                "PMID": row['PMID'],
-                "ISSN": row['ISSN'],
-                "DP": row['DP'],
-                "EDAT": row['EDAT'],
-                "PYEAR": int(row['PYEAR']),
+                "PMID": row["PMID"],
+                "ISSN": row["ISSN"],
+                "DP": row["DP"],
+                "EDAT": row["EDAT"],
+                "PYEAR": int(row["PYEAR"]),
             }
 
             op_dict = {

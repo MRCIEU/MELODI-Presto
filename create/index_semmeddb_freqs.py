@@ -9,7 +9,9 @@ import gzip
 
 # SUB_PRED_OBJ and frequency
 
-es = Elasticsearch([{"host": config.elastic_host, "port": config.elastic_port}],)
+es = Elasticsearch(
+    [{"host": config.elastic_host, "port": config.elastic_port}],
+)
 
 timeout = 300
 

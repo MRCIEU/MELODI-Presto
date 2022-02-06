@@ -25,7 +25,7 @@ pip install -r requirements.txt
 
 ### Create config file
 
-`django_project` needs to have `config.py` file 
+Create `django_project/config.py` and modify
 
 ```
 secret_key=django_secret_key
@@ -34,32 +34,31 @@ secret_key=django_secret_key
 elastic_host='localhost'
 elastic_port='9300'
 
-#path to data storage directory, e.g. where temporary files are stored
-dataPath='/path/to/data/'
+dataPath = '' # path to data storage directory, e.g. where temporary files are stored
 
-#Elasticsearch index names
-semmed_predicate_index = 'name of predicate index'
-semmed_sentence_index = 'name of sentence index'
-semmed_triple_freqs_index = 'name predicate frequency index'
-semmed_citation_index = 'name of citation index'
+# Elasticsearch index names
+semmed_predicate_index = '' # name of predicate index
+semmed_sentence_index = '' # name of sentence index
+semmed_triple_freqs_index = '' # name predicate frequency index
+semmed_citation_index = '' # name of citation index
 
-semmed_predicate_data = 'location of PREDICATION file, e.g. semmedVER40_R_PREDICATION.csv.gz'
-semmed_sentence_data = 'location of SENTENCE data file, e.g. semmedVER40_R_SENTENCE.csv.gz'
-semmed_citation_data = 'location of modified CITATION data file, e.g. semmedVER42_2020_R_CITATIONS.csv.gz'
-semmed_concept_data = 'location of modified GENERIC_CONCEPT data file, e.g. semmedVER42_2020_R_GENERIC_CONCEPT.csv.gz'
+semmed_predicate_data = '' # location of PREDICATION file, e.g. semmedVER40_R_PREDICATION.csv.gz
+semmed_sentence_data = '' # location of SENTENCE data file, e.g. semmedVER40_R_SENTENCE.csv.gz
+semmed_citation_data = '' # location of modified CITATION data file, e.g. semmedVER42_2020_R_CITATIONS.csv.gz
+semmed_concept_data = '' # location of modified GENERIC_CONCEPT data file, e.g. semmedVER42_2020_R_GENERIC_CONCEPT.csv.gz
 maxPubs=10000000
 
-api_url='api url, e.g. http://127.0.0.1:8000/api or https://melodi-presto.mrcieu.ac.uk/api'
-root_url='root url, e.g. http://127.0.0.1:8000 or https://melodi-presto.mrcieu.ac.uk'
-debug='True/False' 
-DEPLOYMENT='dev/prod'
+api_url = '' # api url, e.g. http://127.0.0.1:8000/api or https://melodi-presto.mrcieu.ac.uk/api
+root_url = '' # root url, e.g. http://127.0.0.1:8000 or https://melodi-presto.mrcieu.ac.uk
+debug = 'False' # True/False 
+DEPLOYMENT = 'prod' # dev/prod
 
-allowed_hosts="allowed hosts"
+allowed_hosts = "" # set IP addresses for access
 
-semmed_triple_total='total number of triples in predicate index'
+semmed_triple_total = '' # total number of triples in predicate index
 ```
 
-- create secret key ` python -c "import secrets; print(secrets.token_urlsafe())"`
+- create secret key `python -c "import secrets; print(secrets.token_urlsafe())"`
 
 
 ### Create config symlink
