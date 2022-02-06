@@ -14,8 +14,12 @@ if [ ! -f $PROJECT_ROOT/.build ]; then
   date > $PROJECT_ROOT/.build
 fi
 
-cd django_project // Change to our Django project
+# Change to our Django project
+cd django_project
+# Check that we are in the right directory 
+ls -l
 exec gunicorn django_project.wsgi:application \
     --bind 0.0.0.0:8000 \
     --workers 5 \
     --timeout 600
+exit()
